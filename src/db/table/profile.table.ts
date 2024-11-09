@@ -6,6 +6,7 @@ export type TbProfile = typeof TbProfile;
 export const TbProfile = table("profile", {
   id: column.id.$defaultFn(genId("user")),
   name: column.text("name").notNull(),
+  imageUrl: column.text("imageUrl").notNull(),
   socials: column.json("socials").default({}),
   abouts: column.json("abouts").default({}),
   createdAt: column.createdAt,

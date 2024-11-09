@@ -15,6 +15,13 @@
       "when": 1731129592208,
       "tag": "0001_wise_vindicator",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731135635627,
+      "tag": "0002_glamorous_bulldozer",
+      "breakpoints": true
     }
   ]
 }
