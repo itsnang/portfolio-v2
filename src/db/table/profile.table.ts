@@ -8,6 +8,8 @@ export const TbProfile = table("profile", {
   name: column.text("name").notNull(),
   imageUrl: column.text("imageUrl").notNull(),
   socials: column.json("socials").default({}),
+  skills: column.json("skills").default({}),
+  description: column.text("description"),
   abouts: column.json("abouts").default({}),
   createdAt: column.createdAt,
   updatedAt: column.updatedAt,
