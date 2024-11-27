@@ -7,7 +7,7 @@ export const TbExperiences = table("experiences", {
   id: column.id.$defaultFn(genId("experience")),
   title: column.text("title").notNull(),
   imageUrl: column.text("imageUrl"),
-  description: column.json("description").default({}),
+  description: column.text("description"),
   startDate: column.timestamp("startDate").notNull(),
   endDate: column.timestamp("endDate"),
   createdAt: column.createdAt,

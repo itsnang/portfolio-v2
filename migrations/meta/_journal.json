@@ -29,6 +29,20 @@
       "when": 1732182618174,
       "tag": "0003_dizzy_namor",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1732695934069,
+      "tag": "0004_orange_rattler",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1732696106770,
+      "tag": "0005_material_tag",
+      "breakpoints": true
     }
   ]
 }
