@@ -1,4 +1,5 @@
 import { BlurFadeDemo } from "@/components/bento-demo";
+import { Experience } from "@/components/experience";
 import { MyPlaylist } from "@/components/playlist-component";
 import { Skills } from "@/components/skills-component";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -38,6 +39,7 @@ export default async function Home() {
           </div>
           {/* Playlist */}
           <MyPlaylist />
+          <Experience />
         </div>
       </section>
     </main>
