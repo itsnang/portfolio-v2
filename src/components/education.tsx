@@ -22,7 +22,7 @@ const EDUCATION = [
 
 export const Education = () => {
   return (
-    <div className="flex min-h-0 flex-col gap-y-3">
+    <section className="flex min-h-0 flex-col gap-y-3">
       <h2 className="text-xl font-bold">Education</h2>
       {EDUCATION.map((education) => (
         <ResumeCard
@@ -35,6 +35,6 @@ export const Education = () => {
           period={`${education.start} - ${education.end}`}
         />
       ))}
-    </div>
+    </section>
   );
 };

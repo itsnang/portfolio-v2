@@ -41,7 +41,7 @@ const SKILLS = [
 
 export const Skills = () => {
   return (
-    <div className="flex flex-wrap gap-3">
+    <section className="flex pt-4 flex-wrap gap-3">
       {SKILLS.map((skill, idex) => (
         <div
           key={idex}
@@ -51,6 +51,6 @@ export const Skills = () => {
           <span className="font-medium text-sm">{skill.title}</span>
         </div>
       ))}
-    </div>
+    </section>
   );
 };

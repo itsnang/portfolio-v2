@@ -24,24 +24,22 @@ export default async function Home() {
             </p>
           </div>
         </div>
-        {/* about */}
-        <div className="space-y-4">
-          <p className="text-base text-muted-foreground pt-4">
-            Hi, this is Samnang ✌️. introverted nobody, a Software Developer. I
-            am highly perceptive and very imaginative by seeking inspiration in
-            every moment and currently living in Phnom Penh, Cambodia.
-          </p>
-          <BlurFadeDemo />
-        </div>
-        {/* skills */}
-        <div className="pt-4">
-          <Skills />
-        </div>
-        {/* Playlist */}
-        <Experience />
-        <Education />
-        <MyPlaylist />
       </section>
+      <section className="space-y-4">
+        {/* about */}
+        <p className="text-base text-muted-foreground pt-4">
+          Hi, this is Samnang ✌️. introverted nobody, a Software Developer. I am
+          highly perceptive and very imaginative by seeking inspiration in every
+          moment and currently living in Phnom Penh, Cambodia.
+        </p>
+        <BlurFadeDemo />
+      </section>
+      {/* skills */}
+      <Skills />
+      {/* Playlist */}
+      <Experience />
+      <Education />
+      <MyPlaylist />
     </main>
   );
 }

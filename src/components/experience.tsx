@@ -1,5 +1,5 @@
 import React from "react";
-import { ResumeCard } from "./resume-card";
+import { ExperienceCard } from "./experience-card";
 
 const work = [
   {
@@ -31,10 +31,10 @@ const work = [
 
 export const Experience = () => {
   return (
-    <div className="flex min-h-0 flex-col gap-y-3 py-6">
+    <section className="flex min-h-0 flex-col gap-y-3 py-6">
       <h2 className="text-xl font-bold">Work Experience</h2>
       {work.map((work) => (
-        <ResumeCard
+        <ExperienceCard
           key={work.company}
           logoUrl={work.logoUrl}
           altText={work.company}
@@ -46,6 +46,6 @@ export const Experience = () => {
           description={work.description}
         />
       ))}
-    </div>
+    </section>
   );
 };
