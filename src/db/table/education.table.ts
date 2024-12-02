@@ -1,14 +1,13 @@
 import { table, column } from "@/utils";
 
-export type TbExperiences = typeof TbExperiences;
+export type TbEducation = typeof TbEducation;
 
-export const TbExperiences = table("experiences", {
+export const TbEducation = table("education", {
   id: column.id,
   isActive: column.boolean("is_active").default(true),
-  company: column.text("company").notNull(),
-  title: column.text("title").notNull(),
-  imageUrl: column.text("image_url"),
-  description: column.text("description"),
+  school: column.text("school").notNull(),
+  degree: column.text("degree").notNull(),
+  logoUrl: column.text("logo_url"),
   startDate: column.timestamp("start_date").notNull(),
   endDate: column.timestamp("end_date"),
   createdAt: column.createdAt,
