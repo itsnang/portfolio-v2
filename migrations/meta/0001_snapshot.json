@@ -1,6 +1,6 @@
 {
-  "id": "3218e63e-8fa3-42c0-a487-7ea83f6d442b",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "6f81257a-6a82-47d5-b6a0-9cb397359452",
+  "prevId": "3218e63e-8fa3-42c0-a487-7ea83f6d442b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -88,6 +88,12 @@
           "type": "integer",
           "primaryKey": true,
           "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "is_active": {
           "name": "is_active",
@@ -235,6 +241,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
@@ -298,6 +310,12 @@
           "type": "integer",
           "primaryKey": true,
           "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "is_active": {
           "name": "is_active",
@@ -426,6 +444,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "title": {
           "name": "title",
