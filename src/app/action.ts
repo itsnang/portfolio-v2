@@ -15,6 +15,9 @@ export const getProfile = async () => {
         projects: {
           where: (project, { eq }) => eq(project.isActive, true),
         },
+        socials: {
+          where: (social, { eq }) => eq(social.isActive, true),
+        },
       },
     }).then(takeFirstOrThrow);
 

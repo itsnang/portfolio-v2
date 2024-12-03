@@ -6,6 +6,7 @@ import { Skills } from "@/components/skills-component";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getProfile } from "./action";
 import { AboutImage } from "@/components/about-image";
+import { DockNav } from "@/components/nav-dock";
 
 export default async function Home() {
   const profile = await getProfile();
@@ -20,7 +21,7 @@ export default async function Home() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
-            <h1 className="text-xl font-bold">Lorn Samnang 🎸</h1>
+            <h1 className="text-xl font-bold">{profile.name}</h1>
             <p className="text-xs text-gray-500">&quot;{profile.bio}&quot;</p>
           </div>
         </div>
@@ -37,6 +38,7 @@ export default async function Home() {
       <Education education={profile.education} />
       <Projects projects={profile.projects} />
       <MyPlaylist />
+      <DockNav socials={profile.socials} />
     </main>
   );
 }

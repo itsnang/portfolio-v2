@@ -8,6 +8,7 @@ export interface IProfile {
   skills: ISkill[];
   experience: IExperience[];
   education: IEducation[];
+  projects: IProject[];
 }
 
 export interface ISkill {
@@ -44,6 +45,13 @@ export interface IProject {
   description: string;
   technologies: string[];
   links: ProjectLinks[] | null;
+}
+
+export interface ISocial {
+  id: number;
+  name: string;
+  url: string;
+  icon: string;
 }
 
 export type ProjectLinks = { type: string; href: string };

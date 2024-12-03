@@ -4,6 +4,7 @@ import { relations } from "drizzle-orm";
 import { TbEducation } from "./education.table";
 import { TbProject } from "./project.table";
 import { TbExperiences } from "./experiences.table";
+import { TbSocials } from "./socials.table";
 
 export type TbProfile = typeof TbProfile;
 
@@ -25,4 +26,5 @@ export const ProfileRelations = relations(TbProfile, ({ many }) => ({
   experience: many(TbExperiences),
   education: many(TbEducation),
   projects: many(TbProject),
+  socials: many(TbSocials),
 }));

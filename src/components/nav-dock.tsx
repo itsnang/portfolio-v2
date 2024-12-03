@@ -10,31 +10,20 @@ import {
 import { cn } from "@/lib/utils";
 import { HomeIcon, NotebookIcon } from "lucide-react";
 import Link from "next/link";
-import { Icons } from "./icons";
+import { ISocial } from "@/types/profile.type";
+import React from "react";
+import Image from "next/image";
 
 const navbar = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/blog", icon: NotebookIcon, label: "Blog" },
 ];
-const socials = [
-  {
-    name: "GitHub",
-    url: "https://dub.sh/dillion-github",
-    icon: Icons.github,
-  },
-  {
-    name: "LinkedIn",
-    url: "https://dub.sh/dillion-linkedin",
-    icon: Icons.linkedin,
-  },
-  {
-    name: "Send Email",
-    url: "#",
-    icon: Icons.email,
-  },
-];
 
-export default function DockNav() {
+interface DockNavProps {
+  socials: ISocial[];
+}
+
+export const DockNav: React.FC<DockNavProps> = ({ socials }) => {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto mb-4 pb-4 flex origin-bottom h-full max-h-14">
       <Dock className="z-50 pointer-events-auto relative mx-auto flex min-h-full h-full items-center px-1 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
@@ -73,7 +62,12 @@ export default function DockNav() {
                       "size-12"
                     )}
                   >
-                    <social.icon className="size-4" />
+                    <Image
+                      src={social.icon}
+                      alt={social.name}
+                      width={24}
+                      height={24}
+                    />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -97,4 +91,4 @@ export default function DockNav() {
       </Dock>
     </div>
   );
-}
+};
