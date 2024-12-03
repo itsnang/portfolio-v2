@@ -21,7 +21,7 @@ export const column = {
   json: json,
   timestamp: timestamp,
   enum: pgEnum,
-  id: integer().primaryKey(),
+  id: integer().notNull().primaryKey(),
   deletedAt: timestamp("deleted_at", { mode: "date", withTimezone: true }),
   createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
     .notNull()

@@ -1,38 +1,27 @@
 import React from "react";
 import { ResumeCard } from "./resume-card";
+import { IEducation } from "@/types/profile.type";
+import { convertDate } from "@/helper/convert-date";
 
-const EDUCATION = [
-  {
-    school: "Royal University of Phnom Penh",
-    href: "https://www.rupp.edu.kh/",
-    degree: "Bachelor's Degree of Computer Science",
-    logoUrl: "https://rupp.edu.kh/images/rupp-logo.png",
-    start: "2023",
-    end: "Current",
-  },
-  {
-    school: "Sabaicode",
-    href: "https://sabaicode.com",
-    degree: "Full Stack Web Development",
-    logoUrl: "https://sabaicode.com/sabaicode.jpg",
-    start: "2016",
-    end: "2021",
-  },
-];
+interface EducationProps {
+  education: IEducation[];
+}
 
-export const Education = () => {
+export const Education: React.FC<EducationProps> = ({ education }) => {
   return (
     <section className="flex min-h-0 flex-col gap-y-3">
       <h2 className="text-xl font-bold">Education</h2>
-      {EDUCATION.map((education) => (
+      {education.map((education) => (
         <ResumeCard
           key={education.school}
-          href={education.href}
+          href={education.href ?? "/"}
           logoUrl={education.logoUrl}
           altText={education.school}
           title={education.school}
           subtitle={education.degree}
-          period={`${education.start} - ${education.end}`}
+          period={`${convertDate(education.startDate)} - ${
+            convertDate(education.endDate) ?? "Present"
+          }`}
         />
       ))}
     </section>

@@ -6,9 +6,10 @@ export type TbSkills = typeof TbSkills;
 
 export const TbSkills = table("skills", {
   id: column.id,
-  userId: column.int("userId"),
+  isActive: column.boolean("is_active").default(true),
+  userId: column.int("user_id"),
   name: column.text("name").notNull(),
-  logoUrl: column.text("logoUrl").notNull(),
+  logoUrl: column.text("logo_url").notNull(),
   createdAt: column.createdAt,
   updatedAt: column.updatedAt,
   deletedAt: column.deletedAt,

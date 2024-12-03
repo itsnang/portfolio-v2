@@ -57,7 +57,7 @@ export const ResumeCard = ({
           </Avatar>
         </div>
         <div className="flex-grow ml-4 items-center flex-col group">
-          <CardHeader>
+          <CardHeader className="space-y-2">
             <div className="flex items-center justify-between gap-x-2 text-base">
               <h3 className="inline-flex items-center justify-center font-semibold leading-none text-xs sm:text-sm">
                 {title}
@@ -81,11 +81,11 @@ export const ResumeCard = ({
                   )}
                 />
               </h3>
-              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
-                {period}
-              </div>
             </div>
             {subtitle && <div className="font-sans text-xs">{subtitle}</div>}
+            <div className="text-xs sm:text-sm tabular-nums text-muted-foreground">
+              {period}
+            </div>
           </CardHeader>
           {description && (
             <motion.div
