@@ -1,12 +1,29 @@
 "use server";
 import { db, takeFirstOrThrow } from "@/db/drizzle";
-import { TbProfile } from "@/db/table";
 
 export const getProfile = async () => {
-  const data = await db
-    .select()
-    .from(TbProfile)
-    .execute()
-    .then(takeFirstOrThrow);
-  return data;
+  try {
+    const data = await db.query.TbProfile.findMany({
+      with: {
+        skills: true,
+        experience: {
+          where: (experience, { eq }) => eq(experience.isActive, true),
+        },
+        education: {
+          where: (education, { eq }) => eq(education.isActive, true),
+        },
+        projects: {
+          where: (project, { eq }) => eq(project.isActive, true),
+        },
+        socials: {
+          where: (social, { eq }) => eq(social.isActive, true),
+        },
+      },
+    }).then(takeFirstOrThrow);
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    throw new Error("Failed to fetch profile data");
+  }
 };

@@ -1,18 +1,57 @@
 export interface IProfile {
-  id: string;
+  id: number;
   name: string;
+  boi: string;
   imageUrl: string;
-  socials: Abouts;
-  skills: Abouts;
-  description: string;
-  abouts: Abouts;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
+  abouts: string;
+  aboutImages: string[];
+  skills: ISkill[];
+  experience: IExperience[];
+  education: IEducation[];
+  projects: IProject[];
 }
 
-export interface Abouts {
-  ["en-US"]: string;
-  ["km-KH"]: string;
-  ["zh-CN"]: string;
+export interface ISkill {
+  id: number;
+  name: string;
+  logoUrl: string;
 }
+
+export interface IExperience {
+  id: number;
+  title: string;
+  imageUrl: string;
+  company: string;
+  startDate: Date;
+  endDate: Date | null;
+  description: string | null;
+}
+
+export interface IEducation {
+  id: number;
+  school: string;
+  degree: string;
+  logoUrl: string;
+  href: string | null;
+  startDate: Date;
+  endDate: Date | null;
+}
+
+export interface IProject {
+  id: number;
+  title: string;
+  href: string | null;
+  image: string;
+  description: string;
+  technologies: string[];
+  links: ProjectLinks[] | null;
+}
+
+export interface ISocial {
+  id: number;
+  name: string;
+  url: string;
+  icon: string;
+}
+
+export type ProjectLinks = { type: string; href: string };

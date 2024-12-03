@@ -2,16 +2,16 @@ import { table, column } from "@/utils";
 import { relations } from "drizzle-orm";
 import { TbProfile } from "./profile.table";
 
-export type TbExperiences = typeof TbExperiences;
+export type TbEducation = typeof TbEducation;
 
-export const TbExperiences = table("experiences", {
+export const TbEducation = table("education", {
   id: column.id,
   userId: column.int("user_id"),
   isActive: column.boolean("is_active").default(true),
-  company: column.text("company").notNull(),
-  title: column.text("title").notNull(),
-  imageUrl: column.text("image_url").notNull(),
-  description: column.text("description"),
+  school: column.text("school").notNull(),
+  degree: column.text("degree").notNull(),
+  logoUrl: column.text("logo_url").notNull(),
+  href: column.text("href"),
   startDate: column.timestamp("start_date").notNull(),
   endDate: column.timestamp("end_date"),
   createdAt: column.createdAt,
@@ -19,9 +19,9 @@ export const TbExperiences = table("experiences", {
   deletedAt: column.deletedAt,
 });
 
-export const ExperienceRelations = relations(TbExperiences, ({ one }) => ({
+export const EducationRelations = relations(TbEducation, ({ one }) => ({
   profiles: one(TbProfile, {
-    fields: [TbExperiences.userId],
+    fields: [TbEducation.userId],
     references: [TbProfile.id],
   }),
 }));
