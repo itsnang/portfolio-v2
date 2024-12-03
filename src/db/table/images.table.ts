@@ -1,5 +1,4 @@
 import { column, table } from "@/utils";
-import { relations } from "drizzle-orm";
 
 export type TbImages = typeof TbImages;
 

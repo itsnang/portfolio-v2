@@ -3,18 +3,15 @@
 import * as React from "react";
 import {
   BookOpen,
-  Bot,
   Command,
-  Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Settings2,
-  SquareTerminal,
+  UserPen,
+  Image,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
+// import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -26,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { NavProjects } from "./nav-projects";
 
 const data = {
   user: {
@@ -35,44 +33,34 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Profile",
       url: "#",
-      icon: SquareTerminal,
+      icon: UserPen,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Profile",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Skills",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Experience",
+          url: "#",
+        },
+        {
+          title: "Education",
+          url: "#",
+        },
+        {
+          title: "Projects",
           url: "#",
         },
       ],
     },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
+
     {
       title: "Documentation",
       url: "#",
@@ -134,19 +122,9 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "Images",
       url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      icon: Image,
     },
   ],
 };
