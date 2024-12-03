@@ -15,13 +15,11 @@ interface Props {
   title: string;
   href?: string;
   description: string;
-  dates: string;
   tags: readonly string[];
   link?: string;
   image?: string;
   video?: string;
   links?: readonly {
-    icon: React.ReactNode;
     type: string;
     href: string;
   }[];
@@ -32,7 +30,6 @@ export function ProjectCard({
   title,
   href,
   description,
-  dates,
   tags,
   link,
   image,
@@ -73,7 +70,6 @@ export function ProjectCard({
       <CardHeader className="px-2">
         <div className="space-y-1">
           <CardTitle className="mt-1 text-base">{title}</CardTitle>
-          <time className="font-sans text-xs">{dates}</time>
           <div className="hidden font-sans text-xs underline print:visible">
             {link?.replace("https://", "").replace("www.", "").replace("/", "")}
           </div>
@@ -103,7 +99,6 @@ export function ProjectCard({
             {links?.map((link, idx) => (
               <Link href={link?.href} key={idx} target="_blank">
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
-                  {link.icon}
                   {link.type}
                 </Badge>
               </Link>
