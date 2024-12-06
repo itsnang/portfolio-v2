@@ -1,6 +1,11 @@
+import { getCurrentUser } from "@/lib/lucia/session";
+import { redirect } from "next/navigation";
 import React from "react";
 
-function page() {
+async function DashboardPage() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/sign-in");
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
@@ -13,4 +18,4 @@ function page() {
   );
 }
 
-export default page;
+export default DashboardPage;

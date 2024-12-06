@@ -1,12 +1,12 @@
 "use server";
-import { userInsertSchema } from "@/db/schema/user.schma";
+import { userLoginsSchema } from "@/db/schema/user.schma";
 import { signInUseCase } from "@/lib/lucia/auth";
 import { AuthenticationError } from "@/lib/lucia/errors";
 import { setSession } from "@/lib/lucia/session";
 import { redirect } from "next/navigation";
 
 export const signInAction = async (email: string, password: string) => {
-  const validated = userInsertSchema.safeParse({
+  const validated = userLoginsSchema.safeParse({
     email,
     password,
   });
