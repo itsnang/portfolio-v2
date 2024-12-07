@@ -5,3 +5,5 @@ export * from "./socials.table";
 export * from "./education.table";
 export * from "./images.table";
 export * from "./project.table";
+export * from "./user.table";
+export * from "./token.table";
