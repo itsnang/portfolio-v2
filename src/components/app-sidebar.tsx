@@ -123,7 +123,7 @@ const data = {
   projects: [
     {
       name: "Images",
-      url: "#",
+      url: "/dashboard/images",
       icon: Image,
     },
   ],
