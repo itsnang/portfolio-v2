@@ -1,5 +1,7 @@
 "use server";
 
+import { db } from "@/db/drizzle";
+import { TbImages } from "@/db/table";
 import { env } from "@/utils/env";
 
 export const uploadStagedFile = async (
@@ -8,13 +10,17 @@ export const uploadStagedFile = async (
   const form = new FormData();
   form.set("file", stagedFile);
 
-  // // here /api/upload is the route of my handler
   const res = await fetch(`${env.BASE_URL_DEV}/api/upload`, {
     method: "POST",
     body: form,
   });
 
   const data = await res.json();
+
+  const img: string = data.imgUrl;
+  const imageUrl = await db.insert(TbImages).values({
+    imageUrl: img,
+  });
 
   console.log(data.imgUrl);
   return data.imgUrl;
