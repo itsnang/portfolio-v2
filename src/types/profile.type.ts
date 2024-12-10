@@ -1,5 +1,5 @@
 export interface IProfile {
-  id: number;
+  id: string;
   name: string;
   boi: string;
   imageUrl: string;
@@ -12,13 +12,13 @@ export interface IProfile {
 }
 
 export interface ISkill {
-  id: number;
+  id: string;
   name: string;
   logoUrl: string;
 }
 
 export interface IExperience {
-  id: number;
+  id: string;
   title: string;
   imageUrl: string;
   company: string;
@@ -28,7 +28,7 @@ export interface IExperience {
 }
 
 export interface IEducation {
-  id: number;
+  id: string;
   school: string;
   degree: string;
   logoUrl: string;
@@ -38,7 +38,7 @@ export interface IEducation {
 }
 
 export interface IProject {
-  id: number;
+  id: string;
   title: string;
   href: string | null;
   image: string;
@@ -48,7 +48,7 @@ export interface IProject {
 }
 
 export interface ISocial {
-  id: number;
+  id: string;
   name: string;
   url: string;
   icon: string;
