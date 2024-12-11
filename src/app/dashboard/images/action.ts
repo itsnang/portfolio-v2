@@ -2,7 +2,7 @@
 
 import { db } from "@/db/drizzle";
 import { TbImages } from "@/db/table";
-import { UploadImagesError } from "@/lib/errors";
+import { NotFoundError, UploadImagesError } from "@/lib/errors";
 import { env } from "@/utils/env";
 import { err, ok } from "@justmiracle/result";
 
@@ -30,4 +30,16 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
   if (imageUpload.error) {
     throw new UploadImagesError();
   }
+};
+
+export const getImages = async () => {
+  const images = await db.query.TbImages.findMany({
+    where: (image, { eq }) => eq(image.isActive, true),
+  })
+    .then(ok)
+    .catch(err);
+  if (images.error) {
+    throw new NotFoundError();
+  }
+  return images.value;
 };
