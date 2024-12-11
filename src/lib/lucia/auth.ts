@@ -7,7 +7,7 @@ import { env } from "../env";
 
 import { User } from "@/db/schema/user.schma";
 import { getUserByEmail } from "@/db/repositories/user.repository";
-import { LoginError } from "./errors";
+import { LoginError } from "../errors";
 import { verifyPassword } from "./session";
 import { cookies } from "next/headers";
 

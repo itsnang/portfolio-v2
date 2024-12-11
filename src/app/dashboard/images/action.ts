@@ -2,11 +2,11 @@
 
 import { db } from "@/db/drizzle";
 import { TbImages } from "@/db/table";
+import { UploadImagesError } from "@/lib/errors";
 import { env } from "@/utils/env";
+import { err, ok } from "@justmiracle/result";
 
-export const uploadStagedFile = async (
-  stagedFile: File | Blob
-): Promise<string> => {
+export const uploadStagedFile = async (stagedFile: File | Blob) => {
   const form = new FormData();
   form.set("file", stagedFile);
 
@@ -18,10 +18,16 @@ export const uploadStagedFile = async (
   const data = await res.json();
 
   const img: string = data.imgUrl;
-  const imageUrl = await db.insert(TbImages).values({
-    imageUrl: img,
-  });
+  const imageUpload = await db
+    .insert(TbImages)
+    .values({
+      imageUrl: img,
+    })
+    .returning()
+    .then(ok)
+    .catch(err);
 
-  console.log(data.imgUrl);
-  return data.imgUrl;
+  if (imageUpload.error) {
+    throw new UploadImagesError();
+  }
 };

@@ -18,6 +18,13 @@ export class EmailInUseError extends PublicError {
   }
 }
 
+export class UploadImagesError extends PublicError {
+  constructor() {
+    super("Failed to upload image");
+    this.name = "UploadImagesError";
+  }
+}
+
 export class NotFoundError extends PublicError {
   constructor() {
     super("Resource not found");

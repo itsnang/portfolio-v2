@@ -3,7 +3,7 @@ import { lucia, validateRequest } from "./auth";
 import { cookies } from "next/headers";
 import { getUserByEmail } from "@/db/repositories/user.repository";
 import { cache } from "react";
-import { AuthenticationError } from "./errors";
+import { AuthenticationError } from "../errors";
 
 export const setSession = async (userId: string) => {
   const session = await lucia.createSession(userId, {});
