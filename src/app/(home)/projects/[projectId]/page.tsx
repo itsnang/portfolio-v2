@@ -2,7 +2,6 @@ import React from "react";
 import SparklesText from "@/components/ui/sparkles-text";
 import { getProjectDetail } from "./action";
 import Image from "next/image";
-import { Skills } from "@/components/skills-component";
 
 async function ProjectDetailPage({
   params,

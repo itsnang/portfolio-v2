@@ -4,6 +4,7 @@ import { ImageUpload } from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useTransition } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ interface InitialValueType {
 
 export const ImageUploadForm = () => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm<InitialValueType>({
     defaultValues: {
       image: null,
@@ -29,6 +31,7 @@ export const ImageUploadForm = () => {
       try {
         await uploadStagedFile(data.image);
         toast.success("Image uploaded successfully");
+        router.push("/dashboard/images");
       } catch (error) {
         console.log(error);
         toast.error("Failed to upload image");
