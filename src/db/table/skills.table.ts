@@ -7,7 +7,7 @@ export type TbSkills = typeof TbSkills;
 export const TbSkills = table("skills", {
   id: column.id,
   isActive: column.boolean("is_active").default(true),
-  userId: column.int("user_id"),
+  userId: column.text("user_id"),
   name: column.text("name").notNull(),
   logoUrl: column.text("logo_url").notNull(),
   createdAt: column.createdAt,

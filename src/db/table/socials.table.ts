@@ -6,7 +6,7 @@ export type TbSocials = typeof TbSocials;
 
 export const TbSocials = table("socials", {
   id: column.id,
-  userId: column.int("user_id"),
+  userId: column.text("user_id"),
   isActive: column.boolean("is_active").default(true),
   name: column.text("name").notNull(),
   url: column.text("url").notNull(),

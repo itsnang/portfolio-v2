@@ -1,7 +1,7 @@
 "use server";
 import { userLoginsSchema } from "@/db/schema/user.schma";
 import { signInUseCase } from "@/lib/lucia/auth";
-import { AuthenticationError } from "@/lib/lucia/errors";
+import { AuthenticationError } from "@/lib/errors";
 import { setSession } from "@/lib/lucia/session";
 import { redirect } from "next/navigation";
 

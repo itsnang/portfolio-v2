@@ -7,7 +7,7 @@ export type TbProject = typeof TbProject;
 
 export const TbProject = table("project", {
   id: column.id,
-  userId: column.int("user_id"),
+  userId: column.text("user_id"),
   title: column.text("title").notNull(),
   href: column.text("href"),
   isActive: column.boolean("is_active").default(true),

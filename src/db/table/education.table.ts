@@ -6,7 +6,7 @@ export type TbEducation = typeof TbEducation;
 
 export const TbEducation = table("education", {
   id: column.id,
-  userId: column.int("user_id"),
+  userId: column.text("user_id"),
   isActive: column.boolean("is_active").default(true),
   school: column.text("school").notNull(),
   degree: column.text("degree").notNull(),
