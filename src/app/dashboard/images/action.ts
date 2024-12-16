@@ -35,6 +35,10 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
 export const getImages = async () => {
   const images = await db.query.TbImages.findMany({
     where: (image, { eq }) => eq(image.isActive, true),
+    columns: {
+      id: true,
+      imageUrl: true,
+    },
   })
     .then(ok)
     .catch(err);
