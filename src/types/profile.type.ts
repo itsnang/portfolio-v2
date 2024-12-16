@@ -41,10 +41,11 @@ export interface IProject {
   id: string;
   title: string;
   href: string | null;
-  image: string;
+  thumbnail: string;
   description: string;
-  technologies: string[];
   links: ProjectLinks[] | null;
+  technologies: ProjectTechnology[] | null;
+  detailImage: string[] | null;
 }
 
 export interface ISocial {
@@ -60,3 +61,4 @@ export interface IImages {
 }
 
 export type ProjectLinks = { type: string; href: string };
+export type ProjectTechnology = { name: string; logoUrl: string };
