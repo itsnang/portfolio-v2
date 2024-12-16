@@ -54,4 +54,9 @@ export interface ISocial {
   icon: string;
 }
 
+export interface IImages {
+  id: string;
+  imageUrl: string;
+}
+
 export type ProjectLinks = { type: string; href: string };

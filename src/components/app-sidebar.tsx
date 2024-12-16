@@ -40,7 +40,7 @@ const data = {
       items: [
         {
           title: "Profile",
-          url: "#",
+          url: "/dashboard/profile",
         },
         {
           title: "Skills",
