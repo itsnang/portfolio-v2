@@ -10,7 +10,7 @@ export type TbProfile = typeof TbProfile;
 
 export const TbProfile = table("profile", {
   id: column.id,
-  isAvailable: column.boolean("is_available"),
+  isAvailable: column.boolean("is_available").notNull(),
   name: column.text("name").notNull(),
   bio: column.text("bio"),
   imageUrl: column.text("profile_url").notNull(),

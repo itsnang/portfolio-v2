@@ -27,9 +27,9 @@ import { NavProjects } from "./nav-projects";
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Lorn Samnang",
+    email: "huotchhayyy@gmail.com",
+    avatar: "/vercel.svg",
   },
   navMain: [
     {
