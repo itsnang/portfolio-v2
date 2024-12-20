@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/components/profile/profile-form";
+import { ProfileForm } from "@/components/form/profile-form";
 import React from "react";
 import { getImages } from "../images/action";
 import { getProfile } from "@/app/action";
