@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -15,6 +15,10 @@ import { Input } from "../ui/input";
 import { UserLogins, userLoginsSchema } from "@/db/schema/user.schma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInAction } from "@/app/sign-in/actions";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   return (
@@ -41,6 +45,8 @@ export default function SignIn() {
 
 export function SignInForm() {
   const [passwordReveal, setPasswordReveal] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<UserLogins>({
     resolver: zodResolver(userLoginsSchema),
@@ -51,7 +57,16 @@ export function SignInForm() {
     },
   });
   const onSubmit = async (data: UserLogins) => {
-    await signInAction(data.email, data.password);
+    startTransition(async () => {
+      try {
+        await signInAction(data.email, data.password);
+        toast.success("Singin successfully");
+        router.push("/dashboard");
+      } catch (error) {
+        console.log(error);
+        toast.error("Sigin Error");
+      }
+    });
   };
 
   return (
@@ -106,6 +121,11 @@ export function SignInForm() {
           )}
         />
         <Button className="w-full" type="submit">
+          <LoaderCircle
+            className={cn("animate-spin size-4 hidden", {
+              block: isPending,
+            })}
+          />
           Continue
         </Button>
       </form>

@@ -17,7 +17,7 @@ export default async function Home() {
         {/* profile */}
         <div className="gap-5 flex items-center">
           <Avatar className="size-20 border">
-            <AvatarImage src={profile.imageUrl} />
+            <AvatarImage className="object-cover" src={profile.imageUrl} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="space-y-1">

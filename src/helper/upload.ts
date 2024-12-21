@@ -13,7 +13,6 @@ export const uploadToCloudinary = (
     cloudinary.uploader
       .upload(fileUri, {
         invalidate: true,
-        resource_type: "auto",
         filename_override: fileName,
         folder: "images", // any sub-folder name in your cloud
         use_filename: true,
