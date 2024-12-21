@@ -52,7 +52,7 @@ const data = {
         },
         {
           title: "Education",
-          url: "#",
+          url: "/dashboard/education",
         },
         {
           title: "Projects",
