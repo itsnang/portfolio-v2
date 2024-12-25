@@ -112,7 +112,7 @@ interface ImageCardProps {
   onSelect: (image: string) => void;
 }
 
-function ImageCard({ image, isSelected, onSelect }: ImageCardProps) {
+export function ImageCard({ image, isSelected, onSelect }: ImageCardProps) {
   return (
     <div
       className={cn(
