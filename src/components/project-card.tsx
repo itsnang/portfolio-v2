@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { ProjectTechnology } from "@/types/profile.type";
 import Image from "next/image";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -15,7 +16,7 @@ interface Props {
   title: string;
   href?: string;
   description: string;
-  tags: readonly string[];
+  tags: readonly ProjectTechnology[];
   link?: string;
   image?: string;
   video?: string;
@@ -63,7 +64,7 @@ export function ProjectCard({
             alt={title}
             width={500}
             height={300}
-            className="h-40 w-full overflow-hidden object-cover object-top"
+            className="h-40 w-full overflow-hidden object-cover"
           />
         )}
       </Link>
@@ -85,9 +86,9 @@ export function ProjectCard({
               <Badge
                 className="px-1 py-0 text-[10px]"
                 variant="secondary"
-                key={tag}
+                key={tag.name}
               >
-                {tag}
+                {tag.name}
               </Badge>
             ))}
           </div>

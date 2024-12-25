@@ -1,10 +1,11 @@
 export interface IProfile {
-  id: number;
+  id: string;
   name: string;
-  boi: string;
+  isAvailable: boolean;
+  bio: string | null;
   imageUrl: string;
   abouts: string;
-  aboutImages: string[];
+  aboutImages: string[] | null;
   skills: ISkill[];
   experience: IExperience[];
   education: IEducation[];
@@ -12,13 +13,13 @@ export interface IProfile {
 }
 
 export interface ISkill {
-  id: number;
+  id: string;
   name: string;
   logoUrl: string;
 }
 
 export interface IExperience {
-  id: number;
+  id: string;
   title: string;
   imageUrl: string;
   company: string;
@@ -28,7 +29,7 @@ export interface IExperience {
 }
 
 export interface IEducation {
-  id: number;
+  id: string;
   school: string;
   degree: string;
   logoUrl: string;
@@ -38,20 +39,27 @@ export interface IEducation {
 }
 
 export interface IProject {
-  id: number;
+  id: string;
   title: string;
   href: string | null;
-  image: string;
+  thumbnail: string;
   description: string;
-  technologies: string[];
   links: ProjectLinks[] | null;
+  technologies: ProjectTechnology[] | null;
+  detailImage: string[] | null;
 }
 
 export interface ISocial {
-  id: number;
+  id: string;
   name: string;
   url: string;
   icon: string;
 }
 
+export interface IImages {
+  id: string;
+  imageUrl: string;
+}
+
 export type ProjectLinks = { type: string; href: string };
+export type ProjectTechnology = { name: string; logoUrl: string };

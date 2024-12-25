@@ -1,12 +1,13 @@
 import { table, column } from "@/utils";
 import { relations } from "drizzle-orm";
 import { TbProfile } from "./profile.table";
+import { genId } from "@/utils/id";
 
 export type TbEducation = typeof TbEducation;
 
 export const TbEducation = table("education", {
-  id: column.id,
-  userId: column.int("user_id"),
+  id: column.id.$default(genId("education")),
+  userId: column.text("user_id"),
   isActive: column.boolean("is_active").default(true),
   school: column.text("school").notNull(),
   degree: column.text("degree").notNull(),

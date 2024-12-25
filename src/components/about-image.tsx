@@ -13,8 +13,8 @@ export const AboutImage: React.FC<AboutImageProps> = ({ imageUrl }) => {
           key={idx}
           className="mb-4 size-full rounded-lg object-contain"
           src={imageUrl}
-          width={100}
-          height={100}
+          width={600}
+          height={600}
           alt={`Random stock image ${idx + 1}`}
         />
       ))}

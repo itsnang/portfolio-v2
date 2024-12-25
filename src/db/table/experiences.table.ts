@@ -6,7 +6,7 @@ export type TbExperiences = typeof TbExperiences;
 
 export const TbExperiences = table("experiences", {
   id: column.id,
-  userId: column.int("user_id"),
+  userId: column.text("user_id"),
   isActive: column.boolean("is_active").default(true),
   company: column.text("company").notNull(),
   title: column.text("title").notNull(),

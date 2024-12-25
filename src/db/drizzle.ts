@@ -3,7 +3,7 @@ import { config } from "dotenv";
 // import { drizzle } from "drizzle-orm/neon-http";
 
 config({ path: ".env" }); // or .env.local
-const client = createDBClient({ url: process.env.DATABASE_URL!, max: 500 });
+const client = createDBClient({ url: process.env.DATABASE_URLL!, max: 500 });
 export const db = createDB(client);
 
 export function takeFirst<T>(data: T[]): T | undefined {

@@ -4,7 +4,7 @@ import { MyPlaylist } from "@/components/playlist-component";
 import { Projects } from "@/components/project";
 import { Skills } from "@/components/skills-component";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getProfile } from "./action";
+import { getProfile } from "../action";
 import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
 
@@ -17,7 +17,7 @@ export default async function Home() {
         {/* profile */}
         <div className="gap-5 flex items-center">
           <Avatar className="size-20 border">
-            <AvatarImage src={profile.imageUrl} />
+            <AvatarImage className="object-cover" src={profile.imageUrl} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
