@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getProfile } from "../action";
 import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
+// import { unstable_cacheLife as cacheLife } from "next/cache";
 
 export default async function Home() {
   const profile = await getProfile();

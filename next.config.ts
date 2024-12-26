@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "5mb",
     },
+    dynamicIO: true,
   },
 };
 
