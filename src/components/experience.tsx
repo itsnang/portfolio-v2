@@ -10,7 +10,7 @@ interface ExperienceProps {
 export const Experience: React.FC<ExperienceProps> = ({ experience }) => {
   return (
     <section className="flex min-h-0 flex-col gap-y-3 py-6">
-      <h2 className="text-xl font-bold">Work Experienkce</h2>
+      <h2 className="text-xl font-bold">Work Experience</h2>
       {experience.map((work) => (
         <ExperienceCard
           key={work.company}
