@@ -13,7 +13,7 @@ import { unstable_cache } from "next/cache";
 const getCacheUser = unstable_cache(
   async () => await getProfile(),
   ["profile"],
-  { revalidate: 3600, tags: ["profile"] }
+  { tags: ["profile"] }
 );
 
 export default async function Home() {
