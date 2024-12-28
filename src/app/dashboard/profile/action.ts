@@ -15,9 +15,11 @@ export const updateProfileAction = async (profie: ProfileInsert) => {
     .returning()
     .then(ok)
     .catch(err);
+
+  revalidatePath("/");
+
   if (insertProfile.error) {
     console.log(insertProfile.error.message);
     throw new InsertError();
   }
-  revalidatePath("/");
 };
