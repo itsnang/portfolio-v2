@@ -5,6 +5,7 @@ import { TbProfile } from "@/db/table";
 import { InsertError } from "@/lib/errors";
 import { err, ok } from "@justmiracle/result";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const updateProfileAction = async (profie: ProfileInsert) => {
   const insertProfile = await db
@@ -14,9 +15,9 @@ export const updateProfileAction = async (profie: ProfileInsert) => {
     .returning()
     .then(ok)
     .catch(err);
-
   if (insertProfile.error) {
     console.log(insertProfile.error.message);
     throw new InsertError();
   }
+  revalidatePath("/");
 };
