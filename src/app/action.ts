@@ -20,7 +20,6 @@ export const getProfile = async () => {
         },
       },
     }).then(takeFirstOrThrow);
-
     return data;
   } catch (error) {
     console.error("Error fetching profile data:", error);
