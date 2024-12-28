@@ -1,3 +1,4 @@
+"use cache";
 import { Education } from "@/components/education";
 import { Experience } from "@/components/experience";
 import { MyPlaylist } from "@/components/playlist-component";
@@ -7,10 +8,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getProfile } from "../action";
 import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
-// import { unstable_cacheLife as cacheLife } from "next/cache";
+import { unstable_cache } from "next/cache";
+
+const getCacheUser = unstable_cache(
+  async () => await getProfile(),
+  ["profile"],
+  { revalidate: 3600, tags: ["profile"] }
+);
 
 export default async function Home() {
-  const profile = await getProfile();
+  const profile = await getCacheUser();
   console.log(profile);
   return (
     <main className="mx-auto w-full max-w-2xl">
