@@ -1,4 +1,3 @@
-"use cache";
 import { Education } from "@/components/education";
 import { Experience } from "@/components/experience";
 import { MyPlaylist } from "@/components/playlist-component";
@@ -8,16 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getProfile } from "../action";
 import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
-import { unstable_cache } from "next/cache";
-
-const getCacheUser = unstable_cache(
-  async () => await getProfile(),
-  ["profile"],
-  { tags: ["profile"] }
-);
 
 export default async function Home() {
-  const profile = await getCacheUser();
+  const profile = await getProfile();
   console.log(profile);
   return (
     <main className="mx-auto w-full max-w-2xl">
