@@ -44,7 +44,7 @@ const data = {
         },
         {
           title: "Skills",
-          url: "#",
+          url: "/dashboard/skills",
         },
         {
           title: "Experience",
