@@ -48,7 +48,7 @@ const data = {
         },
         {
           title: "Experience",
-          url: "#",
+          url: "/dashboard/experience",
         },
         {
           title: "Education",
