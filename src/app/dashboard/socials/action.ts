@@ -1,35 +1,34 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
-import { TbProject } from "@/db/table";
+import { SocialsInsert, socialsInsertSchema } from "@/db/schema/socials.schme";
+import { TbSocials } from "@/db/table";
 import { InsertError } from "@/lib/errors";
 import { getCurrentUser } from "@/lib/lucia/session";
 import { err, ok } from "@justmiracle/result";
 import { redirect } from "next/navigation";
 
-export const insertProject = async (project: ProjectInsert) => {
+export const inserSocial = async (soscial: SocialsInsert) => {
   const user = await getCurrentUser();
   if (!user) {
     redirect("/sign-in");
   }
-
-  const validated = projecInsertSchema.safeParse(project);
+  const validated = socialsInsertSchema.safeParse(soscial);
   if (!validated.success) {
     console.log(validated.error);
     throw new InsertError();
   }
 
-  console.log("insert project body:", project);
+  console.log("insert social body:", soscial);
 
-  const projectInsert = await db
-    .insert(TbProject)
-    .values(project)
+  const socials = await db
+    .insert(TbSocials)
+    .values(soscial)
     .returning()
     .then(ok)
     .catch(err);
-  if (projectInsert.error) {
-    console.log(projectInsert.error.message);
+  if (socials.error) {
+    console.log(socials.error.message);
     throw new InsertError();
   }
 };

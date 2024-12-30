@@ -1,11 +1,12 @@
 import { table, column } from "@/utils";
 import { TbProfile } from "./profile.table";
 import { relations } from "drizzle-orm";
+import { genId } from "@/utils/id";
 
 export type TbSkills = typeof TbSkills;
 
 export const TbSkills = table("skills", {
-  id: column.id,
+  id: column.id.$defaultFn(genId("skills")),
   isActive: column.boolean("is_active").default(true),
   userId: column.text("user_id"),
   name: column.text("name").notNull(),

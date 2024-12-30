@@ -2,11 +2,12 @@ import { table, column } from "@/utils";
 import { TbProfile } from "./profile.table";
 import { relations } from "drizzle-orm";
 import { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
+import { genId } from "@/utils/id";
 
 export type TbProject = typeof TbProject;
 
 export const TbProject = table("project", {
-  id: column.id,
+  id: column.id.$defaultFn(genId("project")),
   profileId: column.text("profile_id").references(() => TbProfile.id),
   title: column.text("title").notNull(),
   href: column.text("href"),

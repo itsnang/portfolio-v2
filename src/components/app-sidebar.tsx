@@ -44,11 +44,11 @@ const data = {
         },
         {
           title: "Skills",
-          url: "#",
+          url: "/dashboard/skills",
         },
         {
           title: "Experience",
-          url: "#",
+          url: "/dashboard/experience",
         },
         {
           title: "Education",
@@ -57,6 +57,10 @@ const data = {
         {
           title: "Projects",
           url: "/dashboard/project",
+        },
+        {
+          title: "Socials",
+          url: "/dashboard/socials",
         },
       ],
     },
