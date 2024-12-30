@@ -1,12 +1,19 @@
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
 export default function Loading() {
   return (
-    <main className="mx-auto w-full max-w-2xl">
+    <main className="w-full max-w-3xl md:my-[20vh] min-h-screen">
+      {" "}
+      {/* Removed mx-auto */}
       <section>
-        <div className="gap-5 flex items-center">
+        <div className="gap-5 flex">
           <Skeleton className="size-20 rounded-full" />
           <div className="space-y-2">
             <Skeleton className="h-6 w-32" />
@@ -14,7 +21,6 @@ export default function Loading() {
           </div>
         </div>
       </section>
-
       <section className="pt-4 space-y-4">
         {/* About text skeleton */}
         <div className="space-y-2">
@@ -50,7 +56,6 @@ export default function Loading() {
           ))}
         </div>
       </section>
-
       <section className="flex min-h-0 flex-col gap-y-3 py-6">
         <Skeleton className="h-7 w-48 mb-2" />{" "}
         {/* Skeleton for "Work Experience" heading */}
@@ -78,14 +83,18 @@ export default function Loading() {
         ))}
       </section>
       <section className="flex min-h-0 flex-col gap-y-3 py-6">
-        <Skeleton className="h-7 w-48 mb-2" />{" "}
+        <Skeleton className="h-7 w-48 mb-2" />
         <Card className="flex p-4">
           <div className="flex-none">
             <Skeleton className="size-12 rounded-full" />
           </div>
-          <div className="flex-grow ml-4 items-center flex-col">
+          <div className="flex-grow ml-4 items-start flex-col">
+            {" "}
+            {/* Changed items-center to items-start */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-x-2">
+              <div className="flex items-start justify-between gap-x-2">
+                {" "}
+                {/* Changed justify-between */}
                 <Skeleton className="h-4 w-1/3" />
                 <Skeleton className="h-4 w-16" />
               </div>
@@ -94,6 +103,40 @@ export default function Loading() {
             </div>
           </div>
         </Card>
+      </section>
+      <section className="flex flex-col gap-y-3 py-6">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <Card
+              key={index}
+              className="flex w-full flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full"
+            >
+              <Skeleton className="h-40 w-full" />
+              <CardHeader className="px-4">
+                <Skeleton className="h-6 w-3/4" />
+                <div className="mt-2 space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                </div>
+              </CardHeader>
+              <CardContent className="mt-auto flex flex-col px-4">
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-5 w-16" />
+                  ))}
+                </div>
+              </CardContent>
+              <CardFooter className="px-4 pb-4">
+                <div className="flex flex-row flex-wrap items-start gap-1">
+                  {[1, 2].map((i) => (
+                    <Skeleton key={i} className="h-6 w-20" />
+                  ))}
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </section>
     </main>
   );
