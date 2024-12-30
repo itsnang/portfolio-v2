@@ -8,7 +8,7 @@ interface ProjectsProps {
 
 export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   return (
-    <section className="pt-4">
+    <section className="flex min-h-0 flex-col gap-y-3 py-6">
       <h2 className="text-xl font-bold">Projects</h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
         {projects.map((project) => (

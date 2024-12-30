@@ -58,6 +58,10 @@ const data = {
           title: "Projects",
           url: "/dashboard/project",
         },
+        {
+          title: "Socials",
+          url: "/dashboard/socials",
+        },
       ],
     },
 
