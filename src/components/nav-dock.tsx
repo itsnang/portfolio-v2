@@ -66,8 +66,8 @@ export const DockNav: React.FC<DockNavProps> = ({ socials }) => {
                     <Image
                       src={social.icon}
                       alt={social.name}
-                      width={24}
-                      height={24}
+                      width={18}
+                      height={18}
                     />
                   </Link>
                 </TooltipTrigger>
