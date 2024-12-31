@@ -15,6 +15,8 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
     body: form,
   });
 
+  console.log("=========>", res);
+
   const data = await res.json();
 
   const img: string = data.imgUrl;
