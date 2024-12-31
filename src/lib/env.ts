@@ -9,6 +9,7 @@ export const envSchema = z.object({
   ]),
   DATABASE_URL: z.string(),
   ENCRYPTION_KEY: z.string(),
+  IMAGE_FOLDER: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;
