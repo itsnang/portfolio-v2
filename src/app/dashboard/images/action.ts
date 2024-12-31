@@ -29,6 +29,8 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
     .then(ok)
     .catch(err);
 
+  console.log("======>", imageUpload);
+
   if (imageUpload.error) {
     throw new UploadImagesError();
   }
