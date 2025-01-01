@@ -24,6 +24,7 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
     .insert(TbImages)
     .values({
       imageUrl: img,
+      isActive: true,
     })
     .returning()
     .then(ok)

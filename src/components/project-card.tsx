@@ -82,11 +82,11 @@ export function ProjectCard({
       <CardContent className="mt-auto flex flex-col px-2">
         {tags && tags.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
-            {tags?.map((tag) => (
+            {tags?.map((tag, idx) => (
               <Badge
                 className="px-1 py-0 text-[10px]"
                 variant="secondary"
-                key={tag.name}
+                key={idx}
               >
                 {tag.name}
               </Badge>

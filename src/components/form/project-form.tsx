@@ -40,7 +40,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
       profileId: "1",
       title: "",
       thumbnail: "",
-      href: "",
+      href: null,
       description: "",
       isActive: true,
       technologies: [{ name: "", logoUrl: "" }],
