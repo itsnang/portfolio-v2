@@ -43,14 +43,14 @@ export default function Loading() {
         <Skeleton className="h-7 w-24 mb-4" />{" "}
         {/* Skeleton for the "Skills" heading */}
         <div className="flex pt-4 flex-wrap gap-3">
-          {[...Array(8)].map((_, index) => (
+          {[...Array(7)].map((_, index) => (
             <div
               key={index}
               className="flex-shrink-0 rounded-md px-3 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 bg-white dark:bg-gray-900 inline-flex items-center gap-1"
             >
               <Skeleton className="h-5 w-5 rounded-md" />{" "}
               {/* Skeleton for the skill logo */}
-              <Skeleton className="h-4 w-16" />{" "}
+              <Skeleton className="h-4 w-[55px]" />{" "}
               {/* Skeleton for the skill name */}
             </div>
           ))}
