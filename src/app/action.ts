@@ -8,7 +8,7 @@ export const getProfile = async () => {
         skills: true,
         experience: {
           where: (experience, { eq }) => eq(experience.isActive, true),
-          orderBy: (experience, { desc }) => [desc(experience.startDate)],
+          orderBy: (experience, { desc }) => [desc(experience.endDate)],
         },
         education: {
           where: (education, { eq }) => eq(education.isActive, true),
