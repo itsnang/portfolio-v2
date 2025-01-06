@@ -44,20 +44,17 @@ async function ProjectDetailPage({
         </div>
 
         {projectDetail.detailImage !== null ? (
-          <div className="grid auto-rows-min gap-4 grid-cols-2">
+          <div className="pt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {projectDetail.detailImage!.map((detail, index) => {
               return (
-                <div
-                  key={index}
-                  className="aspect-video overflow-hidden rounded-xl bg-muted/50 relative"
-                >
+                <div className=" overflow-hidden" key={index}>
                   <Image
+                    width={400}
+                    height={400}
                     key={index}
-                    alt={projectDetail.title}
                     src={detail}
-                    fill
-                    sizes="100%"
-                    className="object-cover"
+                    className="object-cover rounded-xl"
+                    alt={projectDetail.title}
                   />
                 </div>
               );
