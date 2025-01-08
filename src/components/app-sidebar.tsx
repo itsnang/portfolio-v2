@@ -3,12 +3,15 @@
 import * as React from "react";
 import {
   BookOpen,
-  Command,
   LifeBuoy,
   Settings2,
   UserPen,
-  Image,
+  Image as ImageLogo,
 } from "lucide-react";
+
+import Image from "next/image";
+
+import favIcon from "@/app/favicon.ico";
 
 import { NavMain } from "@/components/nav-main";
 // import { NavProjects } from "@/components/nav-projects";
@@ -29,7 +32,7 @@ const data = {
   user: {
     name: "Lorn Samnang",
     email: "huotchhayyy@gmail.com",
-    avatar: "/vercel.svg",
+    avatar: "/favIcon.",
   },
   navMain: [
     {
@@ -128,7 +131,7 @@ const data = {
     {
       name: "Images",
       url: "/dashboard/images",
-      icon: Image,
+      icon: ImageLogo,
     },
   ],
 };
@@ -142,11 +145,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                  <Image alt="logo" src={favIcon} height={28} width={28} />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold">Porfolio CMS</span>
                 </div>
               </a>
             </SidebarMenuButton>
