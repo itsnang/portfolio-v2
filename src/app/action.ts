@@ -8,19 +8,21 @@ export const getProfile = async () => {
         skills: true,
         experience: {
           where: (experience, { eq }) => eq(experience.isActive, true),
+          orderBy: (experience, { desc }) => [desc(experience.endDate)],
         },
         education: {
           where: (education, { eq }) => eq(education.isActive, true),
+          orderBy: (education, { asc }) => [asc(education.startDate)],
         },
         projects: {
           where: (project, { eq }) => eq(project.isActive, true),
+          orderBy: (project, { desc }) => [desc(project.createdAt)],
         },
         socials: {
           where: (social, { eq }) => eq(social.isActive, true),
         },
       },
     }).then(takeFirstOrThrow);
-
     return data;
   } catch (error) {
     console.error("Error fetching profile data:", error);

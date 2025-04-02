@@ -1,10 +1,11 @@
 export interface IProfile {
   id: string;
   name: string;
-  boi: string;
+  isAvailable: boolean;
+  bio: string | null;
   imageUrl: string;
   abouts: string;
-  aboutImages: string[];
+  aboutImages: string[] | null;
   skills: ISkill[];
   experience: IExperience[];
   education: IEducation[];

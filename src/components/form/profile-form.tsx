@@ -1,23 +1,52 @@
 "use client";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import SingleImageSelector from "../single-image-selector";
-import { IImages } from "@/types/profile.type";
+import { IImages, IProfile } from "@/types/profile.type";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ImageSelector } from "../multi-image-selector";
 import { Button } from "../ui/button";
 import { Form, FormField } from "../ui/form";
+import { ProfileInsert } from "@/db/schema/profile.schema";
+import { updateProfileAction } from "@/app/dashboard/profile/action";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ProfileFormProps {
   images: IImages[];
+  profile: IProfile;
 }
 
-export const ProfileForm: React.FC<ProfileFormProps> = ({ images }) => {
-  const methods = useForm();
-  const onSubmit = (data: unknown) => console.log(data);
+export const ProfileForm: React.FC<ProfileFormProps> = ({
+  images,
+  profile,
+}) => {
+  const [isPending, startTransition] = useTransition();
+  const methods = useForm<ProfileInsert>({
+    defaultValues: {
+      name: profile.name,
+      imageUrl: profile.imageUrl,
+      bio: profile.bio,
+      aboutImages: profile.aboutImages,
+      abouts: profile.abouts,
+      isAvailable: profile.isAvailable,
+    },
+  });
+  const onSubmit = async (data: ProfileInsert) => {
+    startTransition(async () => {
+      try {
+        await updateProfileAction(data);
+        toast.success("Update Profile successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to update profile");
+      }
+    });
+  };
   return (
     <Form {...methods}>
       <form className="space-y-3" onSubmit={methods.handleSubmit(onSubmit)}>
@@ -77,6 +106,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({ images }) => {
           name="aboutImages"
         />
         <Button type="submit" className="w-full h-12">
+          <LoaderCircle
+            className={cn("animate-spin size-4 hidden", {
+              block: isPending,
+            })}
+          />
           Submit
         </Button>
       </form>

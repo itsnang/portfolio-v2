@@ -1,4 +1,5 @@
 import cloudinary from "@/lib/cloudinary";
+import { env } from "@/lib/env";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 
 type UploadResponse =
@@ -13,9 +14,8 @@ export const uploadToCloudinary = (
     cloudinary.uploader
       .upload(fileUri, {
         invalidate: true,
-        resource_type: "auto",
         filename_override: fileName,
-        folder: "images", // any sub-folder name in your cloud
+        folder: env.IMAGE_FOLDER,
         use_filename: true,
       })
       .then((result) => {

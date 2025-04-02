@@ -66,8 +66,8 @@ export const DockNav: React.FC<DockNavProps> = ({ socials }) => {
                     <Image
                       src={social.icon}
                       alt={social.name}
-                      width={24}
-                      height={24}
+                      width={18}
+                      height={18}
                     />
                   </Link>
                 </TooltipTrigger>
@@ -78,17 +78,6 @@ export const DockNav: React.FC<DockNavProps> = ({ socials }) => {
             </TooltipProvider>
           </DockIcon>
         ))}
-        <Separator orientation="vertical" className="h-full py-2" />
-        <DockIcon>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>{/* <ModeToggle /> */}</TooltipTrigger>
-              <TooltipContent>
-                <p>Theme</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </DockIcon>
       </Dock>
     </div>
   );

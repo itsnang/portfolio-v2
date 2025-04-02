@@ -45,3 +45,10 @@ export class LoginError extends PublicError {
     this.name = "LoginError";
   }
 }
+
+export class InsertError extends PublicError {
+  constructor() {
+    super("Failed to insert");
+    this.name = "InsertError";
+  }
+}

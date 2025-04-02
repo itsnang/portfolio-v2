@@ -5,11 +5,14 @@ import { z } from "zod";
 export const experiencesSchema = createSelectSchema(TbExperiences);
 
 export const experiencesInsertSchema = createInsertSchema(TbExperiences, {
-  title: z.string().min(3).max(255),
-  imageUrl: z.string().url(),
-  description: z.record(z.unknown()).optional(),
-  startDate: z.string(),
-  endDate: z.string().optional(),
+  userId: z.string(),
+  isActive: z.boolean().default(true),
+  company: z.string().nonempty("Company is required"),
+  title: z.string().nonempty("Title is required"),
+  imageUrl: z.string().url("Please provide a valid image URL"),
+  description: z.string(),
+  startDate: z.date(),
+  endDate: z.date().optional(),
 });
 
 export type Experiences = z.infer<typeof experiencesSchema>;

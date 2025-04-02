@@ -24,37 +24,37 @@ async function ProjectDetailPage({
       <div className="mt-6 space-y-4">
         <SparklesText className="text-4xl" text={projectDetail.title} />
         <p>{projectDetail.description}</p>
-        {projectDetail.technologies.map((technology, index) => {
-          return (
-            <div
-              key={index}
-              className="disabled:opacity-75 flex-shrink-0 font-medium rounded-md text-sm gap-x-2 px-3 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-900 dark:text-white bg-white hover:bg-gray-50 disabled:bg-white dark:bg-gray-900 dark:hover:bg-gray-800/50 dark:disabled:bg-gray-900 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center gap-1"
-            >
-              <Image
-                src={technology.logoUrl}
-                alt={technology.name}
-                width={20}
-                height={20}
-              />
-              <span className="font-medium text-sm">{technology.name}</span>
-            </div>
-          );
-        })}
+        <div className="flex pt-4 flex-wrap gap-3">
+          {projectDetail.technologies.map((technology, index) => {
+            return (
+              <div
+                key={index}
+                className="disabled:opacity-75 flex-shrink-0 font-medium rounded-md text-sm gap-x-2 px-3 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-900 dark:text-white bg-white hover:bg-gray-50 disabled:bg-white dark:bg-gray-900 dark:hover:bg-gray-800/50 dark:disabled:bg-gray-900 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center gap-1"
+              >
+                <Image
+                  src={technology.logoUrl}
+                  alt={technology.name}
+                  width={20}
+                  height={20}
+                />
+                <span className="font-medium text-sm">{technology.name}</span>
+              </div>
+            );
+          })}
+        </div>
+
         {projectDetail.detailImage !== null ? (
-          <div className="grid auto-rows-min gap-4 grid-cols-2">
+          <div className="pt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {projectDetail.detailImage!.map((detail, index) => {
               return (
-                <div
-                  key={index}
-                  className="aspect-video overflow-hidden rounded-xl bg-muted/50 relative"
-                >
+                <div className=" overflow-hidden" key={index}>
                   <Image
+                    width={400}
+                    height={400}
                     key={index}
-                    alt={projectDetail.title}
                     src={detail}
-                    fill
-                    sizes="100%"
-                    className="object-cover"
+                    className="object-cover rounded-xl"
+                    alt={projectDetail.title}
                   />
                 </div>
               );

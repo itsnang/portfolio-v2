@@ -15,6 +15,8 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
     body: form,
   });
 
+  console.log("=========>", res);
+
   const data = await res.json();
 
   const img: string = data.imgUrl;
@@ -22,10 +24,13 @@ export const uploadStagedFile = async (stagedFile: File | Blob) => {
     .insert(TbImages)
     .values({
       imageUrl: img,
+      isActive: true,
     })
     .returning()
     .then(ok)
     .catch(err);
+
+  console.log("======>", imageUpload);
 
   if (imageUpload.error) {
     throw new UploadImagesError();
