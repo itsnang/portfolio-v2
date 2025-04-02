@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import ScrollProgress from "@/components/ui/scroll-progress";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,7 +45,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning={true}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ScrollProgress />
         {children}
         <Toaster richColors theme="light" position="top-center" />
         <Analytics />

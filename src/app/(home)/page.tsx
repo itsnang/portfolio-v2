@@ -16,12 +16,19 @@ export default async function Home() {
     <>
       <NavBar isAvailable={profile.isAvailable} />
       <main className="mx-auto w-full max-w-2xl">
-        <section>
+      <div className="w-full bg-gradient-to-r from-blue-200 to-cyan-200 lg:h-56 md:h-44 relative mb-[114px] h-40 block rounded-lg">
+        {/* <Image
+          src="/assets/kdrama.jpg"
+          alt="hero"
+          layout="fill"
+          objectFit="cover"
+        /> */}
+         <section>
           {/* profile */}
-          <div className="gap-5 flex items-center">
-            <Avatar className="size-20 border">
+          <div className="gap-2 flex flex-col absolute -bottom-[112px] left-6">
+            <Avatar className="size-28 border">
               <AvatarImage className="object-cover" src={profile.imageUrl} />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>SN</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
               <h1 className="text-xl font-bold">{profile.name}</h1>
@@ -29,7 +36,10 @@ export default async function Home() {
             </div>
           </div>
         </section>
+      </div>
+       
         <section className="space-y-4">
+   
           {/* about */}
           <p className="text-base text-muted-foreground pt-4">
             {profile.abouts}
