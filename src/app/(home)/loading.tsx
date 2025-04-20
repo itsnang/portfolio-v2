@@ -9,7 +9,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <main className="w-full max-w-3xl md:my-[20vh] min-h-screen">
+    <main className="w-full max-w-4xl md:my-[20vh] min-h-screen">
       {" "}
       {/* Removed mx-auto */}
       <section>
