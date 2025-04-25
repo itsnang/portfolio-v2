@@ -14,21 +14,22 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://lornsamnang.vercel.app/"),
-  title: "Lorn Samnang",
+  title: "Lorn Samnang | Software Developer",
   description:
-    "I am a Software Developer, highly perceptive and very imaginative by seeking inspiration in every moment.",
+    "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
   openGraph: {
     type: "website",
-    url: "https://res.cloudinary.com/dnye8vqwb/image/upload/v1734708545/images/7824885_lj2gkw.jpg",
-    title: "Lorn Samnang",
+    url: "https://lornsamnang.vercel.app/",
+    siteName: "Lorn Samnang",
+    title: "Lorn Samnang | Software Developer",
     description:
-      "I am a Software Developer, highly perceptive and very imaginative by seeking inspiration in every moment.",
+      "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
     images: [
       {
         url: "/favicon.ico",
         width: 1200,
         height: 630,
-        alt: "Og Image Alt",
+        alt: "Lorn Samnang Portfolio",
       },
     ],
   },
