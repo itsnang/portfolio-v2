@@ -8,6 +8,7 @@ import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
 import { NavBar } from "@/components/navbar";
 import { HeroProfile } from "@/components/hero-profile";
+import { AchievementSection } from "@/components/achievement-section";
 
 export default async function Home() {
   const profile = await getProfile();
@@ -33,6 +34,7 @@ export default async function Home() {
         <Skills skills={profile.skills} />
         <Experience experience={profile.experience} />
         <Education education={profile.education} />
+        <AchievementSection />
         <Projects projects={profile.projects} />
         {/* Playlist */}
         <MyPlaylist />
