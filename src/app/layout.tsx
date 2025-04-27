@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk } from "next/font/google";
+import { ReactQueryProvider } from "@/providers/react-query-provider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -43,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning={true}>
       <body className={`${spaceGrotesk.className}`}>
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster richColors theme="light" position="top-center" />
         <Analytics />
         <SpeedInsights />
