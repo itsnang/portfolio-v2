@@ -96,7 +96,9 @@ export function AchievementSection() {
 
   return (
     <section className="pt-4 space-y-4">
-      <h2 className="text-xl font-bold">Achievements</h2>
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-12">
+        Achievements
+      </h1>
 
       <div className="space-y-8">
         <div className="flex flex-wrap gap-2 justify-center">

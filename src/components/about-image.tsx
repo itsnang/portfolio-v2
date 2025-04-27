@@ -5,26 +5,17 @@ interface AboutImageProps {
   imageUrl: string[];
 }
 
-const aspectRatio = [
-  "aspect-[3/4]", // Portrait
-  // "aspect-[4/3]", // Landscape
-  "aspect-[1/1]", // Square
-  // "aspect-[4/3]", // Landscape
-];
-
 export const AboutImage: React.FC<AboutImageProps> = ({ imageUrl }) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="columns-2 gap-4 sm:columns-3">
       {imageUrl.map((image, index) => (
-        <div
-          key={index}
-          className={`relative ${aspectRatio[index % aspectRatio.length]}`}
-        >
+        <div key={index} className="mb-4">
           <Image
             src={image}
             alt={`Image ${index + 1}`}
             className="object-cover rounded-lg"
-            fill
+            width={1600}
+            height={900}
           />
         </div>
       ))}
