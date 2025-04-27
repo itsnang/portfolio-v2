@@ -77,7 +77,7 @@ export function SignInForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-semibold test-sm">Username</FormLabel>
+              <FormLabel className="font-semibold test-sm">Email</FormLabel>
               <FormControl>
                 <Input
                   className="h-8"
