@@ -9,7 +9,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <main className="w-full max-w-4xl md:my-[18vh] min-h-screen">
+    <main className="w-full max-w-4xl min-h-screen">
       <div className="w-full lg:h-56 md:h-44 h-40 relative mb-[114px] block rounded-lg">
         {/* Skeleton for cover image */}
         <Skeleton className="w-full h-full rounded-lg" />
