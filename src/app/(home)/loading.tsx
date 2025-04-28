@@ -9,18 +9,24 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <main className="w-full max-w-4xl md:my-[20vh] min-h-screen">
-      {" "}
-      {/* Removed mx-auto */}
-      <section>
-        <div className="gap-5 flex">
-          <Skeleton className="size-20 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-6 w-32" />
-            <Skeleton className="h-4 w-48" />
+    <main className="w-full max-w-4xl md:my-[18vh] min-h-screen">
+      <div className="w-full lg:h-56 md:h-44 h-40 relative mb-[114px] block rounded-lg">
+        {/* Skeleton for cover image */}
+        <Skeleton className="w-full h-full rounded-lg" />
+        <section>
+          {/* Skeleton for profile */}
+          <div className="gap-2 flex flex-col absolute -bottom-[112px] left-6">
+            {/* Skeleton for avatar */}
+            <Skeleton className="size-28 rounded-full" />
+            <div className="space-y-1">
+              {/* Skeleton for name */}
+              <Skeleton className="h-6 w-32" />
+              {/* Skeleton for bio */}
+              <Skeleton className="h-4 w-48" />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       <section className="pt-4 space-y-4">
         {/* About text skeleton */}
         <div className="space-y-2">
@@ -34,7 +40,7 @@ export default function Loading() {
           {[...Array(6)].map((_, idx) => (
             <Skeleton
               key={idx}
-              className="mb-4 w-full rounded-lg aspect-video"
+              className="mb-4 w-full rounded-lg aspect-[3/4]"
             />
           ))}
         </div>
