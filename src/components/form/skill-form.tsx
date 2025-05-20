@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import SingleImageSelector from "../single-image-selector";
+import { ImageSelector } from "../image-selector";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
@@ -60,10 +60,12 @@ export const SkillForm: React.FC<SkillFormProps> = ({ images }) => {
             <FormItem>
               <FormLabel>Skill Logo</FormLabel>
               <FormControl>
-                <SingleImageSelector
+                <ImageSelector
                   control={form.control}
                   images={images}
                   name="logoUrl"
+                  mode="single"
+                  aspectRatio="video"
                 />
               </FormControl>
               <FormMessage />

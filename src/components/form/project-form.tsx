@@ -4,7 +4,6 @@ import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
 import { IImages } from "@/types/profile.type";
 import React, { useTransition } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import SingleImageSelector from "../single-image-selector";
 import {
   Form,
   FormControl,
@@ -21,7 +20,7 @@ import { ImageSelectionDialog } from "../ui/image-selection-dialog";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { LoaderCircle, Minus, Plus } from "lucide-react";
-import { ImageSelector } from "../multi-image-selector";
+import { ImageSelector } from "../image-selector";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
@@ -80,10 +79,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <SingleImageSelector
+        <ImageSelector
           control={form.control}
           images={images}
           name="thumbnail"
+          mode="single"
+          aspectRatio="video"
         />
 
         <FormField

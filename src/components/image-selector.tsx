@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useController, Control, Path, PathValue } from "react-hook-form";
-import { ImagePlus, Image as ImageIcon, Cloudy, Loader2 } from "lucide-react";
+import { ImagePlus, Image as ImageIcon, Cloudy } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
@@ -159,7 +159,7 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
           <ScrollArea className="h-[60vh] px-6">
             {isLoading ? (
               <div className="flex items-center justify-center h-[60vh]">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
               </div>
             ) : (
               <div className="grid grid-cols-5 gap-4 py-4">

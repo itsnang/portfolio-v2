@@ -20,7 +20,7 @@ interface ProfileFormProps {
   profile: IProfile;
 }
 
-export const ProfileForm: React.FC<ProfileFormProps> = ({
+const ProfileFormContent: React.FC<ProfileFormProps> = ({
   images,
   profile,
 }) => {
@@ -119,4 +119,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       </form>
     </Form>
   );
+};
+
+// Client component wrapper
+export const ProfileForm = (props: ProfileFormProps) => {
+  return <ProfileFormContent {...props} />;
 };

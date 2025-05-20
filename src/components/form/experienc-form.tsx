@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import SingleImageSelector from "../single-image-selector";
+import { ImageSelector } from "../image-selector";
 import { IImages } from "@/types/profile.type";
 import React, { useTransition } from "react";
 import { toast } from "sonner";
@@ -99,10 +99,12 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
               <FormItem>
                 <FormLabel>Company Logo</FormLabel>
                 <FormControl>
-                  <SingleImageSelector
+                  <ImageSelector
                     control={form.control}
                     images={images}
                     name="imageUrl"
+                    mode="single"
+                    aspectRatio="video"
                   />
                 </FormControl>
                 <FormMessage />

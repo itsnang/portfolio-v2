@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { toast } from "sonner";
-import SingleImageSelector from "../single-image-selector";
+import { ImageSelector } from "../image-selector";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { LoaderCircle } from "lucide-react";
@@ -60,10 +60,12 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
             <FormItem>
               <FormLabel>Social Logo</FormLabel>
               <FormControl>
-                <SingleImageSelector
+                <ImageSelector
                   control={form.control}
                   images={images}
                   name="icon"
+                  mode="single"
+                  aspectRatio="video"
                 />
               </FormControl>
               <FormMessage />
