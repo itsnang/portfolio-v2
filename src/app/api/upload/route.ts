@@ -1,27 +1,41 @@
-import { uploadToCloudinary } from "@/helper/upload";
+import { uploadToCloudinaryFolder } from "@/helper/upload";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  // your auth check here if required
+  try {
+    const formData = await req.formData();
+    const file = formData.get("file") as File;
+    const folderPath = formData.get("folder") as string;
 
-  const formData = await req.formData();
-  const file = formData.get("file") as File;
+    if (!file) {
+      return NextResponse.json(
+        { success: false, message: "No file provided" },
+        { status: 400 }
+      );
+    }
 
-  const fileBuffer = await file.arrayBuffer();
+    const fileBuffer = await file.arrayBuffer();
+    const mimeType = file.type;
+    const encoding = "base64";
+    const base64Data = Buffer.from(fileBuffer).toString("base64");
+    const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
 
-  const mimeType = file.type;
-  const encoding = "base64";
-  const base64Data = Buffer.from(fileBuffer).toString("base64");
+    const result = await uploadToCloudinaryFolder(
+      fileUri,
+      file.name,
+      folderPath
+    );
 
-  // this will be used to upload the file
-  const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
-
-  const res = await uploadToCloudinary(fileUri, file.name);
-
-  if (res.success && res.result) {
     return NextResponse.json({
-      message: "success",
-      imgUrl: res.result.secure_url,
+      success: true,
+      imgUrl: result.imageUrl,
+      folder: result.folder,
     });
-  } else return NextResponse.json({ message: "failure" });
+  } catch (error) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { success: false, message: "Upload failed" },
+      { status: 500 }
+    );
+  }
 }
