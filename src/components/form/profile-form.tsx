@@ -3,11 +3,10 @@ import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
-import SingleImageSelector from "../single-image-selector";
+import { ImageSelector } from "../image-selector";
 import { IImages, IProfile } from "@/types/profile.type";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { ImageSelector } from "../multi-image-selector";
 import { Button } from "../ui/button";
 import { Form, FormField } from "../ui/form";
 import { ProfileInsert } from "@/db/schema/profile.schema";
@@ -21,7 +20,7 @@ interface ProfileFormProps {
   profile: IProfile;
 }
 
-export const ProfileForm: React.FC<ProfileFormProps> = ({
+const ProfileFormContent: React.FC<ProfileFormProps> = ({
   images,
   profile,
 }) => {
@@ -67,10 +66,12 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         />
 
         {/* profile */}
-        <SingleImageSelector
+        <ImageSelector
           control={methods.control}
           images={images}
           name="imageUrl"
+          mode="single"
+          aspectRatio="video"
         />
         <div className="space-y-1">
           <Label className="ml-1 text-sm font-medium" htmlFor="name">
@@ -104,6 +105,8 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           control={methods.control}
           images={images}
           name="aboutImages"
+          mode="multiple"
+          aspectRatio="portrait"
         />
         <Button type="submit" className="w-full h-12">
           <LoaderCircle
@@ -116,4 +119,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       </form>
     </Form>
   );
+};
+
+// Client component wrapper
+export const ProfileForm = (props: ProfileFormProps) => {
+  return <ProfileFormContent {...props} />;
 };

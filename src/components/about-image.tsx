@@ -7,14 +7,15 @@ interface AboutImageProps {
 
 export const AboutImage: React.FC<AboutImageProps> = ({ imageUrl }) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="columns-2 gap-4 sm:columns-3">
       {imageUrl.map((image, index) => (
-        <div key={index} className="aspect-square relative">
+        <div key={index} className="mb-4">
           <Image
             src={image}
             alt={`Image ${index + 1}`}
             className="object-cover rounded-lg"
-            fill
+            width={1600}
+            height={900}
           />
         </div>
       ))}
