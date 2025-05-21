@@ -28,7 +28,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import SingleImageSelector from "../single-image-selector";
+import { ImageSelector } from "../image-selector";
 import { IImages } from "@/types/profile.type";
 import React, { useTransition } from "react";
 import { insertEducation } from "@/app/dashboard/education/action";
@@ -69,10 +69,12 @@ export const EducationForm: React.FC<EducationFormProps> = ({ images }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <SingleImageSelector
+        <ImageSelector
           control={form.control}
           images={images}
           name="logoUrl"
+          mode="single"
+          aspectRatio="video"
         />
 
         <FormField
