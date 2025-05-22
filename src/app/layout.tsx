@@ -18,6 +18,30 @@ export const metadata: Metadata = {
   title: "Lorn Samnang | Software Developer",
   description:
     "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
+  keywords: [
+    "Lorn Samnang",
+    "Software Developer",
+    "Web Development",
+    "Frontend Developer",
+    "React Developer",
+    "Next.js Developer",
+    "Portfolio",
+    "Full Stack Developer",
+  ],
+  authors: [{ name: "Lorn Samnang" }],
+  creator: "Lorn Samnang",
+  publisher: "Lorn Samnang",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     type: "website",
     url: "https://lornsamnang.vercel.app/",
@@ -25,6 +49,7 @@ export const metadata: Metadata = {
     title: "Lorn Samnang | Software Developer",
     description:
       "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
+    locale: "en_US",
     images: [
       {
         url: "/favicon.ico",
@@ -34,6 +59,21 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lorn Samnang | Software Developer",
+    description:
+      "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
+    creator: "@lornsamnang",
+    images: ["/favicon.ico"],
+  },
+  verification: {
+    google: "your-google-site-verification", // Add your Google Search Console verification code
+  },
+  alternates: {
+    canonical: "https://lornsamnang.vercel.app/",
+  },
+  category: "technology",
 };
 
 export default function RootLayout({
