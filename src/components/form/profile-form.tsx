@@ -1,5 +1,4 @@
 "use client";
-import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
@@ -14,13 +13,14 @@ import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTransition } from "react";
 
 interface ProfileFormProps {
   images: IImages[];
   profile: IProfile;
 }
 
-const ProfileFormContent: React.FC<ProfileFormProps> = ({
+export const ProfileForm: React.FC<ProfileFormProps> = ({
   images,
   profile,
 }) => {
@@ -119,9 +119,4 @@ const ProfileFormContent: React.FC<ProfileFormProps> = ({
       </form>
     </Form>
   );
-};
-
-// Client component wrapper
-export const ProfileForm = (props: ProfileFormProps) => {
-  return <ProfileFormContent {...props} />;
 };
