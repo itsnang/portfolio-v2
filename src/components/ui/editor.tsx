@@ -13,7 +13,6 @@ interface EditorProps {
 }
 
 const TOOLBAR_OPTIONS = [
-  [{ header: [1, 2, false] }],
   ["bold", "italic"],
   [{ list: "ordered" }, { list: "bullet" }],
   ["clean"],
