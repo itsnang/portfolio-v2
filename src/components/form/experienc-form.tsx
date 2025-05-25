@@ -32,13 +32,13 @@ import {
   experiencesInsertSchema,
   Experiences,
 } from "@/db/schema/experiences.schema";
-import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import {
   insertExperiences,
   updateExperience,
 } from "@/app/dashboard/experience/action";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RichTextEditor } from "../ui/editor";
 
 interface ExperienceProps {
   images: IImages[];
@@ -144,11 +144,10 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Project description"
-                    className="resize-none"
-                    value={field.value ?? ""}
+                  <RichTextEditor
+                    content={field.value ?? ""}
                     onChange={field.onChange}
+                    placeholder="Enter your job description..."
                   />
                 </FormControl>
                 <FormMessage />

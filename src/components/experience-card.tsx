@@ -83,7 +83,14 @@ export const ExperienceCard = ({
             {subtitle && <div className="font-sans text-xs">{subtitle}</div>}
           </CardHeader>
           {description && (
-            <p className="mt-2 text-xs sm:text-sm">{description}</p>
+            <div className="mt-2 text-xs sm:text-sm">
+              {description && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: description }}
+                  className="[&>ol]:list-inside [&>ol]:space-y-1 [&>ol>li]:ml-4 [&>ol>li[data-list='bullet']]:list-disc [&>ol>li:not([data-list='bullet'])]:list-decimal"
+                />
+              )}
+            </div>
           )}
         </div>
       </Card>
