@@ -110,8 +110,10 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
               src={field.value}
               alt="Selected image"
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-transform group-hover:scale-105"
+              priority
+              quality={85}
             />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted/5">
@@ -201,7 +203,10 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
                       src={image}
                       alt={`Selected Image ${index + 1}`}
                       fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                       className="object-cover"
+                      loading="lazy"
+                      quality={75}
                     />
                   </div>
                 </div>
@@ -245,8 +250,10 @@ function ImageCard({
           src={image}
           alt="Gallery image"
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
           className="object-cover transition-transform group-hover:scale-105"
+          loading="lazy"
+          quality={75}
         />
         <div className="absolute top-2 left-2 z-10">
           <Checkbox
