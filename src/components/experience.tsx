@@ -13,7 +13,7 @@ export const Experience: React.FC<ExperienceProps> = ({ experience }) => {
       <h2 className="text-xl font-bold">Work Experience</h2>
       {experience.map((work) => (
         <ExperienceCard
-          key={work.company}
+          key={work.id}
           logoUrl={work.imageUrl}
           altText={work.company}
           title={work.company}

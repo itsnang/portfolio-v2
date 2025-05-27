@@ -18,8 +18,8 @@ export default async function Home() {
   };
   return (
     <>
-      <NavBar isAvailable={profile.isAvailable} />
-      <main className="mx-auto w-full max-w-3xl">
+      <main className="mx-auto w-full max-w-4xl">
+        <NavBar isAvailable={profile.isAvailable} />
         <HeroProfile profile={heroProfile} />
 
         <section className="space-y-4">

@@ -20,9 +20,12 @@ export function HeroProfile({ profile, className = "" }: HeroProfileProps) {
     >
       <Image
         src="/cover.jpg"
-        alt="hero"
+        alt="Hero profile cover image"
         fill
+        priority
+        sizes="100vw"
         className="object-cover rounded-lg"
+        quality={90}
       />
       <section>
         {/* profile */}
