@@ -40,7 +40,7 @@ export default function Loading() {
           {[...Array(6)].map((_, idx) => (
             <Skeleton
               key={idx}
-              className="mb-4 w-full rounded-lg aspect-[3/4]"
+              className="mb-4 w-full rounded-lg aspect-3/4"
             />
           ))}
         </div>
@@ -52,7 +52,7 @@ export default function Loading() {
           {[...Array(7)].map((_, index) => (
             <div
               key={index}
-              className="flex-shrink-0 rounded-md px-3 py-2 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 bg-white dark:bg-gray-900 inline-flex items-center gap-1"
+              className="shrink-0 rounded-md px-3 py-2 shadow-xs ring-1 ring-inset ring-gray-300 dark:ring-gray-700 bg-white dark:bg-gray-900 inline-flex items-center gap-1"
             >
               <Skeleton className="h-5 w-5 rounded-md" />{" "}
               {/* Skeleton for the skill logo */}
@@ -94,7 +94,7 @@ export default function Loading() {
           <div className="flex-none">
             <Skeleton className="size-12 rounded-full" />
           </div>
-          <div className="flex-grow ml-4 items-start flex-col">
+          <div className="grow ml-4 items-start flex-col">
             {" "}
             {/* Changed items-center to items-start */}
             <div className="space-y-2">

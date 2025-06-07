@@ -49,7 +49,7 @@ export function ImageSelectionDialog({
             {images.map((image, index) => (
               <div
                 key={index}
-                className="aspect-[4/3] relative group cursor-pointer rounded-lg overflow-hidden border-2"
+                className="aspect-4/3 relative group cursor-pointer rounded-lg overflow-hidden border-2"
               >
                 <Image
                   src={image.imageUrl}

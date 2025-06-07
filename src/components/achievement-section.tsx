@@ -103,7 +103,7 @@ export function AchievementSection() {
       <div className="space-y-8">
         <div className="flex flex-wrap gap-2 justify-center">
           <Badge
-            variant={filter === null ? "default" : "outline"}
+            variant={filter === null ? "default" : "outline-solid"}
             className="cursor-pointer text-sm"
             onClick={() => setFilter(null)}
           >
@@ -112,7 +112,7 @@ export function AchievementSection() {
           {categories.map((category) => (
             <Badge
               key={category}
-              variant={filter === category ? "default" : "outline"}
+              variant={filter === category ? "default" : "outline-solid"}
               className="cursor-pointer text-sm"
               onClick={() => setFilter(category)}
             >

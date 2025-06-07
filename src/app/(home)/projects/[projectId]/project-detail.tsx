@@ -111,7 +111,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
             priority
             className="object-cover transition-transform duration-700 hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <SparklesText
               className="text-5xl font-bold text-white drop-shadow-lg"
@@ -198,7 +198,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
       {/* Full Screen Image Gallery Modal */}
       {selectedImageIndex !== null && projectDetail.detailImage && (
         <div
-          className="fixed inset-0 z-[100] bg-black w-[100vw] h-[100vh] overflow-hidden m-0 p-0"
+          className="fixed inset-0 z-100 bg-black w-screen h-screen overflow-hidden m-0 p-0"
           style={{
             position: "fixed",
             top: 0,
@@ -221,7 +221,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleClose}
-                className="bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+                className="bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-xs"
               >
                 <X className="w-6 h-6" />
               </Button>
@@ -232,7 +232,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
               variant="ghost"
               size="icon"
               onClick={handlePrevious}
-              className="fixed left-6 z-50 bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+              className="fixed left-6 z-50 bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-xs"
             >
               <ChevronLeft className="w-10 h-10" />
             </Button>
@@ -241,7 +241,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
               variant="ghost"
               size="icon"
               onClick={handleNext}
-              className="fixed right-6 z-50 bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+              className="fixed right-6 z-50 bg-black/50 text-white hover:bg-white/20 hover:text-white backdrop-blur-xs"
             >
               <ChevronRight className="w-10 h-10" />
             </Button>
@@ -270,7 +270,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
 
             {/* Bottom Info */}
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
-              <div className="px-6 py-3 rounded-full bg-black/50 text-white text-base backdrop-blur-sm">
+              <div className="px-6 py-3 rounded-full bg-black/50 text-white text-base backdrop-blur-xs">
                 {selectedImageIndex + 1} / {projectDetail.detailImage.length}
               </div>
             </div>

@@ -16,7 +16,7 @@ interface HeroProfileProps {
 export function HeroProfile({ profile, className = "" }: HeroProfileProps) {
   return (
     <div
-      className={`w-full bg-gradient-to-r from-blue-200 to-cyan-200 lg:h-56 md:h-44 relative mb-[114px] h-40 block rounded-lg ${className}`}
+      className={`w-full bg-linear-to-r from-blue-200 to-cyan-200 lg:h-56 md:h-44 relative mb-[114px] h-40 block rounded-lg ${className}`}
     >
       <Image
         src="/cover.jpg"

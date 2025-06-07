@@ -92,8 +92,8 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
 
   const aspectRatioClass = {
     square: "aspect-square",
-    video: "aspect-[2/1]",
-    portrait: "aspect-[4/3]",
+    video: "aspect-2/1",
+    portrait: "aspect-4/3",
   }[aspectRatio];
 
   const defaultTrigger =
@@ -235,8 +235,8 @@ function ImageCard({
 }: ImageCardProps) {
   const aspectRatioClass = {
     square: "aspect-square",
-    video: "aspect-[2/1]",
-    portrait: "aspect-[4/3]",
+    video: "aspect-2/1",
+    portrait: "aspect-4/3",
   }[aspectRatio];
 
   return (

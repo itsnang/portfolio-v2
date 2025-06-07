@@ -19,7 +19,7 @@ export default function ScrollProgress({ className }: ScrollProgressProps) {
   return (
     <motion.div
       className={cn(
-        "fixed inset-x-0 top-0 z-[1000] h-1 origin-left bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%",
+        "fixed inset-x-0 top-0 z-1000 h-1 origin-left bg-linear-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%",
         className
       )}
       style={{
