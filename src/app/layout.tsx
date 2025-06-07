@@ -82,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning={true}>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${spaceGrotesk.className}`}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster richColors theme="light" position="top-center" />
