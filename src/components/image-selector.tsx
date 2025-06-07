@@ -37,7 +37,7 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
   mode = "single",
   trigger,
   className,
-  aspectRatio = "video",
+  aspectRatio = "square",
 }: ImageSelectorProps<TFieldValues>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
@@ -92,8 +92,8 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
 
   const aspectRatioClass = {
     square: "aspect-square",
-    video: "aspect-[2/1]",
-    portrait: "aspect-[4/3]",
+    video: "aspect-2/1",
+    portrait: "aspect-4/3",
   }[aspectRatio];
 
   const defaultTrigger =
@@ -164,19 +164,21 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
               </div>
             ) : (
-              <div className="grid grid-cols-5 gap-4 py-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
                 {images.map((image, index) => (
-                  <ImageCard
-                    key={index}
-                    image={image.imageUrl}
-                    isSelected={
-                      mode === "single"
-                        ? image.imageUrl === (field.value as string)
-                        : (field.value as string[]).includes(image.imageUrl)
-                    }
-                    onSelect={handleImageSelect}
-                    aspectRatio={aspectRatio}
-                  />
+                  <div key={index}>
+                    <ImageCard
+                      key={index}
+                      image={image.imageUrl}
+                      isSelected={
+                        mode === "single"
+                          ? image.imageUrl === (field.value as string)
+                          : (field.value as string[]).includes(image.imageUrl)
+                      }
+                      onSelect={handleImageSelect}
+                      aspectRatio={"square"}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -233,8 +235,8 @@ function ImageCard({
 }: ImageCardProps) {
   const aspectRatioClass = {
     square: "aspect-square",
-    video: "aspect-[2/1]",
-    portrait: "aspect-[4/3]",
+    video: "aspect-2/1",
+    portrait: "aspect-4/3",
   }[aspectRatio];
 
   return (

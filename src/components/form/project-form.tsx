@@ -171,7 +171,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
                   required: "Name is required",
                 })}
                 placeholder="Technology Name"
-                className="flex-grow"
+                className="grow"
               />
               {watchTechnologies[fieldIndex]?.logoUrl && (
                 <Image
