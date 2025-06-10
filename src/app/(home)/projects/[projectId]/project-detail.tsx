@@ -36,17 +36,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
     null
   );
 
-  useEffect(() => {
-    if (selectedImageIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [selectedImageIndex]);
-
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
   };
