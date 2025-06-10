@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import SparklesText from "@/components/ui/sparkles-text";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -66,19 +67,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
     [selectedImageIndex, projectDetail.detailImage]
   );
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImageIndex === null) return;
-      if (e.key === "ArrowLeft")
-        handlePrevious(e as unknown as React.MouseEvent);
-      if (e.key === "ArrowRight") handleNext(e as unknown as React.MouseEvent);
-      if (e.key === "Escape") handleClose();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImageIndex, handlePrevious, handleNext, handleClose]);
-
   return (
     <>
       <motion.section
@@ -86,6 +74,18 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
         animate="animate"
         className="max-w-7xl mx-auto lg:px-8 py-8 space-y-8"
       >
+        <motion.div variants={fadeInUp} className="flex items-center">
+          <Link href="/" className="group">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              Back
+            </Button>
+          </Link>
+        </motion.div>
+
         {/* Hero Section */}
         <motion.div
           variants={fadeInUp}
