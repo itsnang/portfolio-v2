@@ -36,7 +36,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
     null
   );
 
-  // Add effect to prevent background scrolling when modal is open
   useEffect(() => {
     if (selectedImageIndex !== null) {
       document.body.style.overflow = "hidden";
@@ -78,7 +77,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
     [selectedImageIndex, projectDetail.detailImage]
   );
 
-  // Handle keyboard events
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedImageIndex === null) return;
@@ -97,7 +95,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
       <motion.section
         initial="initial"
         animate="animate"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"
+        className="max-w-7xl mx-auto lg:px-8 py-8 space-y-8"
       >
         {/* Hero Section */}
         <motion.div
@@ -268,7 +266,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
               />
             </motion.div>
 
-            {/* Bottom Info */}
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
               <div className="px-6 py-3 rounded-full bg-black/50 text-white text-base backdrop-blur-xs">
                 {selectedImageIndex + 1} / {projectDetail.detailImage.length}
