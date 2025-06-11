@@ -19,48 +19,40 @@ const dockVariants = cva(
   "mx-auto w-max h-full p-2 flex items-end rounded-md border"
 );
 
-const Dock = React.forwardRef<HTMLDivElement, DockProps>(
-  (
-    {
-      className,
-      children,
-      magnification = DEFAULT_MAGNIFICATION,
-      distance = DEFAULT_DISTANCE,
-      ...props
-    },
-    ref
-  ) => {
-    const mousex = useMotionValue(Infinity);
+function Dock({
+  className,
+  children,
+  magnification = DEFAULT_MAGNIFICATION,
+  distance = DEFAULT_DISTANCE,
+  ...props
+}: DockProps & React.ComponentProps<typeof motion.div>) {
+  const mousex = useMotionValue(Infinity);
 
-    const renderChildren = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return React.Children.map(children, (child: any) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, {
-            mousex,
-            magnification,
-            distance,
-          } as DockIconProps);
-        }
-        return child;
-      });
-    };
+  const renderChildren = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return React.Children.map(children, (child: any) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          mousex,
+          magnification,
+          distance,
+        } as DockIconProps);
+      }
+      return child;
+    });
+  };
 
-    return (
-      <motion.div
-        ref={ref}
-        onMouseMove={(e) => mousex.set(e.pageX)}
-        onMouseLeave={() => mousex.set(Infinity)}
-        {...props}
-        className={cn(dockVariants({ className }))}
-      >
-        {renderChildren()}
-      </motion.div>
-    );
-  }
-);
-
-Dock.displayName = "Dock";
+  return (
+    <motion.div
+      onMouseMove={(e) => mousex.set(e.pageX)}
+      onMouseLeave={() => mousex.set(Infinity)}
+      {...props}
+      className={cn(dockVariants({ className }))}
+    >
+      {renderChildren()}
+    </motion.div>
+  );
+}
 
 export interface DockIconProps {
   size?: number;
