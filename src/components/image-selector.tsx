@@ -230,9 +230,9 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
     <div className={className}>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>{trigger || defaultTrigger}</DialogTrigger>
-        <DialogContent className="w-[95vw] sm:max-w-[800px] h-[90vh] sm:max-h-[80vh] p-0 rounded-xl sm:rounded-xl rounded-t-xl border-0 shadow-2xl overflow-hidden">
-          <DialogHeader className="border-b border-border/50">
-            <div className="flex items-center justify-between gap-2">
+        <DialogContent className="w-[95vw] sm:max-w-[800px] h-[85vh] sm:max-h-[75vh] p-0 rounded-xl border-0 shadow-2xl flex flex-col overflow-hidden">
+          <DialogHeader className="border-b border-border/50 px-4 py-3 flex-shrink-0">
+            <div className="flex items-center justify-between">
               <div className="space-y-1 min-w-0 flex-1">
                 <DialogTitle className="text-lg sm:text-xl font-semibold truncate">
                   {mode === "single" ? "Select Image" : "Image Manager"}
@@ -246,12 +246,12 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
             </div>
           </DialogHeader>
 
-          <div className="flex flex-row justify-between items-center px-2">
+          <div className="flex flex-row justify-between items-center px-4 py-2 border-b border-border/30 flex-shrink-0">
             <FolderSelector
               onFolderSelect={setSelectedFolder}
               selectedFolder={selectedFolder}
             />
-            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2">
               {mode === "multiple" && selectedInfo.hasSelection && (
                 <div className="flex items-center gap-1 sm:gap-2">
                   <Badge
@@ -309,61 +309,65 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
             </div>
           </div>
 
-          <ScrollArea className="h-[60vh] sm:h-[45vh] px-4 sm:px-6">
-            {isLoading ? (
-              <div className="flex flex-col items-center justify-center h-full gap-4">
-                <div className="relative">
-                  <div className="w-12 h-12 border-4 border-muted rounded-full"></div>
-                  <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+          <div className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full px-4 sm:px-6">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-full gap-4">
+                  <div className="relative">
+                    <div className="w-12 h-12 border-4 border-muted rounded-full"></div>
+                    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                  </div>
+                  <div className="text-center space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Loading images...
+                    </p>
+                    <p className="text-xs text-muted-foreground/70 hidden sm:block">
+                      Please wait while we fetch your images
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Loading images...
-                  </p>
-                  <p className="text-xs text-muted-foreground/70 hidden sm:block">
-                    Please wait while we fetch your images
-                  </p>
+              ) : images.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full min-h-[30vh] gap-4">
+                  <div className="p-6 rounded-full bg-muted/50">
+                    <ImageIcon className="h-12 w-12 text-muted-foreground/40" />
+                  </div>
+                  <div className="text-center space-y-2">
+                    <p className="text-base sm:text-lg font-medium text-muted-foreground">
+                      No images found
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground/70 max-w-sm px-4 sm:px-0">
+                      Try selecting a different folder or upload some images to
+                      get started
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ) : images.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full min-h-[30vh] gap-4">
-                <div className="p-6 rounded-full bg-muted/50">
-                  <ImageIcon className="h-12 w-12 text-muted-foreground/40" />
+              ) : (
+                <div
+                  className={cn("grid gap-3 sm:gap-4 py-4 sm:py-6", gridCols)}
+                >
+                  {images.map((image, index) => (
+                    <ImageCard
+                      key={`${image.imageUrl}-${index}`}
+                      image={image.imageUrl}
+                      isSelected={
+                        mode === "single"
+                          ? image.imageUrl === (field.value as string)
+                          : ((field.value as string[]) || []).includes(
+                              image.imageUrl
+                            )
+                      }
+                      onSelect={handleImageSelect}
+                      aspectRatio="square"
+                      index={index}
+                    />
+                  ))}
                 </div>
-                <div className="text-center space-y-2">
-                  <p className="text-base sm:text-lg font-medium text-muted-foreground">
-                    No images found
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground/70 max-w-sm px-4 sm:px-0">
-                    Try selecting a different folder or upload some images to
-                    get started
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className={cn("grid gap-3 sm:gap-4 py-4 sm:py-6", gridCols)}>
-                {images.map((image, index) => (
-                  <ImageCard
-                    key={`${image.imageUrl}-${index}`}
-                    image={image.imageUrl}
-                    isSelected={
-                      mode === "single"
-                        ? image.imageUrl === (field.value as string)
-                        : ((field.value as string[]) || []).includes(
-                            image.imageUrl
-                          )
-                    }
-                    onSelect={handleImageSelect}
-                    aspectRatio="square"
-                    index={index}
-                  />
-                ))}
-              </div>
-            )}
-          </ScrollArea>
+              )}
+            </ScrollArea>
+          </div>
 
           {mode === "multiple" && (
-            <div className="flex justify-between items-center p-4 sm:p-6 pt-3 sm:pt-4 border-t border-border/50 bg-muted/20">
+            <div className="flex justify-between items-center p-4 border-t border-border/50 bg-muted/20 flex-shrink-0">
               <div className="text-xs sm:text-sm text-muted-foreground">
                 {selectedInfo.count > 0
                   ? `${selectedInfo.count} image${selectedInfo.count > 1 ? "s" : ""} selected`
