@@ -143,7 +143,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -181,9 +180,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Provide a detailed description of your project
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
