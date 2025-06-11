@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Briefcase, GraduationCap, Trophy } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -12,78 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Icons } from "./icons";
 import Link from "next/link";
-
-const achievements = [
-  {
-    id: 1,
-    title: "Enhancing Cellcard App",
-    description:
-      "In recognition of your exceptional contribution and unwavering effort in enhancing the Cellcard app's performance and user experience.",
-    icon: <Trophy className="h-10 w-10 text-yellow-500" />,
-    year: "2025",
-    category: "Award",
-    links: [
-      {
-        title: "Certificate",
-        icon: <Icons.certificate className="h-4 w-4 text-gray-900" />,
-        href: "https://drive.google.com/file/d/12H-2G0rV7RTZ0oa7CsPOSOvRtMCb-lkS/view",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "TOP 2 Turing Hackaton team",
-    description:
-      "a five-day program that provides participants with the opportunity to test their ideas in fulfilling societal needs and build a strong foundation for their startups.",
-    icon: <Trophy className="h-10 w-10 text-yellow-500" />,
-    year: "2024",
-    category: "Award",
-    links: [
-      {
-        title: "View more",
-        icon: <Icons.certificate className="h-4 w-4 text-gray-900" />,
-        href: "https://hackathon.techostartup.center/cycle6",
-      },
-    ],
-  },
-
-  {
-    id: 4,
-    title: "Full-Stack Web Development Bootcamp",
-    description:
-      "Awarded a Cellcard scholarship to attend the Sabaicode Full-Stack Web Development Bootcamp, recognizing my potential in full-stack development.",
-    icon: <GraduationCap className="h-10 w-10 text-green-500" />,
-    year: "2022",
-    category: "Education",
-    links: [
-      {
-        title: "News",
-        icon: <Icons.globe className="h-4 w-4 text-gray-900" />,
-        href: "https://www.cellcard.com.kh/en/media-center/news/post/%E1%9E%A2%E1%9E%93%E1%9E%B6%E1%9E%82%E1%9E%8F%E1%9E%A2%E1%9F%92%E1%9E%93%E1%9E%80%E1%9E%A2%E1%9E%97%E1%9E%B7%E1%9E%9C%E1%9E%8C%E1%9F%92%E1%9E%8D%E1%9E%93%E1%9F%8D%E1%9E%80%E1%9E%98%E1%9F%92%E1%9E%98/",
-      },
-    ],
-  },
-  {
-    id: 5,
-    title: "Mobile App Developer at Cellcard",
-    description:
-      "Promoted to Mobile App Developer at Cellcard, Developing and maintaining the Cellcard App and Cellcard Website.",
-    icon: <Briefcase className="h-10 w-10 text-purple-500" />,
-    year: "2024",
-    category: "Career",
-  },
-  {
-    id: 6,
-    title: "Mobile App Developer Trainee at Cellcard",
-    description:
-      "Completed a 6-month internship as a Mobile App Developer Trainee at Cellcard, where I developed and maintained Dealer App and Cellcard Sales Force App.",
-    icon: <Briefcase className="h-10 w-10 text-purple-500" />,
-    year: "2023",
-    category: "Career",
-  },
-];
+import { achievements } from "@/data/achievement";
 
 export function AchievementSection() {
   const [filter, setFilter] = useState<string | null>(null);
@@ -94,84 +23,182 @@ export function AchievementSection() {
     ? achievements.filter((a) => a.category === filter)
     : achievements;
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="pt-4 space-y-4">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        Achievements
-      </h1>
+    <section className="pt-8 pb-16 space-y-8">
+      <motion.div
+        className="text-center space-y-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
+          Achievements
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          A collection of my awards, and career highlights
+        </p>
+      </motion.div>
 
       <div className="space-y-8">
-        <div className="flex flex-wrap gap-2 justify-center">
+        <motion.div
+          className="flex flex-wrap gap-3 justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <Badge
             variant={filter === null ? "default" : "outline"}
-            className="cursor-pointer text-sm"
+            className="cursor-pointer text-sm px-4 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg"
             onClick={() => setFilter(null)}
           >
-            All
+            All ({achievements.length})
           </Badge>
-          {categories.map((category) => (
-            <Badge
-              key={category}
-              variant={filter === category ? "default" : "outline"}
-              className="cursor-pointer text-sm"
-              onClick={() => setFilter(category)}
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
+          {categories.map((category) => {
+            const count = achievements.filter(
+              (a) => a.category === category
+            ).length;
+            return (
+              <Badge
+                key={category}
+                variant={filter === category ? "default" : "outline"}
+                className="cursor-pointer text-sm px-4 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                onClick={() => setFilter(category)}
+              >
+                {category} ({count})
+              </Badge>
+            );
+          })}
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {filteredAchievements.map((achievement) => (
-            <motion.div
-              key={achievement.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="h-full overflow-hidden border-2 hover:border-primary/50 transition-all duration-300">
-                <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                  <div className="rounded-full p-2 bg-muted flex items-center justify-center">
-                    {achievement.icon}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filter}
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {filteredAchievements.map((achievement) => (
+              <motion.div
+                key={achievement.id}
+                variants={itemVariants}
+                layout
+                whileHover={{
+                  y: -8,
+                  transition: { duration: 0.2 },
+                }}
+                className="group"
+              >
+                <Card className="h-full overflow-hidden border border-border/20 bg-gradient-to-br from-background via-background to-muted/30 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 relative">
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${achievement.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
+
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -m-[1px] border-2" />
+
+                  <div className="relative bg-background rounded-lg h-full">
+                    <CardHeader className="flex flex-col items-center text-center space-y-4 pb-4">
+                      <motion.div
+                        className="relative"
+                        whileHover={{ rotate: 5, scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div
+                          className={`absolute inset-0 rounded-full bg-gradient-to-br ${achievement.gradient} blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500`}
+                        />
+                        <div className="relative rounded-full p-4 bg-background/90 backdrop-blur-sm border border-border/30 shadow-lg">
+                          {achievement.icon}
+                        </div>
+                      </motion.div>
+
+                      <div className="space-y-2">
+                        <CardTitle className="text-xl font-bold leading-tight group-hover:text-primary transition-colors duration-300">
+                          {achievement.title}
+                        </CardTitle>
+                        <CardDescription className="flex items-center justify-center gap-2">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                            {achievement.year}
+                          </span>
+                          <span className="text-muted-foreground">•</span>
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-secondary text-secondary-foreground">
+                            {achievement.category}
+                          </span>
+                        </CardDescription>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="px-6 pb-4">
+                      <p className="text-muted-foreground leading-relaxed">
+                        {achievement.description}
+                      </p>
+                    </CardContent>
+
+                    <CardFooter className="px-6 pt-0">
+                      {achievement.links && achievement.links.length > 0 && (
+                        <div className="w-full flex flex-wrap justify-center gap-2">
+                          {achievement.links.map((link, idx) => (
+                            <Link target="_blank" href={link.href} key={idx}>
+                              <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
+                                <Badge className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer">
+                                  {link.icon}
+                                  <span className="font-medium">
+                                    {link.title}
+                                  </span>
+                                </Badge>
+                              </motion.div>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </CardFooter>
                   </div>
-                  <div>
-                    <CardTitle className="text-lg">
-                      {achievement.title}
-                    </CardTitle>
-                    <CardDescription>
-                      <span className="inline-block mt-1 text-sm font-medium">
-                        {achievement.year} • {achievement.category}
-                      </span>
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    {achievement.description}
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  {achievement.links && achievement.links.length > 0 && (
-                    <div className="mt-2 flex flex-row flex-wrap items-start gap-2">
-                      {achievement.links.map((link, idx) => (
-                        <Link target="_blank" href={link.href} key={idx}>
-                          <Badge
-                            key={idx}
-                            title={link.title}
-                            className="flex gap-2 bg-white hover:bg-white"
-                          >
-                            {link.icon}
-                            <span className="text-gray-900">{link.title}</span>
-                          </Badge>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {filteredAchievements.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-16"
+          >
+            <div className="text-4xl mb-4">🏆</div>
+            <h3 className="text-xl font-semibold mb-2">
+              No achievements found
+            </h3>
+            <p className="text-muted-foreground">
+              Try adjusting your filter to see more results.
+            </p>
+          </motion.div>
+        )}
       </div>
     </section>
   );

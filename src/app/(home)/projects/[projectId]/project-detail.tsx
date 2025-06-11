@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import SparklesText from "@/components/ui/sparkles-text";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -35,18 +36,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
   );
-
-  // Add effect to prevent background scrolling when modal is open
-  useEffect(() => {
-    if (selectedImageIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [selectedImageIndex]);
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
@@ -78,27 +67,25 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
     [selectedImageIndex, projectDetail.detailImage]
   );
 
-  // Handle keyboard events
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImageIndex === null) return;
-      if (e.key === "ArrowLeft")
-        handlePrevious(e as unknown as React.MouseEvent);
-      if (e.key === "ArrowRight") handleNext(e as unknown as React.MouseEvent);
-      if (e.key === "Escape") handleClose();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImageIndex, handlePrevious, handleNext, handleClose]);
-
   return (
     <>
       <motion.section
         initial="initial"
         animate="animate"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"
+        className="max-w-7xl mx-auto lg:px-8 py-8 space-y-8"
       >
+        <motion.div variants={fadeInUp} className="flex items-center">
+          <Link href="/" className="group">
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              Back
+            </Button>
+          </Link>
+        </motion.div>
+
         {/* Hero Section */}
         <motion.div
           variants={fadeInUp}
@@ -268,7 +255,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
               />
             </motion.div>
 
-            {/* Bottom Info */}
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
               <div className="px-6 py-3 rounded-full bg-black/50 text-white text-base backdrop-blur-xs">
                 {selectedImageIndex + 1} / {projectDetail.detailImage.length}
