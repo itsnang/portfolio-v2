@@ -19,13 +19,7 @@ import {
 import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { toast } from "sonner";
-import {
-  LoaderCircle,
-  Save,
-  User,
-  FileText,
-  Image as ImageIcon,
-} from "lucide-react";
+import { LoaderCircle, Save, FileText, Image as ImageIcon } from "lucide-react";
 
 import { useState } from "react";
 import {
@@ -58,7 +52,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       abouts: profile.abouts || "",
       isAvailable: profile.isAvailable ?? true,
     },
-    mode: "onChange", // Enable real-time validation
+    mode: "onChange",
   });
 
   const {
@@ -75,7 +69,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     try {
       await updateProfileAction(data);
       toast.success("Profile updated successfully!");
-      // Reset form dirty state after successful submission
       form.reset(data);
     } catch (error) {
       console.error("Profile update error:", error);
@@ -102,7 +95,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       <div className="space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">Profile Settings</h1>
         <p className="text-muted-foreground">
-          Manage your personal information and availability status.
+          Manage personal information and availability status.
         </p>
       </div>
 
@@ -111,50 +104,31 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           {/* Availability Section */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Availability
-                  </CardTitle>
-                  <CardDescription>
-                    Let visitors know if you&apos;re available for new
-                    opportunities
-                  </CardDescription>
-                </div>
-                <FormField
-                  control={form.control}
-                  name="isAvailable"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="flex items-center space-x-3">
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            id="availability-toggle"
-                            disabled={isPending}
-                          />
-                          <div className="space-y-1">
-                            <FormLabel
-                              htmlFor="availability-toggle"
-                              className="text-sm font-medium cursor-pointer"
-                            >
-                              Available for work
-                            </FormLabel>
-                            <FormDescription className="text-xs">
-                              {field.value
-                                ? "Currently open to opportunities"
-                                : "Not available at the moment"}
-                            </FormDescription>
-                          </div>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="isAvailable"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex items-center justify-between space-x-3">
+                        <FormLabel
+                          htmlFor="availability-toggle"
+                          className="text-sm font-medium cursor-pointer"
+                        >
+                          Available for work
+                        </FormLabel>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          id="availability-toggle"
+                          disabled={isPending}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardHeader>
           </Card>
 
@@ -165,9 +139,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 <ImageIcon className="h-5 w-5" />
                 Profile Image
               </CardTitle>
-              <CardDescription>
-                Choose a professional photo that represents you
-              </CardDescription>
+              <CardDescription>Choose profile image</CardDescription>
             </CardHeader>
             <CardContent>
               <FormField
@@ -199,9 +171,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 <FileText className="h-5 w-5" />
                 Personal Information
               </CardTitle>
-              <CardDescription>
-                Tell visitors about yourself and your background
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -219,9 +188,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                           disabled={isPending}
                         />
                       </FormControl>
-                      <FormDescription>
-                        This will be displayed as your main name
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -242,9 +208,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                           disabled={isPending}
                         />
                       </FormControl>
-                      <FormDescription>
-                        A short professional summary
-                      </FormDescription>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -265,10 +229,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                         disabled={isPending}
                       />
                     </FormControl>
-                    <FormDescription>
-                      A detailed description of your professional background and
-                      interests
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -280,9 +240,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           <Card>
             <CardHeader>
               <CardTitle>About Images</CardTitle>
-              <CardDescription>
-                Add images that showcase your work, personality, or interests
-              </CardDescription>
             </CardHeader>
             <CardContent>
               <FormField
@@ -300,10 +257,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                         className="w-full"
                       />
                     </FormControl>
-                    <FormDescription>
-                      Select multiple images to create a visual story about
-                      yourself
-                    </FormDescription>
+                    <FormDescription>Select multiple images</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
