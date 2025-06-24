@@ -40,8 +40,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ name }) => {
     <>
       <div
         {...getRootProps()}
-        className={`relative mx-auto flex aspect-[2/1] w-full max-w-3xl items-center justify-center rounded-2xl border border-gray-200 transition-all duration-200 ${
-          isDragActive ? "ring-primary bg-gray-50 ring" : "bg-white"
+        className={`relative mx-auto flex aspect-2/1 w-full max-w-3xl items-center justify-center rounded-2xl border border-gray-200 transition-all duration-200 ${
+          isDragActive ? "ring-primary bg-gray-50 ring-3" : "bg-white"
         }`}
       >
         <input {...register} {...getInputProps()} multiple={false} />

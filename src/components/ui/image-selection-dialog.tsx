@@ -45,18 +45,20 @@ export function ImageSelectionDialog({
           <DialogTitle>Select an Image</DialogTitle>
         </DialogHeader>
         <ScrollArea className="h-[60vh] px-6">
-          <div className="grid grid-cols-5 gap-4 py-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4">
             {images.map((image, index) => (
               <div
                 key={index}
-                className="aspect-[4/3] relative group cursor-pointer rounded-lg overflow-hidden border-2"
+                className="aspect-4/3 relative group cursor-pointer rounded-lg overflow-hidden border-2"
               >
                 <Image
                   src={image.imageUrl}
-                  alt="Gallery image"
+                  alt={`Gallery image ${index + 1}`}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                   className="object-cover transition-transform group-hover:scale-105"
+                  loading="lazy"
+                  quality={75}
                   onClick={() => handleSelect(image.imageUrl)}
                 />
               </div>
