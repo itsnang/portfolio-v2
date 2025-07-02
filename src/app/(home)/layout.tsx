@@ -1,3 +1,10 @@
+import { generateMetadata } from "@/lib/metadata";
+
+export const metadata = generateMetadata({
+  title: "Home | Lorn Samnang",
+  description: "Welcome to the portfolio of Lorn Samnang. Explore my projects, skills, and professional journey.",
+});
+
 export default function HomeLayout({
   children,
 }: {
