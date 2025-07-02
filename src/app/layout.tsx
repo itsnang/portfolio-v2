@@ -74,6 +74,12 @@ export const metadata: Metadata = {
     canonical: "https://lornsamnang.com/",
   },
   category: "technology",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Portfolio",
+  },
 };
 
 export default function RootLayout({
