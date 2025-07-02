@@ -14,7 +14,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lornsamnang.vercel.app/"),
+  metadataBase: new URL("https://lornsamnang.com/"),
   title: "Lorn Samnang | Software Developer",
   description:
     "Passionate and imaginative Software Developer who draws inspiration from every moment. Focused on crafting meaningful digital experiences.",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: "https://lornsamnang.vercel.app/",
+    url: "https://lornsamnang.com/",
     siteName: "Lorn Samnang",
     title: "Lorn Samnang | Software Developer",
     description:
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     google: "your-google-site-verification", // Add your Google Search Console verification code
   },
   alternates: {
-    canonical: "https://lornsamnang.vercel.app/",
+    canonical: "https://lornsamnang.com/",
   },
   category: "technology",
 };
