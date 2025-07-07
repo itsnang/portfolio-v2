@@ -5,6 +5,7 @@ import { TbEducation } from "./education.table";
 import { TbProject } from "./project.table";
 import { TbExperiences } from "./experiences.table";
 import { TbSocials } from "./socials.table";
+import { TbRecommendations } from "./recommendations.table";
 
 export type TbProfile = typeof TbProfile;
 
@@ -27,4 +28,5 @@ export const ProfileRelations = relations(TbProfile, ({ many }) => ({
   education: many(TbEducation),
   projects: many(TbProject),
   socials: many(TbSocials),
+  recommendations: many(TbRecommendations),
 }));

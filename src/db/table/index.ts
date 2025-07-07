@@ -7,3 +7,4 @@ export * from "./images.table";
 export * from "./project.table";
 export * from "./user.table";
 export * from "./token.table";
+export * from "./recommendations.table";

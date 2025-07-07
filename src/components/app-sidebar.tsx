@@ -66,6 +66,10 @@ const data = {
           title: "Socials",
           url: "/dashboard/socials",
         },
+        {
+          title: "Recommendations",
+          url: "/dashboard/recommendations",
+        },
       ],
     },
 

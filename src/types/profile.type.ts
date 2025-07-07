@@ -10,6 +10,7 @@ export interface IProfile {
   experience: IExperience[];
   education: IEducation[];
   projects: IProject[];
+  recommendations: IRecommendation[];
 }
 
 export interface ISkill {
@@ -54,6 +55,14 @@ export interface ISocial {
   name: string;
   url: string;
   icon: string;
+}
+
+export interface IRecommendation {
+  id: string;
+  name: string;
+  position: string;
+  profileImageUrl: string;
+  recommendationText: string;
 }
 
 export interface IImages {
