@@ -1,4 +1,4 @@
-import { ExperienceFormWrapper } from "@/components/form/experience-form-wrapper";
+import { ExperienceForm } from "@/components/form/experienc-form";
 import React from "react";
 import { getImages } from "../../images/action";
 import { getCurrentUser } from "@/lib/lucia/session";
@@ -24,10 +24,7 @@ async function CreateExperiencePage() {
       </div>
 
       <div className="border-t pt-8">
-        <ExperienceFormWrapper
-          images={images}
-          redirectUrl="/dashboard/experience"
-        />
+        <ExperienceForm images={images} redirectUrl="/dashboard/experience" />
       </div>
     </section>
   );
