@@ -22,6 +22,10 @@ export const getProfile = async () => {
         socials: {
           where: (social, { eq }) => eq(social.isActive, true),
         },
+        recommendations: {
+          where: (recommendation, { eq }) => eq(recommendation.isActive, true),
+          orderBy: (recommendation, { asc }) => [asc(recommendation.createdAt)],
+        },
       },
     }).then(takeFirstOrThrow);
     return data;

@@ -3,6 +3,7 @@ import { Experience } from "@/components/experience";
 import { MyPlaylist } from "@/components/playlist-component";
 import { Projects } from "@/components/project";
 import { Skills } from "@/components/skills-component";
+import { Recommendations } from "@/components/recommendations";
 import { getProfile } from "../action";
 import { AboutImage } from "@/components/about-image";
 import { DockNav } from "@/components/nav-dock";
@@ -33,6 +34,8 @@ export default async function Home() {
         <Skills skills={profile.skills} />
         <Experience experience={profile.experience} />
         <Education education={profile.education} />
+        <Recommendations recommendations={profile.recommendations} />
+
         <Projects projects={profile.projects} />
         {/* Playlist */}
         <MyPlaylist />
