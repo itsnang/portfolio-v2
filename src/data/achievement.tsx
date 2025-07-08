@@ -49,7 +49,7 @@ export const achievements = [
       {
         title: "News",
         icon: <Icons.globe className="h-4 w-4" />,
-        href: "https://www.cellcard.com.kh/en/media-center/news/post/%E1%9E%A2%E1%9E%93%E1%9E%B6%E1%9E%82%E1%9E%8F%E1%9E%A2%E1%9F%92%E1%9E%93%E1%9E%80%E1%9E%A2%E1%9E%97%E1%9E%B7%E1%9E%9C%E1%9E%8C%E1%9F%92%E1%9E%8D%E1%9E%93%E1%9F%8D%E1%9E%80%E1%9E%98%E1%9F%92%E1%9E%98/",
+        href: "https://sabaicode.com",
       },
     ],
   },
