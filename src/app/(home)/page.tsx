@@ -1,14 +1,14 @@
-import { Education } from "@/components/education";
-import { Experience } from "@/components/experience";
-import { MyPlaylist } from "@/components/playlist-component";
-import { Projects } from "@/components/project";
-import { Skills } from "@/components/skills-component";
-import { Recommendations } from "@/components/recommendations";
+import { Education } from "@/components/sections/education";
+import { Experience } from "@/components/sections/experience";
+import { MyPlaylist } from "@/components/sections/playlist-component";
+import { Projects } from "@/components/sections/project";
+import { Skills } from "@/components/sections/skills-component";
+import { Recommendations } from "@/components/sections/recommendations";
 import { getProfile } from "../action";
-import { AboutImage } from "@/components/about-image";
+import { AboutImage } from "@/components/sections/about-image";
 import { DockNav } from "@/components/nav-dock";
-import { NavBar } from "@/components/navbar";
-import { HeroProfile } from "@/components/hero-profile";
+import { NavBar } from "@/components/sections/navbar";
+import { HeroProfile } from "@/components/sections/hero-profile";
 
 export default async function Home() {
   const profile = await getProfile();

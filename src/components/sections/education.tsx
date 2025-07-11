@@ -1,5 +1,5 @@
 import React from "react";
-import { ResumeCard } from "./resume-card";
+import { ResumeCard } from "../resume-card";
 import { IEducation } from "@/types/profile.type";
 import { convertDate } from "@/helper/convert-date";
 
