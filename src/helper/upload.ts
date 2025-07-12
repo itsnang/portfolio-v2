@@ -1,5 +1,5 @@
 import cloudinary from "@/lib/cloudinary";
-import { env } from "@/lib/env";
+import { env } from "@/utils/env";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 
 type UploadResponse =

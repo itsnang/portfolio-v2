@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "5mb",
     },
     dynamicIO: true,
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
+      },
+    },
   },
 };
 
