@@ -7,6 +7,8 @@ export const envSchema = z.object({
     z.literal("test"),
     z.literal("stage"),
   ]),
+  DATABASE_URL: z.string(),
+  ENCRYPTION_KEY: z.string(),
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),

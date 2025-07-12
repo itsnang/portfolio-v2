@@ -1,5 +1,5 @@
 import React from "react";
-import { ExperienceCard } from "./experience-card";
+import { ExperienceCard } from "../experience-card";
 import { IExperience } from "@/types/profile.type";
 import { convertDate } from "@/helper/convert-date";
 

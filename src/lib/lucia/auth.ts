@@ -3,13 +3,13 @@ import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "@/db/drizzle";
 import { TbSession } from "@/db/table/token.table";
 import { TbUser } from "@/db/table/user.table";
-import { env } from "../env";
 
 import { User } from "@/db/schema/user.schma";
 import { getUserByEmail } from "@/db/repositories/user.repository";
 import { LoginError } from "../errors";
 import { verifyPassword } from "./session";
 import { cookies } from "next/headers";
+import { env } from "@/utils/env";
 
 export const adapter = new DrizzlePostgreSQLAdapter(db, TbSession, TbUser);
 export const SESSION_COOKIE_NAME = "auth" as const;
