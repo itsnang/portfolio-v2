@@ -4,7 +4,6 @@ import { db } from "@/db/drizzle";
 import { SocialsInsert, socialsInsertSchema } from "@/db/schema/socials.schme";
 import { TbSocials } from "@/db/table";
 import { InsertError } from "@/lib/errors";
-import {} from "@/lib/lucia/session";
 import { err, ok } from "@justmiracle/result";
 
 export const inserSocial = async (soscial: SocialsInsert) => {

@@ -1,7 +1,6 @@
 import { EducationForm } from "@/components/form/education-form";
 import React from "react";
 import { getImages } from "../images/action";
-import {} from "@/lib/lucia/session";
 
 async function EducationPage() {
   const images = await getImages();

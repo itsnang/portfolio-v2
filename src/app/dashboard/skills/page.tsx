@@ -1,7 +1,6 @@
 import { SkillForm } from "@/components/form/skill-form";
 import React from "react";
 import { getImages } from "../images/action";
-import {} from "@/lib/lucia/session";
 
 async function SkillPage() {
   const images = await getImages();

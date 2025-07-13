@@ -2,7 +2,6 @@ import { ProfileForm } from "@/components/form/profile-form";
 import React from "react";
 import { getImages } from "../images/action";
 import { getProfile } from "@/app/action";
-import {} from "@/lib/lucia/session";
 
 async function page() {
   const images = await getImages();

@@ -4,7 +4,6 @@ import { db } from "@/db/drizzle";
 import { ExperiencesInsert } from "@/db/schema/experiences.schema";
 import { TbExperiences } from "@/db/table";
 import { InsertError } from "@/lib/errors";
-import {} from "@/lib/lucia/session";
 import { err, ok } from "@justmiracle/result";
 import { eq } from "drizzle-orm";
 

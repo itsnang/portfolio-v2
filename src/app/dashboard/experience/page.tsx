@@ -1,6 +1,5 @@
 import React from "react";
 import { getImages } from "../images/action";
-import {} from "@/lib/lucia/session";
 import { getExperiences } from "./action";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
