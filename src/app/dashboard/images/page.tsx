@@ -5,8 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/lucia/session";
-import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/get-current-user";
 import { getImages } from "./action";
 import { FolderSelector } from "@/components/folder-selector";
 import { toast } from "sonner";
@@ -39,9 +38,7 @@ function Page() {
   useEffect(() => {
     const checkAuth = async () => {
       const user = await getCurrentUser();
-      if (!user) {
-        redirect("/sign-in");
-      } else {
+      if (user) {
         setIsAuthenticated(true);
       }
     };

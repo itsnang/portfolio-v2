@@ -1,16 +1,14 @@
 import { column, table } from "@/utils";
-import { genId } from "@/utils/id";
-import { text } from "drizzle-orm/pg-core";
 
 export type TbUser = typeof TbUser;
 
 export const TbUser = table("user", {
-  id: text("id").notNull().primaryKey().$defaultFn(genId("user")),
-  role: column.text("role").notNull(),
-  email: column.text("email").notNull(),
-  password: column.text("password").notNull(),
-  salt: text("salt"),
+  id: column.id,
+  name: column.text("name").notNull(),
+  email: column.text("email").notNull().unique(),
+  emailVerified: column.boolean("email_verified").default(false),
+  image: column.text("image"),
+  role: column.text("role").notNull().default("user"),
   createdAt: column.createdAt,
   updatedAt: column.updatedAt,
-  deletedAt: column.deletedAt,
 });

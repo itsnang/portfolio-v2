@@ -1,15 +1,12 @@
 import { ExperienceForm } from "@/components/form/experienc-form";
 import React from "react";
 import { getImages } from "../../images/action";
-import { getCurrentUser } from "@/lib/lucia/session";
-import { redirect } from "next/navigation";
+import {} from "@/lib/lucia/session";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 
 async function CreateExperiencePage() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/sign-in");
   const images = await getImages();
 
   return (

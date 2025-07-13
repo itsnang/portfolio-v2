@@ -39,7 +39,7 @@ export const lucia = new Lucia(adapter, {
 });
 
 export async function signInUseCase(email: string, password: string) {
-  const user = await getUserByEmail(email);
+  getUserByEmail(email);
 
   if (!user) {
     throw new LoginError();

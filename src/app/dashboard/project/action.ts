@@ -4,16 +4,9 @@ import { db } from "@/db/drizzle";
 import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
 import { TbProject } from "@/db/table";
 import { InsertError } from "@/lib/errors";
-import { getCurrentUser } from "@/lib/lucia/session";
 import { err, ok } from "@justmiracle/result";
-import { redirect } from "next/navigation";
 
 export const insertProject = async (project: ProjectInsert) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
   const validated = projecInsertSchema.safeParse(project);
   if (!validated.success) {
     console.log(validated.error);

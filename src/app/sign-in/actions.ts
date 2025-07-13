@@ -12,6 +12,6 @@ export const signInAction = async (email: string, password: string) => {
   if (!validated.success) {
     throw new AuthenticationError();
   }
-  const user = await signInUseCase(email, password);
+  signInUseCase(email, password);
   await setSession(user.id);
 };

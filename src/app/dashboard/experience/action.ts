@@ -4,16 +4,11 @@ import { db } from "@/db/drizzle";
 import { ExperiencesInsert } from "@/db/schema/experiences.schema";
 import { TbExperiences } from "@/db/table";
 import { InsertError } from "@/lib/errors";
-import { getCurrentUser } from "@/lib/lucia/session";
+import {} from "@/lib/lucia/session";
 import { err, ok } from "@justmiracle/result";
-import { redirect } from "next/navigation";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const insertExperiences = async (experience: ExperiencesInsert) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
   console.log("insert skill body:", experience);
 
   const insertExperience = await db
@@ -29,14 +24,9 @@ export const insertExperiences = async (experience: ExperiencesInsert) => {
 };
 
 export const getExperiences = async () => {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
   try {
     const experiences = await db.query.TbExperiences.findMany({
-      where: (experience, { eq }) => eq(experience.userId, user.id),
+      where: (experience, { eq }) => eq(experience.isActive, true),
     });
     return experiences;
   } catch (error) {
@@ -46,11 +36,6 @@ export const getExperiences = async () => {
 };
 
 export const getExperienceById = async (id: string) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
   try {
     const experience = await db.query.TbExperiences.findFirst({
       where: (experience, { eq }) => eq(experience.id, id),
@@ -66,11 +51,6 @@ export const updateExperience = async (
   id: string,
   experience: ExperiencesInsert
 ) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
   try {
     const updatedExperience = await db
       .update(TbExperiences)
@@ -78,7 +58,7 @@ export const updateExperience = async (
         ...experience,
         updatedAt: new Date(),
       })
-      .where(and(eq(TbExperiences.id, id), eq(TbExperiences.userId, user.id)))
+      .where(eq(TbExperiences.id, id))
       .returning()
       .then(ok)
       .catch(err);
