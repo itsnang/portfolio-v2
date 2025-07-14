@@ -6,5 +6,7 @@ export * from "./education.table";
 export * from "./images.table";
 export * from "./project.table";
 export * from "./user.table";
-export * from "./token.table";
 export * from "./recommendations.table";
+export * from "./account.table";
+export * from "./verification.table";
+export * from "./session.table";

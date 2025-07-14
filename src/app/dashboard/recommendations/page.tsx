@@ -1,15 +1,10 @@
 import React from "react";
-import { getCurrentUser } from "@/lib/lucia/session";
-import { redirect } from "next/navigation";
 import { getImages } from "../images/action";
 import { RecommendationsForm } from "@/components/form/recommendations-form";
 import { insertRecommendation } from "./action";
 import { RecommendationsInsert } from "@/db/schema/recommendations.schema";
 
 async function RecommendationsPage() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/sign-in");
-
   const images = await getImages();
 
   const handleSubmit = async (data: RecommendationsInsert) => {

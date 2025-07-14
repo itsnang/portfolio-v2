@@ -1,7 +1,6 @@
 import React from "react";
 import { getImages } from "@/app/dashboard/images/action";
 import { getExperienceById } from "../../action";
-import { getCurrentUser } from "@/lib/lucia/session";
 import { redirect } from "next/navigation";
 import { ExperienceForm } from "@/components/form/experienc-form";
 
@@ -12,9 +11,7 @@ interface EditExperiencePageProps {
 export default async function EditExperiencePage({
   params,
 }: EditExperiencePageProps) {
-  const user = await getCurrentUser();
   const { id } = await params;
-  if (!user) redirect("/sign-in");
   const experience = await getExperienceById(id);
   if (!experience) redirect("/dashboard/experience");
   const images = await getImages();
