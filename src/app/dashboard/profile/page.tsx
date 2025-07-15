@@ -3,6 +3,8 @@ import React from "react";
 import { getImages } from "../images/action";
 import { getProfile } from "@/app/action";
 
+export const revalidate = 0;
+
 async function page() {
   const images = await getImages();
   const profile = await getProfile();

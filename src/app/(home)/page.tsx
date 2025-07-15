@@ -10,6 +10,8 @@ import { DockNav } from "@/components/nav-dock";
 import { NavBar } from "@/components/sections/navbar";
 import { HeroProfile } from "@/components/sections/hero-profile";
 
+export const revalidate = 0;
+
 export default async function Home() {
   const profile = await getProfile();
   const heroProfile = {
