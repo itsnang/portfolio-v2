@@ -5,7 +5,7 @@ import { Projects } from "@/components/sections/project";
 import { Skills } from "@/components/sections/skills-component";
 import { Recommendations } from "@/components/sections/recommendations";
 import { getProfile } from "../action";
-import { AboutImage } from "@/components/sections/about-image";
+// import { AboutImage } from "@/components/sections/about-image";
 import { DockNav } from "@/components/nav-dock";
 import { NavBar } from "@/components/sections/navbar";
 import { HeroProfile } from "@/components/sections/hero-profile";
@@ -30,7 +30,7 @@ export default async function Home() {
           <p className="text-base text-muted-foreground pt-4">
             {profile.abouts}
           </p>
-          <AboutImage imageUrl={profile.aboutImages ?? []} />
+          {/* <AboutImage imageUrl={profile.aboutImages ?? []} /> */}
         </section>
         {/* skills */}
         <Skills skills={profile.skills} />
