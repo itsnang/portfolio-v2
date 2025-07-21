@@ -6,7 +6,6 @@ import { getCurrentUser } from "@/lib/auth/get-current-user";
 import { InsertError } from "@/lib/errors";
 import { err, ok } from "@justmiracle/result";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 
 export const updateProfileAction = async (profie: ProfileInsert) => {
   const user = await getCurrentUser();
@@ -26,8 +25,4 @@ export const updateProfileAction = async (profie: ProfileInsert) => {
     console.log(insertProfile.error.message);
     throw new InsertError();
   }
-
-  // Invalidate cache for both dashboard and home page
-  revalidatePath("/dashboard/profile");
-  revalidatePath("/");
 };
