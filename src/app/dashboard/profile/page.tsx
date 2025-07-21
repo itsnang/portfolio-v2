@@ -2,12 +2,10 @@ import { ProfileForm } from "@/components/form/profile-form";
 import React from "react";
 import { getImages } from "../images/action";
 import { getProfile } from "@/app/action";
-import { getCurrentUser } from "@/lib/lucia/session";
-import { redirect } from "next/navigation";
+
+export const revalidate = 0;
 
 async function page() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/sign-in");
   const images = await getImages();
   const profile = await getProfile();
 

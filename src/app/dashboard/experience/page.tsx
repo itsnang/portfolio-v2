@@ -1,7 +1,5 @@
 import React from "react";
 import { getImages } from "../images/action";
-import { getCurrentUser } from "@/lib/lucia/session";
-import { redirect } from "next/navigation";
 import { getExperiences } from "./action";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
@@ -9,8 +7,6 @@ import { ExperienceTable } from "@/components/experience-table";
 import Link from "next/link";
 
 async function ExperiencePage() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/sign-in");
   const [, experiences] = await Promise.all([getImages(), getExperiences()]);
 
   return (

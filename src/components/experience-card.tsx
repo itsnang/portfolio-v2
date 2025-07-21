@@ -3,7 +3,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/card";
-import React from "react";
 
 interface ExperienceCardProps {
   logoUrl: string;
@@ -61,7 +60,9 @@ export const ExperienceCard = ({
           <div className="mt-2 text-xs sm:text-sm">
             {description && (
               <div
-                dangerouslySetInnerHTML={{ __html: description }}
+                dangerouslySetInnerHTML={{
+                  __html: description,
+                }}
                 className="[&>ol]:list-decimal [&>ol]:list-outside [&>ol]:space-y-1 [&>ol>li[data-list='bullet']]:list-disc [&>ul]:list-disc [&>ul]:list-outside [&>ul]:space-y-1 [&>ul]:ml-4 [&>ol]:ml-4 [&_li]:my-1"
               />
             )}
