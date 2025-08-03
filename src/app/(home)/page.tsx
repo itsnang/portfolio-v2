@@ -1,6 +1,5 @@
 import { Education } from "@/components/sections/education";
 import { Experience } from "@/components/sections/experience";
-import { MyPlaylist } from "@/components/sections/playlist-component";
 import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
 import { Skills } from "@/components/sections/skills-component";
@@ -40,7 +39,7 @@ export default async function Home() {
 
         <Projects projects={profile.projects} />
         {/* Playlist */}
-        <MyPlaylist />
+        {/* <MyPlaylist /> */}
         <DockNav socials={profile.socials} />
       </main>
     </>
