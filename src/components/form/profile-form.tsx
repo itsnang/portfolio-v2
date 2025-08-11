@@ -1,25 +1,25 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Switch } from "../ui/switch";
-import { ImageSelector } from "../image-selector";
+import { updateProfileAction } from "@/app/dashboard/profile/action";
+import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { IImages, IProfile } from "@/types/profile.type";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { ImageSelector } from "../image-selector";
 import { Button } from "../ui/button";
 import {
   Form,
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  FormDescription,
 } from "../ui/form";
-import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
-import { updateProfileAction } from "@/app/dashboard/profile/action";
-import { toast } from "sonner";
-import { LoaderCircle, Save, FileText, Image as ImageIcon } from "lucide-react";
+import { Input } from "../ui/input";
+import { Switch } from "../ui/switch";
+import { Textarea } from "../ui/textarea";
 
 import { useState } from "react";
 import {
