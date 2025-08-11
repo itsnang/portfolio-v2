@@ -16,7 +16,7 @@ export const updateProfileAction = async (profie: ProfileInsert) => {
   const insertProfile = await db
     .update(TbProfile)
     .set(profie)
-    .where(eq(TbProfile.id, userId))
+    .where(eq(TbProfile.userId, userId))
     .returning()
     .then(ok)
     .catch(err);
