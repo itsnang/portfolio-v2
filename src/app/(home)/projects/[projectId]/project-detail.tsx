@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import SparklesText from "@/components/ui/sparkles-text";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import SparklesText from "@/components/ui/sparkles-text";
+import { motion } from "framer-motion";
+import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useCallback, useState } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -72,7 +72,7 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
       <motion.section
         initial="initial"
         animate="animate"
-        className="max-w-7xl mx-auto lg:px-8 py-8 space-y-8"
+        className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8"
       >
         <motion.div variants={fadeInUp} className="flex items-center">
           <Link href="/" className="group">
@@ -99,9 +99,9 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
             className="object-cover transition-transform duration-700 hover:scale-105"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-8">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
             <SparklesText
-              className="text-5xl font-bold text-white drop-shadow-lg"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg"
               text={projectDetail.title}
             />
           </div>
