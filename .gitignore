@@ -45,3 +45,6 @@ next-env.d.ts
 # PWA files (generated during build)
 /public/sw.js
 /public/workbox-*.js
+
+# Claude.md (local development guidance)
+CLAUDE.md
