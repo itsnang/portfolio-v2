@@ -22,9 +22,11 @@ export function HeroProfile({ profile, className = "" }: HeroProfileProps) {
         alt="Hero profile cover image"
         fill
         priority
-        sizes="100vw"
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1024px"
         className="object-cover rounded-lg"
-        quality={90}
+        quality={75}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli5ctTRWEVKGRUxLNUfKCgHkbj0fwAJA2rD47IcOUn3hJJ39+y+j9BgCY2nZF0Vz4rZDhAc9wBUVGnMhYUmyWxYs="
       />
       <section>
         {/* profile */}

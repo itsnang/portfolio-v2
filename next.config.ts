@@ -12,11 +12,16 @@ const nextConfig: NextConfig = {
         pathname: "**",
       },
     ],
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 31536000, // 1 year
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
   },
   experimental: {
     serverActions: {
       bodySizeLimit: "5mb",
     },
+    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
   },
   turbopack: {
     rules: {
@@ -26,6 +31,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true,
 };
 
 const pwaConfig = withPWA({
