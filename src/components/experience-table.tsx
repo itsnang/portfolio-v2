@@ -78,7 +78,10 @@ export const ExperienceTable = ({
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Link href={`/dashboard/experience/${experience.id}/edit`}>
+                    <Link 
+                      href={`/dashboard/experience/${experience.id}/edit`}
+                      aria-label={`Edit ${experience.title} at ${experience.company}`}
+                    >
                       <Button variant="ghost" size="icon">
                         <PencilIcon className="h-4 w-4" />
                       </Button>
@@ -115,7 +118,10 @@ export const ExperienceTable = ({
                   </p>
                 </div>
               </div>
-              <Link href={`/dashboard/experience/${experience.id}/edit`}>
+              <Link 
+                href={`/dashboard/experience/${experience.id}/edit`}
+                aria-label={`Edit ${experience.title} at ${experience.company}`}
+              >
                 <Button variant="ghost" size="icon">
                   <PencilIcon className="h-4 w-4" />
                 </Button>

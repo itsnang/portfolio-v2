@@ -47,6 +47,7 @@ export function ProjectCard({
       <Link
         href={href || "#"}
         className={cn("block cursor-pointer", className)}
+        aria-label={`View ${title} project details`}
       >
         {video && (
           <video
@@ -101,7 +102,12 @@ export function ProjectCard({
         {links && links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
             {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
+              <Link 
+                href={link?.href} 
+                key={idx} 
+                target="_blank"
+                aria-label={`Visit ${title} ${link.type} link`}
+              >
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link.type}
                 </Badge>

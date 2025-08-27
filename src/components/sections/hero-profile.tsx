@@ -32,7 +32,11 @@ export function HeroProfile({ profile, className = "" }: HeroProfileProps) {
         {/* profile */}
         <div className="gap-2 flex flex-col absolute -bottom-[112px] left-6">
           <Avatar className="size-28 border">
-            <AvatarImage className="object-cover" src={profile.imageUrl} />
+            <AvatarImage
+              alt={`${profile.name} profile`}
+              className="object-cover"
+              src={profile.imageUrl}
+            />
             <AvatarFallback>SN</AvatarFallback>
           </Avatar>
           <div className="space-y-1">

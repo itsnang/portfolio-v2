@@ -39,6 +39,7 @@ export const DockNav: React.FC<DockNavProps> = async ({ socials }) => {
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "size-12"
                     )}
+                    aria-label={item.label}
                   >
                     <item.icon className="size-4" />
                   </Link>
@@ -63,6 +64,7 @@ export const DockNav: React.FC<DockNavProps> = async ({ socials }) => {
                       buttonVariants({ variant: "ghost", size: "icon" }),
                       "size-12"
                     )}
+                    aria-label={`Visit ${social.name} profile`}
                   >
                     <Image
                       src={social.icon}
