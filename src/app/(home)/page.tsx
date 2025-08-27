@@ -4,12 +4,11 @@ import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
 import { Skills } from "@/components/sections/skills-component";
 import { getProfile } from "../action";
-// import { AboutImage } from "@/components/sections/about-image";
 import { DockNav } from "@/components/nav-dock";
 import { HeroProfile } from "@/components/sections/hero-profile";
 import { NavBar } from "@/components/sections/navbar";
 
-export const revalidate = 0;
+export const revalidate = 3600; // Cache for 1 hour
 
 export default async function Home() {
   const profile = await getProfile();
@@ -29,7 +28,6 @@ export default async function Home() {
           <p className="text-base text-muted-foreground pt-4">
             {profile.abouts}
           </p>
-          {/* <AboutImage imageUrl={profile.aboutImages ?? []} /> */}
         </section>
         {/* skills */}
         <Skills skills={profile.skills} />
@@ -38,8 +36,6 @@ export default async function Home() {
         <Recommendations recommendations={profile.recommendations} />
 
         <Projects projects={profile.projects} />
-        {/* Playlist */}
-        {/* <MyPlaylist /> */}
         <DockNav socials={profile.socials} />
       </main>
     </>
