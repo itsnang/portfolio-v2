@@ -48,3 +48,9 @@ next-env.d.ts
 
 # Claude.md (local development guidance)
 CLAUDE.md
+
+# MCP configuration
+.mcp.json
+
+# Claude local directory
+.claude
