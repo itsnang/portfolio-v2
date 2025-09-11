@@ -1,20 +1,37 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { format } from "date-fns";
 import {
-  CalendarIcon,
-  LoaderCircle,
+  formatCambodiaDate,
+  getCurrentCambodiaDate,
+  normalizeToCambodiaStartOfDay,
+  toCambodiaDate,
+} from "@/lib/date-utils";
+import {
   Building2,
-  User,
-  FileText,
+  CalendarIcon,
   Calendar as CalendarLucide,
+  FileText,
   ImageIcon,
+  LoaderCircle,
+  User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
+import {
+  insertExperiences,
+  updateExperience,
+} from "@/app/dashboard/experience/action";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -25,36 +42,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { ImageSelector } from "../image-selector";
-import { IImages } from "@/types/profile.type";
-import React, { useState } from "react";
-import { toast } from "sonner";
 import {
+  Experiences,
   ExperiencesInsert,
   experiencesInsertSchema,
-  Experiences,
 } from "@/db/schema/experiences.schema";
 import { cn } from "@/lib/utils";
-import {
-  insertExperiences,
-  updateExperience,
-} from "@/app/dashboard/experience/action";
+import { IImages } from "@/types/profile.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
+import { toast } from "sonner";
+import { ImageSelector } from "../image-selector";
 import { RichTextEditor } from "../ui/editor";
 
 interface ExperienceProps {
@@ -72,24 +77,43 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
   const router = useRouter();
   const form = useForm<ExperiencesInsert>({
     resolver: zodResolver(experiencesInsertSchema),
-    defaultValues: initialData ?? {
-      userId: "1",
-      title: "",
-      company: "",
-      imageUrl: "",
-      description: "",
-      isActive: true,
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          startDate: initialData.startDate
+            ? toCambodiaDate(initialData.startDate)
+            : undefined,
+          endDate: initialData.endDate
+            ? toCambodiaDate(initialData.endDate)
+            : undefined,
+        }
+      : {
+          userId: "1",
+          title: "",
+          company: "",
+          imageUrl: "",
+          description: "",
+          isActive: true,
+        },
   });
 
   async function onSubmit(values: ExperiencesInsert) {
     setIsPending(true);
     try {
+      // Normalize dates to Cambodia timezone before saving
+      const normalizedValues = {
+        ...values,
+        startDate: normalizeToCambodiaStartOfDay(values.startDate),
+        endDate: values.endDate
+          ? normalizeToCambodiaStartOfDay(values.endDate)
+          : undefined,
+      };
+
       if (initialData) {
-        await updateExperience(initialData.id, values);
+        await updateExperience(initialData.id, normalizedValues);
         toast.success("Experience updated successfully");
       } else {
-        await insertExperiences(values);
+        await insertExperiences(normalizedValues);
         toast.success("Experience added successfully");
       }
       form.reset();
@@ -104,7 +128,6 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
   }
 
   const isFormValid = form.formState.isValid;
-  const watchedStartDate = form.watch("startDate");
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
@@ -272,7 +295,11 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
-                                format(field.value, "PPP")
+                                formatCambodiaDate(field.value, {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
                               ) : (
                                 <span>Select start date</span>
                               )}
@@ -284,9 +311,12 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             mode="single"
                             selected={field.value || undefined}
                             onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
+                            disabled={(date) => {
+                              const today = getCurrentCambodiaDate();
+                              return (
+                                date > today || date < new Date("1900-01-01")
+                              );
+                            }}
                             initialFocus
                           />
                         </PopoverContent>
@@ -314,7 +344,11 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
-                                format(field.value, "PPP")
+                                formatCambodiaDate(field.value, {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
                               ) : (
                                 <span>Select end date or leave blank</span>
                               )}
@@ -326,16 +360,6 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             mode="single"
                             selected={field.value || undefined}
                             onSelect={field.onChange}
-                            disabled={(date) => {
-                              const today = new Date();
-                              const startDate = watchedStartDate;
-                              return (
-                                date > today ||
-                                date < new Date("1900-01-01") ||
-                                (startDate && date < startDate)
-                              );
-                            }}
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>
