@@ -1,11 +1,10 @@
-import {} from "date-fns";
+import { formatCambodiaDate } from "@/lib/date-utils";
 
 export const convertDate = (date: Date | null) => {
   if (!date) return null;
-  const humanReadableDate = new Date(date).toLocaleDateString("en-US", {
+  return formatCambodiaDate(date, {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
-  return humanReadableDate;
 };
