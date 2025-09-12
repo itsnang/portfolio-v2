@@ -1,10 +1,9 @@
-import React from "react";
-import { getImages } from "../images/action";
-import { getExperiences } from "./action";
+import { ExperienceTable } from "@/components/experience-table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { ExperienceTable } from "@/components/experience-table";
 import Link from "next/link";
+import { getImages } from "../images/action";
+import { getExperiences } from "./action";
 
 async function ExperiencePage() {
   const [, experiences] = await Promise.all([getImages(), getExperiences()]);

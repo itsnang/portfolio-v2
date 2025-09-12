@@ -2,7 +2,6 @@
 
 import {
   formatCambodiaDate,
-  getCurrentCambodiaDate,
   normalizeToCambodiaStartOfDay,
   toCambodiaDate,
 } from "@/lib/date-utils";
@@ -130,7 +129,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
   const isFormValid = form.formState.isValid;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div className="max-w-5xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
           {initialData ? "Edit Experience" : "Add New Experience"}
@@ -311,13 +310,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             mode="single"
                             selected={field.value || undefined}
                             onSelect={field.onChange}
-                            disabled={(date) => {
-                              const today = getCurrentCambodiaDate();
-                              return (
-                                date > today || date < new Date("1900-01-01")
-                              );
-                            }}
-                            initialFocus
+                            captionLayout="dropdown"
                           />
                         </PopoverContent>
                       </Popover>
@@ -360,6 +353,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                             mode="single"
                             selected={field.value || undefined}
                             onSelect={field.onChange}
+                            captionLayout="dropdown"
                           />
                         </PopoverContent>
                       </Popover>
@@ -417,7 +411,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                 <Button
                   type="button"
                   variant="outline"
-                  className="sm:flex-1"
+                  className="sm:flex-1 h-12"
                   onClick={() => router.push(redirectUrl)}
                   disabled={isPending}
                 >
