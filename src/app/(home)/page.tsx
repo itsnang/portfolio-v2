@@ -68,9 +68,7 @@ export default async function Home() {
         </BlurFade>
 
         {/* Dock navigation */}
-        <BlurFade delay={1.6} duration={0.8}>
-          <DockNav socials={profile.socials} />
-        </BlurFade>
+        <DockNav socials={profile.socials} />
       </main>
     </>
   );
