@@ -1,9 +1,16 @@
 "use client";
+import { insertSkill } from "@/app/dashboard/skills/action";
 import { SkillsInsert, skillsInsertSchema } from "@/db/schema/skills.schma";
+import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import React, { useTransition } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { ImageSelector } from "../image-selector";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -13,21 +20,14 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { ImageSelector } from "../image-selector";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
-import { LoaderCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { insertSkill } from "@/app/dashboard/skills/action";
 
 interface SkillFormProps {
   images: IImages[];
 }
 
 export const SkillForm: React.FC<SkillFormProps> = ({ images }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<SkillsInsert>({
     resolver: zodResolver(skillsInsertSchema),
@@ -39,16 +39,17 @@ export const SkillForm: React.FC<SkillFormProps> = ({ images }) => {
     },
   });
   async function onSubmit(values: SkillsInsert) {
-    startTransition(async () => {
-      try {
-        console.log(values);
-        await insertSkill(values);
-        toast.success("Insert Skill successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed to Insert Skill");
-      }
-    });
+    setIsPending(true);
+    try {
+      console.log(values);
+      await insertSkill(values);
+      toast.success("Insert Skill successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to Insert Skill");
+    } finally {
+      setIsPending(false);
+    }
   }
   return (
     <Form {...form}>

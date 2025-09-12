@@ -160,7 +160,12 @@ export function AchievementSection() {
                       {achievement.links && achievement.links.length > 0 && (
                         <div className="w-full flex flex-wrap justify-center gap-2">
                           {achievement.links.map((link, idx) => (
-                            <Link target="_blank" href={link.href} key={idx}>
+                            <Link 
+                              target="_blank" 
+                              href={link.href} 
+                              key={idx}
+                              aria-label={`View ${achievement.title} ${link.title}`}
+                            >
                               <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}

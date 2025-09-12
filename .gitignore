@@ -45,3 +45,12 @@ next-env.d.ts
 # PWA files (generated during build)
 /public/sw.js
 /public/workbox-*.js
+
+# Claude.md (local development guidance)
+CLAUDE.md
+
+# MCP configuration
+.mcp.json
+
+# Claude local directory
+.claude
