@@ -23,7 +23,6 @@ interface BlurFadeProps {
   yOffset?: number;
   inView?: boolean;
   inViewMargin?: MarginType;
-  blur?: string;
 }
 
 export default function BlurFade({
@@ -35,7 +34,6 @@ export default function BlurFade({
   yOffset = 20,
   inView = false,
   inViewMargin = "-100px",
-  blur = "8px",
 }: BlurFadeProps) {
   const ref = useRef(null);
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
@@ -45,14 +43,10 @@ export default function BlurFade({
     hidden: {
       y: yOffset,
       opacity: 0,
-      filter: `blur(${blur})`,
-      scale: 0.95,
     },
     visible: {
       y: 0,
       opacity: 1,
-      filter: `blur(0px)`,
-      scale: 1,
     },
   };
 
@@ -73,6 +67,7 @@ export default function BlurFade({
           type: "tween",
         }}
         className={className}
+        style={{ background: "transparent" }}
       >
         {children}
       </motion.div>
