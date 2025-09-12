@@ -5,13 +5,14 @@ import {
   educationInsertSchema,
 } from "@/db/schema/education.schema";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
 
+import { insertEducation } from "@/app/dashboard/education/action";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -22,25 +23,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { ImageSelector } from "../image-selector";
-import { IImages } from "@/types/profile.type";
-import React, { useTransition } from "react";
-import { insertEducation } from "@/app/dashboard/education/action";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { IImages } from "@/types/profile.type";
+import React, { useState } from "react";
+import { toast } from "sonner";
+import { ImageSelector } from "../image-selector";
 
 interface EducationFormProps {
   images: IImages[];
 }
 
 export const EducationForm: React.FC<EducationFormProps> = ({ images }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<EducationInsert>({
     resolver: zodResolver(educationInsertSchema),
@@ -53,18 +53,19 @@ export const EducationForm: React.FC<EducationFormProps> = ({ images }) => {
     },
   });
   async function onSubmit(values: EducationInsert) {
-    startTransition(async () => {
-      try {
-        await insertEducation({
-          ...values,
-          userId: "1",
-        });
-        toast.success("Insert Education successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed to Insert Education");
-      }
-    });
+    setIsPending(true);
+    try {
+      await insertEducation({
+        ...values,
+        userId: "1",
+      });
+      toast.success("Insert Education successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to Insert Education");
+    } finally {
+      setIsPending(false);
+    }
   }
   return (
     <Form {...form}>

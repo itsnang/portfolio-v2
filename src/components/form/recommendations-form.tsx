@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { ImageSelector } from "@/components/image-selector";
+import { Button } from "@/components/ui/button";
 import {
-  LoaderCircle,
-  User,
-  Building2,
-  Quote,
-  Image as ImageIcon,
-} from "lucide-react";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -22,22 +20,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ImageSelector } from "@/components/image-selector";
 import {
   RecommendationsInsert,
   recommendationsInsertSchema,
 } from "@/db/schema/recommendations.schema";
+import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Building2,
+  Image as ImageIcon,
+  LoaderCircle,
+  Quote,
+  User,
+} from "lucide-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface RecommendationsFormProps {
   images: IImages[];
@@ -48,7 +48,7 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
   images,
   onSubmit,
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<RecommendationsInsert>({
     resolver: zodResolver(recommendationsInsertSchema),
@@ -63,18 +63,19 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
   });
 
   async function handleSubmit(values: RecommendationsInsert) {
-    startTransition(async () => {
-      try {
-        if (onSubmit) {
-          await onSubmit(values);
-          toast.success("Recommendation added successfully");
-          form.reset();
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to add recommendation");
+    setIsPending(true);
+    try {
+      if (onSubmit) {
+        await onSubmit(values);
+        toast.success("Recommendation added successfully");
+        form.reset();
       }
-    });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add recommendation");
+    } finally {
+      setIsPending(false);
+    }
   }
 
   return (
