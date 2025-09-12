@@ -1,6 +1,5 @@
 import { SocialsForm } from "@/components/form/socials-form";
 
-import React from "react";
 import { getImages } from "../images/action";
 
 async function SocialsPage() {

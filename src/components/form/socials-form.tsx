@@ -1,9 +1,16 @@
 "use client";
+import { inserSocial } from "@/app/dashboard/socials/action";
 import { SocialsInsert, socialsInsertSchema } from "@/db/schema/socials.schme";
+import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import React, { useTransition } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { ImageSelector } from "../image-selector";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -13,20 +20,13 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { toast } from "sonner";
-import { ImageSelector } from "../image-selector";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
-import { LoaderCircle } from "lucide-react";
-import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
-import { inserSocial } from "@/app/dashboard/socials/action";
 
 interface SocialsFormProps {
   images: IImages[];
 }
 export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const form = useForm<SocialsInsert>({
     resolver: zodResolver(socialsInsertSchema),
     defaultValues: {
@@ -39,16 +39,17 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
   });
 
   async function onSubmit(values: SocialsInsert) {
-    startTransition(async () => {
-      try {
-        console.log(values);
-        await inserSocial(values);
-        toast.success("Insert Social successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed to Insert Social");
-      }
-    });
+    setIsPending(true);
+    try {
+      console.log(values);
+      await inserSocial(values);
+      toast.success("Insert Social successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to Insert Social");
+    } finally {
+      setIsPending(false);
+    }
   }
   return (
     <Form {...form}>

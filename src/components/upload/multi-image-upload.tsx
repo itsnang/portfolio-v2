@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useTransition, useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { LoaderCircle, Upload, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { uploadStagedFile } from "@/app/dashboard/images/action";
 import { FolderSelector } from "@/components/folder-selector";
-import { useDropzone } from "react-dropzone";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { LoaderCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface MultiImageUploadFormData {
   images: File[];
 }
 
 export const MultiImageUpload = () => {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const router = useRouter();
@@ -70,18 +70,19 @@ export const MultiImageUpload = () => {
       return;
     }
 
-    startTransition(async () => {
-      try {
-        for (const image of data.images) {
-          await uploadStagedFile(image, selectedFolder);
-        }
-        toast.success("Images uploaded successfully");
-        router.push("/dashboard/images");
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to upload images");
+    setIsPending(true);
+    try {
+      for (const image of data.images) {
+        await uploadStagedFile(image, selectedFolder);
       }
-    });
+      toast.success("Images uploaded successfully");
+      router.push("/dashboard/images");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to upload images");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
