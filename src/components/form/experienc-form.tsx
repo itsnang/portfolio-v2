@@ -78,12 +78,18 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
     resolver: zodResolver(experiencesInsertSchema),
     defaultValues: initialData
       ? {
-          ...initialData,
+          userId: (initialData.userId as string) || "1",
+          title: (initialData.title as string) || "",
+          company: (initialData.company as string) || "",
+          imageUrl: (initialData.imageUrl as string) || "",
+          description: (initialData.description as string) || "",
+          isActive: (initialData.isActive as boolean) ?? true,
+          sortOrder: initialData.sortOrder as number | undefined,
           startDate: initialData.startDate
-            ? toCambodiaDate(initialData.startDate)
+            ? toCambodiaDate(initialData.startDate as Date)
             : undefined,
           endDate: initialData.endDate
-            ? toCambodiaDate(initialData.endDate)
+            ? toCambodiaDate(initialData.endDate as Date)
             : undefined,
         }
       : {
@@ -108,8 +114,8 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
           : undefined,
       };
 
-      if (initialData) {
-        await updateExperience(initialData.id, normalizedValues);
+      if (initialData && initialData.id) {
+        await updateExperience(initialData.id as string, normalizedValues);
         toast.success("Experience updated successfully");
       } else {
         await insertExperiences(normalizedValues);
@@ -275,7 +281,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
                   name="startDate"
@@ -359,6 +365,35 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                       </Popover>
                       <FormDescription>
                         Leave empty if this is your current position
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Sort Order</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="e.g. 1, 2, 3..."
+                          className="h-11"
+                          value={field.value || ""}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value
+                                ? parseInt(e.target.value)
+                                : undefined
+                            )
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Higher numbers appear first (optional)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

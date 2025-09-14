@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { TbExperiences } from "../table";
 import { z } from "zod";
+import { TbExperiences } from "../table";
 
 export const experiencesSchema = createSelectSchema(TbExperiences);
 
@@ -13,6 +13,7 @@ export const experiencesInsertSchema = createInsertSchema(TbExperiences, {
   description: z.string(),
   startDate: z.date(),
   endDate: z.date().optional(),
+  sortOrder: z.number().int().optional(),
 });
 
 export type Experiences = z.infer<typeof experiencesSchema>;
