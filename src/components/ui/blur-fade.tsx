@@ -25,7 +25,7 @@ interface BlurFadeProps {
   inViewMargin?: MarginType;
 }
 
-export default function BlurFade({
+export function BlurFade({
   children,
   className,
   variant,
