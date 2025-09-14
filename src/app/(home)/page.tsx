@@ -6,7 +6,8 @@ import { NavBar } from "@/components/sections/navbar";
 import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
 import { Skills } from "@/components/sections/skills-component";
-import BlurFade from "../../components/ui/blur-fade";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getProfile } from "../action";
 
 export const revalidate = 3600; // Cache for 1 hour
@@ -66,6 +67,26 @@ export default async function Home() {
         <BlurFade delay={1.4} duration={0.7}>
           <Projects projects={profile.projects} />
         </BlurFade>
+
+        {/* About Images Gallery */}
+        {profile.aboutImages && profile.aboutImages.length > 0 && (
+          <BlurFade delay={1.6} duration={0.7}>
+            <h2 className="text-lg font-semibold mb-6 text-foreground">
+              Gallery
+            </h2>
+            <MasonryGallery
+              images={profile.aboutImages.map((imageUrl, index) => ({
+                id: `about-${index}`,
+                src: imageUrl,
+                alt: `Gallery image ${index + 1}`,
+                width: 400,
+                height: Math.floor(Math.random() * 300) + 400,
+              }))}
+              className="max-w-full"
+              gap="gap-3"
+            />
+          </BlurFade>
+        )}
 
         {/* Dock navigation */}
         <DockNav socials={profile.socials} />

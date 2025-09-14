@@ -8,6 +8,13 @@
       "when": 1754891680525,
       "tag": "0000_soft_rhino",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1757859857792,
+      "tag": "0001_silly_iron_fist",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,7 @@
-import { table, column } from "@/utils";
+import { column, table } from "@/utils";
+import { genId } from "@/utils/id";
 import { relations } from "drizzle-orm";
 import { TbProfile } from "./profile.table";
-import { genId } from "@/utils/id";
 
 export type TbExperiences = typeof TbExperiences;
 
@@ -15,6 +15,7 @@ export const TbExperiences = table("experiences", {
   description: column.text("description"),
   startDate: column.timestamp("start_date").notNull(),
   endDate: column.timestamp("end_date"),
+  sortOrder: column.int("sort_order"),
   createdAt: column.createdAt,
   updatedAt: column.updatedAt,
   deletedAt: column.deletedAt,
