@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
 
 interface GalleryImage {
   id: string;
@@ -24,9 +23,6 @@ export function MasonryGallery({
   className,
   gap = "gap-4",
 }: MasonryGalleryProps) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-
   const createColumns = (numCols: number) => {
     const cols = Array.from({ length: numCols }, () => [] as GalleryImage[]);
     images.forEach((image, index) => {
@@ -40,8 +36,8 @@ export function MasonryGallery({
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
+        staggerChildren: 0.03,
+        delayChildren: 0.05,
       },
     },
   };
@@ -49,17 +45,30 @@ export function MasonryGallery({
   const itemVariants = {
     hidden: {
       opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const desktopItemVariants = {
+    hidden: {
+      opacity: 0,
       y: 30,
-      scale: 0.9,
-      filter: "blur(4px)",
+      scale: 0.95,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: "blur(0px)",
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
@@ -67,20 +76,18 @@ export function MasonryGallery({
 
   return (
     <motion.div
-      ref={ref}
       initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      animate="visible"
       variants={containerVariants}
       className={cn("w-full", className)}
     >
-      {/* Desktop & Tablet (lg: 4 columns) */}
       <div className={cn("hidden lg:grid lg:grid-cols-4", gap)}>
         {createColumns(4).map((column, columnIndex) => (
           <div key={`lg-${columnIndex}`} className={cn("flex flex-col", gap)}>
             {column.map((image) => (
               <motion.div
                 key={`lg-${image.id}`}
-                variants={itemVariants}
+                variants={desktopItemVariants}
                 className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
               >
                 <Image
@@ -88,7 +95,7 @@ export function MasonryGallery({
                   alt={image.alt}
                   width={image.width}
                   height={image.height}
-                  className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(min-width: 1024px) 25vw, 33vw"
                 />
               </motion.div>
@@ -97,14 +104,13 @@ export function MasonryGallery({
         ))}
       </div>
 
-      {/* Tablet (md: 3 columns) */}
       <div className={cn("hidden md:grid lg:hidden md:grid-cols-3", gap)}>
         {createColumns(3).map((column, columnIndex) => (
           <div key={`md-${columnIndex}`} className={cn("flex flex-col", gap)}>
             {column.map((image) => (
               <motion.div
                 key={`md-${image.id}`}
-                variants={itemVariants}
+                variants={desktopItemVariants}
                 className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
               >
                 <Image
@@ -112,7 +118,7 @@ export function MasonryGallery({
                   alt={image.alt}
                   width={image.width}
                   height={image.height}
-                  className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="33vw"
                 />
               </motion.div>
@@ -121,7 +127,6 @@ export function MasonryGallery({
         ))}
       </div>
 
-      {/* Mobile (2 columns) */}
       <div className={cn("grid md:hidden grid-cols-2", gap)}>
         {createColumns(2).map((column, columnIndex) => (
           <div key={`sm-${columnIndex}`} className={cn("flex flex-col", gap)}>
@@ -136,7 +141,7 @@ export function MasonryGallery({
                   alt={image.alt}
                   width={image.width}
                   height={image.height}
-                  className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-102"
                   sizes="50vw"
                 />
               </motion.div>
