@@ -11,9 +11,7 @@ export const getProfile = async () => {
         },
         experience: {
           where: (experience, { eq }) => eq(experience.isActive, true),
-          orderBy: (experience, { desc, sql }) => [
-            desc(sql`COALESCE(${experience.sortOrder}, 0)`),
-          ],
+          orderBy: (experience, { asc }) => [asc(experience.sortOrder)],
         },
         education: {
           where: (education, { eq }) => eq(education.isActive, true),
