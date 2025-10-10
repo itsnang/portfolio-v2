@@ -349,7 +349,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                                   day: "numeric",
                                 })
                               ) : (
-                                <span>Select end date or leave blank</span>
+                                <span>Select end date</span>
                               )}
                             </Button>
                           </FormControl>
