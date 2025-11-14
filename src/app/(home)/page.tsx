@@ -28,17 +28,11 @@ export default async function Home() {
         </BlurFade>
 
         <BlurFade delay={0.4} duration={0.7}>
-          <section className="space-y-4 mb-12 pt-12">
+          <section className="space-y-4 pt-8">
             <div className="relative">
-              <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary/50 to-transparent rounded-full" />
-              <div className="pl-6">
-                <h2 className="text-lg font-semibold mb-4 text-foreground">
-                  About Me
-                </h2>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {profile.abouts}
-                </p>
-              </div>
+              <p className="text-base text-muted-foreground leading-relaxed">
+                {profile.abouts}
+              </p>
             </div>
           </section>
         </BlurFade>
