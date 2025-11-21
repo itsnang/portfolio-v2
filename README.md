@@ -4,13 +4,13 @@ Samnang Lorn’s personal portfolio powered by Next.js 15, React 19, and Tailwin
 
 ## Respect This Work
 
-All code are original. Please **do not**:
+All design, layout, copy, and code are original. Feel free to use the UI as **inspiration**, but please **do not**:
 
-- Clone or redistribute the UI/UX or component structure
+- Copy the interface, sections, or component structure verbatim
 - Repackage any part of the project for client work, templates, or commercial use
-- Publish derivatives that could be confused with this site
+- Publish derivatives that could be mistaken for this site
 
-Learning from the code is encouraged—just build something distinct and credit inspirations. For collaboration or licensing requests, reach out before reusing anything substantial.
+Learn from the ideas, then create something unmistakably yours. Credit is appreciated if you reference concepts from this repository. For collaboration or licensing requests, reach out before reusing anything substantial.
 
 See the [`LICENSE`](./LICENSE) for the full legal terms (All Rights Reserved).
 
