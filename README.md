@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Portfolio v2
+
+Samnang Lorn’s personal portfolio powered by Next.js 15, React 19, and Tailwind CSS 4. This repository exists as a live showcase, not as a template or starter kit.
+
+## Respect This Work
+
+All design, layout, copy, and code are original. Please **do not**:
+
+- Clone or redistribute the UI/UX or component structure
+- Repackage any part of the project for client work, templates, or commercial use
+- Publish derivatives that could be confused with this site
+
+Learning from the code is encouraged—just build something distinct and credit inspirations. For collaboration or licensing requests, reach out before reusing anything substantial.
+
+See the [`LICENSE`](./LICENSE) for the full legal terms (All Rights Reserved).
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` during development. Main content lives under `src/app/(home)` with shared UI in `src/components/**`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js App Router with Turbopack
+- React Server Components + Suspense patterns
+- Tailwind CSS 4 + custom motion tooling
+- TipTap v3 editor extensions
+- Drizzle ORM, Lucia Auth, and supporting utilities
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy via Vercel (recommended) or any platform supporting Next.js 15. Configure required environment variables before promoting to production.
