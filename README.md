@@ -4,7 +4,7 @@ Samnang Lorn’s personal portfolio powered by Next.js 15, React 19, and Tailwin
 
 ## Respect This Work
 
-All design, layout, copy, and code are original. Please **do not**:
+All code are original. Please **do not**:
 
 - Clone or redistribute the UI/UX or component structure
 - Repackage any part of the project for client work, templates, or commercial use
