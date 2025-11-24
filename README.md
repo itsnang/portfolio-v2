@@ -29,7 +29,7 @@ Visit `http://localhost:3000` during development. Main content lives under `src/
 - React Server Components + Suspense patterns
 - Tailwind CSS 4 + custom motion tooling
 - TipTap v3 editor extensions
-- Drizzle ORM, Lucia Auth, and supporting utilities
+- Drizzle ORM, Better Auth, and supporting utilities
 
 ## Deployment
 
