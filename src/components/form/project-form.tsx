@@ -12,26 +12,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Checkbox } from "../ui/checkbox";
-import { Textarea } from "../ui/textarea";
-import { ImageSelectionDialog } from "../ui/image-selection-dialog";
-import { Button } from "../ui/button";
+} from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
+import { ImageSelectionDialog } from "@/components/ui/image-selection-dialog";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { LoaderCircle, Minus, Plus, Link2, Settings2 } from "lucide-react";
-import { ImageSelector } from "../image-selector";
+import { ImageSelector } from "@/components/image-selector";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertProject } from "@/app/dashboard/project/action";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Separator } from "../ui/separator";
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface ProjectFormProps {
   images: IImages[];
@@ -85,11 +85,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">
-          Create New Project
-        </h1>
+    <div className="max-w-4xl mx-auto space-y-8">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">Create New Project</h1>
         <p className="text-muted-foreground">
           Add a new project to your portfolio with details, technologies, and
           images.
@@ -257,17 +255,16 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
                         form.setValue(`technologies.${fieldIndex}.logoUrl`, url)
                       }
                       triggerText="Choose Logo"
-                      className="whitespace-nowrap"
+                      className="whitespace-nowrap h-11"
                     />
 
                     <div className="flex gap-2">
                       {fields.length > 1 && (
                         <Button
                           variant="outline"
-                          size="sm"
                           type="button"
                           onClick={() => remove(fieldIndex)}
-                          className="text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive h-11"
                         >
                           <Minus className="w-4 h-4" />
                         </Button>
@@ -322,7 +319,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
                       {linkFields.length > 1 && (
                         <Button
                           variant="outline"
-                          size="sm"
                           type="button"
                           onClick={() => removeLink(index)}
                           className="text-destructive hover:text-destructive"
