@@ -1,7 +1,7 @@
 import { getImages } from "@/app/dashboard/images/action";
 import ProjectForm from "@/components/form/project-form";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftIcon, EditIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getProjectById } from "@/server/actions/project";

@@ -36,7 +36,7 @@ import {
   ProjectInsert,
   Project,
 } from "@/db/schema/project.schema";
-import { IImages } from "@/types/profile.type";
+import { IImages, ProjectLinks, ProjectTechnology } from "@/types/profile.type";
 import {
   createProjectAction,
   updateProjectAction,
@@ -69,13 +69,18 @@ const getDefaultValues = (initialData?: Project): ProjectInsert => {
     href: initialData.href ? String(initialData.href) : null,
     description: String(initialData.description || ""),
     isActive: Boolean(initialData.isActive ?? true),
-    technologies: (Array.isArray(initialData.technologies) &&
-    initialData.technologies.length > 0
-      ? (initialData.technologies as { name: string; logoUrl: string }[])
-      : [{ name: "", logoUrl: "" }]) as any,
-    links: (Array.isArray(initialData.links) && initialData.links.length > 0
-      ? (initialData.links as { type: string; href: string }[])
-      : [{ type: "", href: "" }]) as any,
+    technologies:
+      Array.isArray(initialData.technologies) &&
+      initialData.technologies.length > 0
+        ? (initialData.technologies as [
+            ProjectTechnology,
+            ...ProjectTechnology[],
+          ])
+        : [{ name: "", logoUrl: "" }],
+    links:
+      Array.isArray(initialData.links) && initialData.links.length > 0
+        ? (initialData.links as ProjectLinks[])
+        : [{ type: "", href: "" }],
     detailImage: Array.isArray(initialData.detailImage)
       ? (initialData.detailImage as string[])
       : undefined,
