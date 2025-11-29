@@ -1,6 +1,5 @@
 import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth/better-auth";
-import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import * as schema from "@/db/table";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
@@ -52,22 +51,37 @@ export function withOptionalAuthAction<
   ) => Promise<ReturnType>
 ) {
   return async function (...args: ParamsType): Promise<ReturnType> {
-    const session = await auth.api.getSession({
+    const sessionData = await auth.api.getSession({
       headers: await headers(),
     });
 
-    const profile = session
-      ? await db.query.TbProfile.findFirst({
-          where: eq(schema.TbProfile.userId, session.user.id),
-        })
-      : undefined;
+    let profile: typeof schema.TbProfile.$inferSelect | undefined;
+    let session: typeof schema.TbSession.$inferSelect | undefined;
+    let user: typeof schema.TbUser.$inferSelect | undefined;
+
+    if (sessionData?.user) {
+      user = sessionData.user as typeof schema.TbUser.$inferSelect;
+
+      // Fetch session from database using the session ID from better-auth
+      if (sessionData.session?.id) {
+        const dbSession = await db.query.TbSession.findFirst({
+          where: (session, { eq }) => eq(session.id, sessionData.session.id),
+        });
+        session = dbSession;
+      }
+
+      // Fetch profile
+      profile = await db.query.TbProfile.findFirst({
+        where: (profile, { eq }) => eq(profile.userId, sessionData.user.id),
+      });
+    }
 
     return await callback(
       {
         db,
         profile,
-        session: session?.session as typeof schema.TbSession.$inferSelect,
-        user: session?.user as typeof schema.TbUser.$inferSelect,
+        session,
+        user,
       },
       ...args
     );
