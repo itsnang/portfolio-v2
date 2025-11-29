@@ -1,6 +1,10 @@
 "use client";
 
-import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
+import {
+  projecInsertSchema,
+  ProjectInsert,
+  Project,
+} from "@/db/schema/project.schema";
 import { IImages } from "@/types/profile.type";
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -22,7 +26,6 @@ import { LoaderCircle, Minus, Plus, Link2, Settings2 } from "lucide-react";
 import { ImageSelector } from "@/components/image-selector";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertProject } from "@/app/dashboard/project/action";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -31,27 +34,62 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import {
+  createProjectAction,
+  updateProjectAction,
+} from "../../server/actions/project";
+import { useRouter } from "next/navigation";
 
 interface ProjectFormProps {
   images: IImages[];
+  initialData?: Project;
+  redirectUrl: string;
 }
 
-const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({
+  images,
+  initialData,
+  redirectUrl,
+}) => {
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<ProjectInsert>({
     resolver: zodResolver(projecInsertSchema),
-    defaultValues: {
-      profileId: "1",
-      title: "",
-      thumbnail: "",
-      href: null,
-      description: "",
-      isActive: true,
-      technologies: [{ name: "", logoUrl: "" }],
-      links: [{ type: "", href: "" }],
-    },
+    defaultValues: initialData
+      ? {
+          profileId: String(initialData.profileId || ""),
+          title: String(initialData.title || ""),
+          thumbnail: String(initialData.thumbnail || ""),
+          href: initialData.href ? String(initialData.href) : null,
+          description: String(initialData.description || ""),
+          isActive: Boolean(initialData.isActive ?? true),
+          technologies:
+            Array.isArray(initialData.technologies) &&
+            initialData.technologies.length > 0
+              ? (initialData.technologies as {
+                  name: string;
+                  logoUrl: string;
+                }[])
+              : [{ name: "", logoUrl: "" }],
+          links:
+            Array.isArray(initialData.links) && initialData.links.length > 0
+              ? (initialData.links as { type: string; href: string }[])
+              : [{ type: "", href: "" }],
+          detailImage: Array.isArray(initialData.detailImage)
+            ? (initialData.detailImage as string[])
+            : undefined,
+        }
+      : {
+          profileId: "",
+          title: "",
+          thumbnail: "",
+          href: null,
+          description: "",
+          isActive: true,
+          technologies: [{ name: "", logoUrl: "" }],
+          links: [{ type: "", href: "" }],
+        },
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -67,33 +105,53 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
     name: "links",
   });
 
-  console.log(form.formState.errors);
-
   const watchTechnologies = form.watch("technologies");
+
   const onSubmit = async (data: ProjectInsert) => {
     setIsPending(true);
     try {
-      await insertProject(data);
-      console.log(data);
-      toast.success("Create Project successfully.");
+      // Filter out empty links (where both type and href are empty)
+      const cleanedData = {
+        ...data,
+        links: data.links?.filter(
+          (link) => link.type?.trim() || link.href?.trim()
+        ),
+      };
+
+      let result;
+      if (initialData && initialData.id) {
+        result = await updateProjectAction(
+          initialData.id as string,
+          cleanedData
+        );
+      } else {
+        result = await createProjectAction(cleanedData);
+      }
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(result.message);
+      form.reset();
+      router.push(redirectUrl);
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to Create Project.");
+      console.error("Project error:", error);
+      toast.error(
+        initialData
+          ? "Failed to update project. Please try again."
+          : "Failed to create project. Please try again."
+      );
     } finally {
       setIsPending(false);
     }
   };
 
+  const isFormValid = form.formState.isValid;
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Create New Project</h1>
-        <p className="text-muted-foreground">
-          Add a new project to your portfolio with details, technologies, and
-          images.
-        </p>
-      </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Project Thumbnail Section */}
@@ -361,26 +419,44 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ images }) => {
             </CardContent>
           </Card>
 
-          <Separator />
+          {/* Submit Section */}
+          <Card className="shadow-sm border-2">
+            <CardContent className="pt-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="sm:flex-1 h-12"
+                  onClick={() => router.push(redirectUrl)}
+                  disabled={isPending}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="sm:flex-1 h-12 relative"
+                  disabled={isPending || !isFormValid}
+                >
+                  {isPending && (
+                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isPending
+                    ? initialData
+                      ? "Updating..."
+                      : "Creating..."
+                    : initialData
+                      ? "Update Project"
+                      : "Create Project"}
+                </Button>
+              </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-center pt-6">
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full md:w-auto min-w-[200px] h-12 text-base font-medium"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <LoaderCircle className="animate-spin w-5 h-5 mr-2" />
-                  Creating Project...
-                </>
-              ) : (
-                "Create Project"
+              {!isFormValid && (
+                <p className="text-sm text-muted-foreground mt-3 text-center">
+                  Please fill in all required fields to continue
+                </p>
               )}
-            </Button>
-          </div>
+            </CardContent>
+          </Card>
         </form>
       </Form>
     </div>
