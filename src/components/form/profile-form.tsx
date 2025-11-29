@@ -1,5 +1,4 @@
 "use client";
-import { updateProfileAction } from "@/app/dashboard/profile/action";
 import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { IImages, IProfile } from "@/types/profile.type";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +29,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
+import { updateProfileAction } from "../../server/actions/profile";
 
 interface ProfileFormProps {
   images: IImages[];
@@ -67,8 +67,12 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
 
     setIsPending(true);
     try {
-      await updateProfileAction(data);
-      toast.success("Profile updated successfully!");
+      const result = await updateProfileAction(data);
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success(result.message);
       form.reset(data);
     } catch (error) {
       console.error("Profile update error:", error);
