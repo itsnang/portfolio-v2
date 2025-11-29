@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { HomeIcon, NotebookIcon, Award } from "lucide-react";
+import { HomeIcon, NotebookIcon } from "lucide-react";
 import Link from "next/link";
 import { ISocial } from "@/types/profile.type";
 import React from "react";
@@ -17,7 +17,6 @@ import Image from "next/image";
 const navbar = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/blog", icon: NotebookIcon, label: "Blog" },
-  { href: "/achievement", icon: Award, label: "Achievement" },
 ];
 
 interface DockNavProps {

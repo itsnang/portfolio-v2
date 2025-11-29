@@ -50,8 +50,11 @@ export const ExperienceCard = ({
                 </span>
               )}
             </h3>
-            <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
+            <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right flex items-center gap-1">
               {period}
+              {period.includes("Present") && (
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              )}
             </div>
           </div>
           {subtitle && <div className="font-sans text-xs">{subtitle}</div>}

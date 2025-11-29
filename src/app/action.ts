@@ -6,10 +6,12 @@ export const getProfile = async () => {
   try {
     const data = await db.query.TbProfile.findMany({
       with: {
-        skills: true,
+        skills: {
+          where: (skill, { eq }) => eq(skill.isActive, true),
+        },
         experience: {
           where: (experience, { eq }) => eq(experience.isActive, true),
-          orderBy: (experience, { desc }) => [desc(experience.endDate)],
+          orderBy: (experience, { asc }) => [asc(experience.sortOrder)],
         },
         education: {
           where: (education, { eq }) => eq(education.isActive, true),
