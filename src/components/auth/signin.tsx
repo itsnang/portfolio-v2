@@ -24,21 +24,18 @@ export default function SignIn() {
     <div className="w-full max-w-md mx-auto">
       <div className="relative overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 rounded-2xl">
         {/* Background gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20" />
+        <div className="absolute inset-0 bg-primary/5" />
 
         {/* Content */}
         <div className="relative p-8 space-y-6">
           {/* Header */}
           <div className="text-center space-y-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
-              <Lock className="w-8 h-8 text-white" />
-            </div>
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                 Welcome Back
               </h1>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Sign in to access your Portfolio CMS
+                Sign in to access Portfolio CMS
               </p>
             </div>
           </div>
@@ -132,9 +129,9 @@ export function SignInForm() {
               </FormLabel>
               <FormControl>
                 <div className="relative group">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-primary transition-colors" />
                   <Input
-                    className="pl-10 h-12 bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="pl-10 h-12 bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                     placeholder="Enter your email"
                     type="email"
                     {...field}
@@ -156,9 +153,9 @@ export function SignInForm() {
               </FormLabel>
               <FormControl>
                 <div className="relative group">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 group-focus-within:text-primary transition-colors" />
                   <Input
-                    className="pl-10 pr-12 h-12 bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="pl-10 pr-12 h-12 bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                     placeholder="Enter your password"
                     type={passwordReveal ? "text" : "password"}
                     {...field}
@@ -184,8 +181,8 @@ export function SignInForm() {
         <div className="pt-2">
           <Button
             className={cn(
-              "w-full h-12 rounded-xl font-semibold text-white shadow-lg transition-all duration-200",
-              "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700",
+              "w-full h-12 rounded-xl font-semibold shadow-lg transition-all duration-200",
+              "bg-primary text-primary-foreground hover:bg-primary/90",
               "hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
               "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             )}
@@ -205,7 +202,7 @@ export function SignInForm() {
         <div className="text-center pt-2">
           <button
             type="button"
-            className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+            className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
           >
             Forgot your password?
           </button>
