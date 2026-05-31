@@ -6,13 +6,14 @@ import { NavBar } from "@/components/sections/navbar";
 import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
 import { Skills } from "@/components/sections/skills-component";
+import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getProfile } from "../action";
+import { getAppConfig, getProfile } from "../action";
 
 export const revalidate = 3600; // Cache for 1 hour
 
 export default async function Home() {
-  const profile = await getProfile();
+  const [profile, appConfig] = await Promise.all([getProfile(), getAppConfig()]);
   const heroProfile = {
     imageUrl: profile.imageUrl,
     name: profile.name,
@@ -20,6 +21,7 @@ export default async function Home() {
   };
   return (
     <>
+      {appConfig.maintenance && <MaintenanceBanner />}
       <main className="mx-auto w-full max-w-4xl">
         <NavBar isAvailable={profile.isAvailable} />
         <HeroProfile profile={heroProfile} />
