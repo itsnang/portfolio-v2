@@ -12,7 +12,7 @@ export const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
-  IMAGE_FOLDER: z.string(),
+  IMAGE_FOLDER: z.string().optional(),
   BASE_URL_DEV: z.string(),
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.string().url(),
