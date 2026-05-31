@@ -710,6 +710,40 @@
   display: none;
 }
 
+@media (max-width: 640px) {
+  .wf-hero-grid {
+    grid-template-columns: 1fr !important;
+    flex-direction: column;
+  }
+  .wf-proj-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .wf-edu-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .wf-gallery-grid {
+    column-count: 2 !important;
+  }
+}
+
+@media (max-width: 540px) {
+  .wf-xp-header {
+    flex-wrap: wrap;
+  }
+  .wf-xp-meta {
+    margin-left: 0 !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 6px;
+  }
+  .wf-xp-date {
+    white-space: normal !important;
+  }
+}
+
 @media (max-width: 860px) {
   .sketch-page [style*="grid-template-columns: 1.25fr"] {
     grid-template-columns: 1fr !important;

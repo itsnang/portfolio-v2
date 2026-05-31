@@ -101,6 +101,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
         }}
       >
         <div
+          className="wf-hero-grid"
           style={{
             maxWidth: 1080,
             margin: "0 auto",
@@ -348,6 +349,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                 onClick={() => setOpenXp(openXp === xp.id ? null : xp.id)}
               >
                 <div
+                  className="wf-xp-header"
                   style={{ display: "flex", alignItems: "flex-start", gap: 16 }}
                 >
                   <div
@@ -401,6 +403,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                     </div>
                   </div>
                   <div
+                    className="wf-xp-meta"
                     style={{
                       marginLeft: "auto",
                       textAlign: "right",
@@ -408,7 +411,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                     }}
                   >
                     <div
-                      className="wf-m"
+                      className="wf-m wf-xp-date"
                       style={{
                         fontSize: 13,
                         color: "var(--wf-ink-soft)",
@@ -474,6 +477,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
             </span>
           </div>
           <div
+            className="wf-proj-grid"
             style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22 }}
           >
             {profile.projects.map((proj, i) => (
@@ -604,6 +608,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
             </h2>
           </div>
           <div
+            className="wf-edu-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -790,7 +795,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
               </span>
             </div>
             <div
-              className="wf-reveal"
+              className="wf-reveal wf-gallery-grid"
               style={{ columnCount: 4, columnGap: 16 }}
             >
               {profile.aboutImages.map((src, i) => (
