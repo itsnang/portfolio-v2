@@ -13,3 +13,4 @@ export * from "./project.table";
 export * from "./recommendations.table";
 export * from "./skills.table";
 export * from "./socials.table";
+export * from "./app-config.table";

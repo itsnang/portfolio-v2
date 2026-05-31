@@ -1,18 +1,18 @@
 ## Portfolio v2
 
-Samnang Lorn’s personal portfolio powered by Next.js 15, React 19, and Tailwind CSS 4. This repository exists as a live showcase, not as a template or starter kit.
+Personal portfolio built with Next.js 15, React 19, Tailwind CSS 4, and a modern animation + content tooling stack. The codebase powers [Samnang Lorn](https://github.com/samnanglorn)'s public folio site and is not intended as a starter kit or template.
 
 ## Respect This Work
 
-All design, layout, copy, and code are original. Feel free to use the UI as **inspiration**, but please **do not**:
+The design, layout, copy, and code in this repository are original work. Please **do not**:
 
-- Copy the interface, sections, or component structure verbatim
-- Repackage any part of the project for client work, templates, or commercial use
-- Publish derivatives that could be mistaken for this site
+- Copy the UI/UX, sections, or component structure verbatim
+- Repackage any of the design or code for personal/commercial use
+- Publish derivatives that could be mistaken for this portfolio
 
-Learn from the ideas, then create something unmistakably yours. Credit is appreciated if you reference concepts from this repository. For collaboration or licensing requests, reach out before reusing anything substantial.
+Viewing the source for learning or inspiration is fine—just build something original and credit if you reference ideas. For licensing or collaboration inquiries, reach out before reusing anything substantial.
 
-See the [`LICENSE`](./LICENSE) for the full legal terms (All Rights Reserved).
+See the [`LICENSE`](./LICENSE) file for the full legal terms (All Rights Reserved).
 
 ## Getting Started
 
@@ -21,21 +21,23 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:3000` during development. Main content lives under `src/app/(home)` with shared UI in `src/components/**`.
+Open `http://localhost:3000` to develop locally. Update content in `src/app/(home)` and components under `src/components/**`.
 
 ## Tech Stack
 
 - Next.js App Router with Turbopack
 - React Server Components + Suspense patterns
-- Tailwind CSS 4 + custom motion tooling
-- TipTap v3 editor extensions
-- Drizzle ORM, Better Auth, and supporting utilities
+- Tailwind CSS 4 + custom motion/3D utilities
+- TipTap editor extensions for content tooling
+- Drizzle ORM + Lucia auth integrations
 
 ## Deployment
+
+Deploy to Vercel or any Next.js-compatible platform:
 
 ```bash
 npm run build
 npm start
 ```
 
-Deploy via Vercel (recommended) or any platform supporting Next.js 15. Configure required environment variables before promoting to production.
+Ensure environment variables (`.env`) match your deployment target (database, auth, analytics).

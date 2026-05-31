@@ -1,4 +1,4 @@
-import { DockNav } from "@/components/nav-dock";
+import { DockNavClient } from "@/components/nav-dock-client";
 import { Education } from "@/components/sections/education";
 import { Experience } from "@/components/sections/experience";
 import { HeroProfile } from "@/components/sections/hero-profile";
@@ -6,68 +6,49 @@ import { NavBar } from "@/components/sections/navbar";
 import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
 import { Skills } from "@/components/sections/skills-component";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { MaintenanceBanner } from "@/components/maintenance-banner";
+import { WireframeHome } from "@/components/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getProfile } from "../action";
+import { getAppConfig, getProfile } from "../action";
 
-export const revalidate = 3600; // Cache for 1 hour
 
 export default async function Home() {
-  const profile = await getProfile();
+  const [profile, appConfig] = await Promise.all([getProfile(), getAppConfig()]);
+
+  if (appConfig.theme === "wireframe") {
+    return <WireframeHome profile={profile} />;
+  }
+
   const heroProfile = {
     imageUrl: profile.imageUrl,
     name: profile.name,
     bio: profile.bio ?? "",
   };
+
   return (
     <>
+      {appConfig.maintenance && <MaintenanceBanner />}
       <main className="mx-auto w-full max-w-4xl">
         <NavBar isAvailable={profile.isAvailable} />
-        <BlurFade delay={0.2} duration={0.8}>
-          <HeroProfile profile={heroProfile} />
-        </BlurFade>
+        <HeroProfile profile={heroProfile} />
 
-        <BlurFade delay={0.4} duration={0.7}>
-          <section className="space-y-4 pt-8">
-            <div className="relative">
-              <p className="text-base text-muted-foreground leading-relaxed">
-                {profile.abouts}
-              </p>
-            </div>
-          </section>
-        </BlurFade>
+        <section className="space-y-4 pt-8">
+          <div className="relative">
+            <p className="text-base text-muted-foreground leading-relaxed">
+              {profile.abouts}
+            </p>
+          </div>
+        </section>
 
-        {/* Skills section */}
-        <BlurFade delay={0.6} duration={0.7}>
-          <Skills skills={profile.skills} />
-        </BlurFade>
+        <Skills skills={profile.skills} />
+        <Experience experience={profile.experience} />
+        <Education education={profile.education} />
+        <Recommendations recommendations={profile.recommendations} />
+        <Projects projects={profile.projects} />
 
-        {/* Experience section */}
-        <BlurFade delay={0.8} duration={0.7}>
-          <Experience experience={profile.experience} />
-        </BlurFade>
-
-        {/* Education section */}
-        <BlurFade delay={1.0} duration={0.7}>
-          <Education education={profile.education} />
-        </BlurFade>
-
-        {/* Recommendations section */}
-        <BlurFade delay={1.2} duration={0.7}>
-          <Recommendations recommendations={profile.recommendations} />
-        </BlurFade>
-
-        {/* Projects section */}
-        <BlurFade delay={1.4} duration={0.7}>
-          <Projects projects={profile.projects} />
-        </BlurFade>
-
-        {/* About Images Gallery */}
         {profile.aboutImages && profile.aboutImages.length > 0 && (
-          <BlurFade delay={1.6} duration={0.7}>
-            <h2 className="text-lg font-semibold mb-6 text-foreground">
-              Gallery
-            </h2>
+          <>
+            <h2 className="text-lg font-semibold mb-6 text-foreground">Gallery</h2>
             <MasonryGallery
               images={profile.aboutImages.map((imageUrl, index) => ({
                 id: `about-${index}`,
@@ -79,11 +60,10 @@ export default async function Home() {
               className="max-w-full"
               gap="gap-3"
             />
-          </BlurFade>
+          </>
         )}
 
-        {/* Dock navigation */}
-        <DockNav socials={profile.socials} />
+        <DockNavClient />
       </main>
     </>
   );

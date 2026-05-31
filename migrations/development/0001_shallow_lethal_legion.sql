@@ -1,0 +1,2 @@
+CREATE TYPE "public"."skill_category" AS ENUM('Frontend', 'Backend', 'Mobile', 'Database', 'Tools');--> statement-breakpoint
+ALTER TABLE "skills" ADD COLUMN "category" "skill_category" DEFAULT 'Tools' NOT NULL;

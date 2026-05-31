@@ -1,4 +1,5 @@
 "use server";
+import { cache } from "react";
 import { db, takeFirstOrThrow } from "@/db/drizzle";
 import { err, ok } from "@justmiracle/result";
 
@@ -49,3 +50,10 @@ export const getSocials = async () => {
   console.log(socials.value);
   return socials.value;
 };
+
+const DEFAULT_APP_CONFIG = { id: "config", maintenance: false, theme: "modern" as const };
+
+export const getAppConfig = cache(async () => {
+  const config = await db.query.TbAppConfig.findFirst();
+  return config ?? DEFAULT_APP_CONFIG;
+});
