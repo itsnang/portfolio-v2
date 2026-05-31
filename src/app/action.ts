@@ -49,3 +49,8 @@ export const getSocials = async () => {
   console.log(socials.value);
   return socials.value;
 };
+
+export const getAppConfig = async () => {
+  const config = await db.query.TbAppConfig.findFirst();
+  return config ?? { id: "config", maintenance: false, theme: "modern" as const };
+};
