@@ -454,6 +454,18 @@
 .wf-reveal.d2 { transition-delay: .16s; }
 .wf-reveal.d3 { transition-delay: .24s; }
 
+/* skeleton shimmer */
+@keyframes wf-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+.wf-skel {
+  background: linear-gradient(90deg, #ede9de 25%, #e0dcd0 50%, #ede9de 75%);
+  background-size: 1200px 100%;
+  animation: wf-shimmer 1.6s ease-in-out infinite;
+  border-radius: 2px;
+}
+
 /* scribble underline */
 .wf-uline { position: relative; white-space: nowrap; display: inline-block; }
 .wf-uline svg { position: absolute; left: -2%; bottom: -12px; width: 104%; height: 14px; overflow: visible; }
