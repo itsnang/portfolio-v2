@@ -1,3 +1,5 @@
+import type { SkillCategory } from "@/db/table";
+
 export interface IProfile {
   id: string;
   name: string;
@@ -18,6 +20,7 @@ export interface ISkill {
   id: string;
   name: string;
   logoUrl: string;
+  category: SkillCategory;
 }
 
 export interface IExperience {
