@@ -54,3 +54,6 @@ CLAUDE.md
 
 # Claude local directory
 .claude
+
+# Playwright
+.playwright-mcp/
