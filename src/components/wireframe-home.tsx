@@ -877,7 +877,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="wf-sketch wf-btn"
+                className="wf-btn"
                 style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
               >
                 {social.icon && (

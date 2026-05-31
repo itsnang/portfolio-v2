@@ -4,7 +4,7 @@ import { getAppConfig } from "@/app/action";
 export const revalidate = 60;
 
 export const metadata = generateMetadata({
-  title: "Home | Lorn Samnang",
+  title: "Home",
   description:
     "Welcome to the portfolio of Lorn Samnang. Explore my projects, skills, and professional journey.",
 });
