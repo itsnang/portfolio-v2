@@ -30,7 +30,10 @@ const WOBBLE = (
 );
 
 function stripHtml(html: string) {
-  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function fmt(d: Date | null | undefined, fallback = "Present") {
@@ -88,65 +91,6 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
 
-      {/* ── NAV ── */}
-      <nav
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 40,
-          background: "rgba(251,250,245,.9)",
-          backdropFilter: "blur(4px)",
-          borderBottom: "2px solid var(--wf-ink)",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1080,
-            margin: "0 auto",
-            padding: "0 28px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: 62,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-            <div className="wf-h" style={{ fontSize: 24, fontWeight: 700 }}>
-              SN
-            </div>
-            <span
-              className="wf-m"
-              style={{ fontSize: 15, color: "var(--wf-accent)" }}
-            >
-              / portfolio
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 4 }}>
-            {["skills", "work", "projects", "edu", "gallery", "contact"].map(
-              (id) => (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  className="wf-m wf-nav-link"
-                  style={{
-                    fontSize: 15,
-                    color: "var(--wf-ink-soft)",
-                    textDecoration: "none",
-                    padding: "7px 12px",
-                  }}
-                >
-                  {id === "edu"
-                    ? "education"
-                    : id === "contact"
-                      ? "say hi"
-                      : id}
-                </a>
-              ),
-            )}
-          </div>
-        </div>
-      </nav>
-
       {/* ── HERO ── */}
       <header
         style={{
@@ -167,6 +111,39 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
           }}
         >
           <div className="wf-reveal">
+            {profile.isAvailable && (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  border: "1.5px dashed #4a7a5a",
+                  background: "#f0f7f2",
+                  padding: "3px 10px 3px 8px",
+                  marginBottom: 14,
+                }}
+              >
+                <span
+                  style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: "#4a7a5a",
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  className="wf-m"
+                  style={{
+                    fontSize: 12,
+                    color: "#4a7a5a",
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  available for work
+                </span>
+              </div>
+            )}
             <div className="wf-eyebrow" style={{ marginBottom: 10 }}>
               // hello world, this is
             </div>
@@ -265,7 +242,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
               01
             </span>
             <h2 className="wf-h" style={{ fontSize: 40 }}>
-              Skills
+              Stack
             </h2>
             <span
               className="wf-m"
@@ -367,9 +344,10 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                       flexShrink: 0,
                       display: "grid",
                       placeItems: "center",
-                      background: "var(--wf-paper-2)",
+                      background: "#fff",
                       overflow: "hidden",
                       borderRadius: 0,
+                      padding: xp.imageUrl ? 4 : 0,
                     }}
                   >
                     {xp.imageUrl ? (
@@ -379,7 +357,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                         style={{
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }}
                       />
                     ) : (
@@ -663,99 +641,104 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                 </a>
               ))}
             </div>
-            {profile.recommendations[0] && (
-              <div
-                className="wf-sketch wf-quote wf-reveal d2"
-                style={{
-                  background: "var(--wf-paper-2)",
-                  padding: "30px 34px",
-                  position: "relative",
-                }}
-              >
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {profile.recommendations.map((rec, i) => (
                 <div
-                  className="wf-h"
+                  key={rec.id}
+                  className={`wf-sketch wf-quote wf-reveal d${Math.min(i + 2, 3)}`}
                   style={{
-                    fontSize: 74,
-                    color: "var(--wf-accent)",
-                    lineHeight: 0.5,
-                    position: "absolute",
-                    top: 24,
-                    left: 20,
-                    opacity: 0.5,
-                  }}
-                >
-                  &ldquo;
-                </div>
-                <p
-                  className="wf-m"
-                  style={{
-                    fontSize: 17,
-                    lineHeight: 1.6,
-                    color: "var(--wf-ink)",
-                    margin: "0 0 16px",
-                    paddingLeft: 30,
-                  }}
-                >
-                  {profile.recommendations[0].recommendationText}
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    paddingLeft: 30,
+                    background: "var(--wf-paper-2)",
+                    padding: "30px 34px",
+                    position: "relative",
                   }}
                 >
                   <div
-                    className="wf-sketch wf-badge"
+                    className="wf-h"
                     style={{
-                      width: 42,
-                      height: 42,
-                      flexShrink: 0,
-                      display: "grid",
-                      placeItems: "center",
-                      background: "var(--wf-paper-2)",
+                      fontSize: 74,
+                      color: "var(--wf-accent)",
+                      lineHeight: 0.5,
+                      position: "absolute",
+                      top: 24,
+                      left: 20,
+                      opacity: 0.5,
                     }}
                   >
-                    <span
-                      className="wf-h"
-                      style={{ fontSize: 16, fontWeight: 700 }}
-                    >
-                      {profile.recommendations[0].name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .slice(0, 2)}
-                    </span>
+                    &ldquo;
                   </div>
-                  <div>
+                  <p
+                    className="wf-m"
+                    style={{
+                      fontSize: 17,
+                      lineHeight: 1.6,
+                      color: "var(--wf-ink)",
+                      margin: "0 0 16px",
+                      paddingLeft: 30,
+                    }}
+                  >
+                    {rec.recommendationText}
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      paddingLeft: 30,
+                    }}
+                  >
                     <div
-                      className="wf-h"
-                      style={{ fontSize: 19, fontWeight: 700 }}
-                    >
-                      {profile.recommendations[0].name}
-                    </div>
-                    <div
-                      className="wf-m"
+                      className="wf-sketch wf-badge"
                       style={{
-                        fontSize: 12,
-                        color: "var(--wf-ink-soft)",
-                        maxWidth: 280,
-                        lineHeight: 1.35,
+                        width: 42,
+                        height: 42,
+                        flexShrink: 0,
+                        display: "grid",
+                        placeItems: "center",
+                        background: "var(--wf-paper-2)",
                       }}
                     >
-                      {profile.recommendations[0].position}
+                      <span
+                        className="wf-h"
+                        style={{ fontSize: 16, fontWeight: 700 }}
+                      >
+                        {rec.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .slice(0, 2)}
+                      </span>
+                    </div>
+                    <div>
+                      <div
+                        className="wf-h"
+                        style={{ fontSize: 19, fontWeight: 700 }}
+                      >
+                        {rec.name}
+                      </div>
+                      <div
+                        className="wf-m"
+                        style={{
+                          fontSize: 12,
+                          color: "var(--wf-ink-soft)",
+                          maxWidth: 280,
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {rec.position}
+                      </div>
                     </div>
                   </div>
+                  {i === 0 && (
+                    <div
+                      className="wf-note"
+                      style={{ top: -18, right: 18, transform: "rotate(4deg)" }}
+                    >
+                      real reference ✓
+                    </div>
+                  )}
                 </div>
-                <div
-                  className="wf-note"
-                  style={{ top: -18, right: 18, transform: "rotate(4deg)" }}
-                >
-                  real reference ✓
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </section>
 
@@ -875,38 +858,30 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
               justifyContent: "center",
             }}
           >
-            <a
-              href="https://github.com/itsnang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wf-sketch wf-btn"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://t.me/itsamnang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wf-sketch wf-btn"
-            >
-              Telegram
-            </a>
-            <a
-              href="https://www.linkedin.com/in/itsnang/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wf-sketch wf-btn"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://www.instagram.com/huotchhayyy/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wf-sketch wf-btn"
-            >
-              Instagram
-            </a>
+            {profile.socials.map((social) => (
+              <a
+                key={social.id}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="wf-sketch wf-btn"
+                style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
+              >
+                {social.icon && (
+                  <img
+                    src={social.icon}
+                    alt={social.name}
+                    style={{
+                      width: 16,
+                      height: 16,
+                      objectFit: "contain",
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
+                {social.name}
+              </a>
+            ))}
           </div>
           <div
             className="wf-note"

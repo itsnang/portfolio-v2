@@ -11,6 +11,7 @@ export interface IProfile {
   education: IEducation[];
   projects: IProject[];
   recommendations: IRecommendation[];
+  socials: ISocial[];
 }
 
 export interface ISkill {
