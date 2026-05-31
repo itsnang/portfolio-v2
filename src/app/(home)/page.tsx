@@ -1,4 +1,4 @@
-import { DockNav } from "@/components/nav-dock";
+import { DockNavClient } from "@/components/nav-dock-client";
 import { Education } from "@/components/sections/education";
 import { Experience } from "@/components/sections/experience";
 import { HeroProfile } from "@/components/sections/hero-profile";
@@ -57,7 +57,7 @@ export default async function Home() {
           </>
         )}
 
-        <DockNav socials={profile.socials} />
+        <DockNavClient />
       </main>
     </>
   );
