@@ -66,7 +66,6 @@ export const ExperienceCard = ({
                 dangerouslySetInnerHTML={{
                   __html: description,
                 }}
-                className="[&>ol]:list-decimal [&>ol]:list-outside [&>ol]:space-y-1 [&>ol>li[data-list='bullet']]:list-disc [&>ul]:list-disc [&>ul]:list-outside [&>ul]:space-y-1 [&>ul]:ml-4 [&>ol]:ml-4 [&_li]:my-1"
               />
             )}
           </div>
