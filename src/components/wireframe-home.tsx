@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import type { IProfile } from "@/types/profile.type";
+import { skillCategoryEnum } from "@/db/table";
 
 const WOBBLE = (
   <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
@@ -255,26 +256,38 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
               // the toolbox
             </span>
           </div>
-          <div
-            className="wf-reveal"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 11,
-              position: "relative",
-            }}
-          >
-            {profile.skills.map((skill) => (
-              <span key={skill.id} className="wf-sketch wf-chip">
-                {skill.logoUrl && (
-                  <img src={skill.logoUrl} alt="" className="wf-logo" />
-                )}
-                {skill.name}
-              </span>
-            ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: 28, position: "relative" }}>
+            {skillCategoryEnum.enumValues.map((cat) => {
+              const group = profile.skills.filter((s) => s.category === cat);
+              if (group.length === 0) return null;
+              return (
+                <div key={cat}>
+                  <div
+                    className="wf-eyebrow wf-reveal"
+                    style={{ fontSize: 12, marginBottom: 10 }}
+                  >
+                    // {cat.toLowerCase()}
+                  </div>
+                  <div
+                    className="wf-reveal"
+                    style={{ display: "flex", flexWrap: "wrap", gap: 11 }}
+                  >
+                    {group.map((skill) => (
+                      <span key={skill.id} className="wf-sketch wf-chip">
+                        {skill.logoUrl && (
+                          <img src={skill.logoUrl} alt="" className="wf-logo" />
+                        )}
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
             <div
               className="wf-note"
               style={{
+                position: "absolute",
                 bottom: -40,
                 right: 0,
                 width: 150,
