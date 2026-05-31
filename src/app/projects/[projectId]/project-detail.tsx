@@ -23,7 +23,7 @@ interface Technology {
 }
 
 interface ProjectDetailProps {
-  projectDetail: {
+  project: {
     title: string;
     description: string;
     thumbnail: string;
@@ -32,39 +32,32 @@ interface ProjectDetailProps {
   };
 }
 
-export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null
-  );
+export function ProjectDetail({ project }: ProjectDetailProps) {
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  const handleImageClick = (index: number) => {
-    setSelectedImageIndex(index);
-  };
-
-  const handleClose = useCallback(() => {
-    setSelectedImageIndex(null);
-  }, []);
+  const handleImageClick = (index: number) => setSelectedImageIndex(index);
+  const handleClose = useCallback(() => setSelectedImageIndex(null), []);
 
   const handlePrevious = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
-      if (selectedImageIndex === null || !projectDetail.detailImage) return;
+      if (selectedImageIndex === null || !project.detailImage) return;
       setSelectedImageIndex((prev) =>
-        prev === 0 ? projectDetail.detailImage!.length - 1 : prev! - 1
+        prev === 0 ? project.detailImage!.length - 1 : prev! - 1
       );
     },
-    [selectedImageIndex, projectDetail.detailImage]
+    [selectedImageIndex, project.detailImage]
   );
 
   const handleNext = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
-      if (selectedImageIndex === null || !projectDetail.detailImage) return;
+      if (selectedImageIndex === null || !project.detailImage) return;
       setSelectedImageIndex((prev) =>
-        prev === projectDetail.detailImage!.length - 1 ? 0 : prev! + 1
+        prev === project.detailImage!.length - 1 ? 0 : prev! + 1
       );
     },
-    [selectedImageIndex, projectDetail.detailImage]
+    [selectedImageIndex, project.detailImage]
   );
 
   return (
@@ -86,14 +79,13 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
           </Link>
         </motion.div>
 
-        {/* Hero Section */}
         <motion.div
           variants={fadeInUp}
           className="relative aspect-video overflow-hidden rounded-2xl bg-muted/50 shadow-xl"
         >
           <Image
-            alt={projectDetail.title}
-            src={projectDetail.thumbnail}
+            alt={project.title}
+            src={project.thumbnail}
             fill
             priority
             className="object-cover transition-transform duration-700 hover:scale-105"
@@ -102,65 +94,52 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
           <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
             <SparklesText
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg"
-              text={projectDetail.title}
+              text={project.title}
             />
           </div>
         </motion.div>
 
-        {/* Content Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <motion.div variants={fadeInUp} className="lg:col-span-2 space-y-6">
             <Card className="p-6">
               <h2 className="text-2xl font-semibold mb-4">About the Project</h2>
               <p className="text-muted-foreground leading-relaxed">
-                {projectDetail.description}
+                {project.description}
               </p>
             </Card>
 
-            {projectDetail.detailImage &&
-              projectDetail.detailImage.length > 0 && (
-                <Card className="p-6">
-                  <h2 className="text-2xl font-semibold mb-6">
-                    Project Gallery
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {projectDetail.detailImage.map((detail, index) => (
-                      <motion.div
-                        key={index}
-                        variants={fadeInUp}
-                        whileHover={{ scale: 1.02 }}
-                        className="relative aspect-square overflow-hidden rounded-lg cursor-pointer group"
-                        onClick={() => handleImageClick(index)}
-                      >
-                        <Image
-                          fill
-                          src={detail}
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          alt={`${projectDetail.title} - Image ${index + 1}`}
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                          <div className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </Card>
-              )}
+            {project.detailImage && project.detailImage.length > 0 && (
+              <Card className="p-6">
+                <h2 className="text-2xl font-semibold mb-6">Project Gallery</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {project.detailImage.map((detail, index) => (
+                    <motion.div
+                      key={index}
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.02 }}
+                      className="relative aspect-square overflow-hidden rounded-lg cursor-pointer group"
+                      onClick={() => handleImageClick(index)}
+                    >
+                      <Image
+                        fill
+                        src={detail}
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt={`${project.title} - Image ${index + 1}`}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </Card>
+            )}
           </motion.div>
 
-          {/* Sidebar */}
           <motion.div variants={fadeInUp} className="space-y-6">
             <Card className="p-6">
               <h2 className="text-2xl font-semibold mb-4">Technologies Used</h2>
               <Separator className="my-4" />
               <div className="flex flex-wrap gap-3">
-                {projectDetail.technologies.map((technology, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
+                {project.technologies.map((technology, index) => (
+                  <motion.div key={index} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Badge
                       variant="secondary"
                       className="h-9 px-4 py-2 flex items-center gap-2 bg-secondary/50 hover:bg-secondary"
@@ -182,27 +161,9 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
         </div>
       </motion.section>
 
-      {/* Full Screen Image Gallery Modal */}
-      {selectedImageIndex !== null && projectDetail.detailImage && (
-        <div
-          className="fixed inset-0 z-100 bg-black w-screen h-screen overflow-hidden m-0 p-0"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            margin: 0,
-            padding: 0,
-            width: "100vw",
-            height: "100vh",
-          }}
-        >
-          <div
-            className="absolute inset-0 w-full h-full flex items-center justify-center m-0 p-0"
-            style={{ margin: 0, padding: 0 }}
-          >
-            {/* Top Controls */}
+      {selectedImageIndex !== null && project.detailImage && (
+        <div className="fixed inset-0 z-100 bg-black w-screen h-screen overflow-hidden">
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center">
             <div className="fixed top-6 right-6 z-50">
               <Button
                 variant="ghost"
@@ -213,8 +174,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
                 <X className="w-6 h-6" />
               </Button>
             </div>
-
-            {/* Navigation Controls */}
             <Button
               variant="ghost"
               size="icon"
@@ -223,7 +182,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
             >
               <ChevronLeft className="w-10 h-10" />
             </Button>
-
             <Button
               variant="ghost"
               size="icon"
@@ -232,8 +190,6 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
             >
               <ChevronRight className="w-10 h-10" />
             </Button>
-
-            {/* Image Container */}
             <motion.div
               key={selectedImageIndex}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -241,23 +197,20 @@ export function ProjectDetail({ projectDetail }: ProjectDetailProps) {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
               className="fixed inset-0 w-full h-full"
-              style={{ margin: 0, padding: 0 }}
             >
               <Image
-                src={projectDetail.detailImage[selectedImageIndex]}
-                alt={`${projectDetail.title} - Image ${selectedImageIndex + 1}`}
+                src={project.detailImage[selectedImageIndex]}
+                alt={`${project.title} - Image ${selectedImageIndex + 1}`}
                 fill
                 className="object-contain"
                 priority
                 sizes="100vw"
                 quality={100}
-                style={{ margin: 0, padding: 0 }}
               />
             </motion.div>
-
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
               <div className="px-6 py-3 rounded-full bg-black/50 text-white text-base backdrop-blur-xs">
-                {selectedImageIndex + 1} / {projectDetail.detailImage.length}
+                {selectedImageIndex + 1} / {project.detailImage.length}
               </div>
             </div>
           </div>

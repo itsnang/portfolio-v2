@@ -57,3 +57,6 @@ CLAUDE.md
 
 # Playwright
 .playwright-mcp/
+
+# Superpowers docs (local planning/specs)
+docs/superpowers/
