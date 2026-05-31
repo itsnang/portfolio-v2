@@ -1,4 +1,4 @@
-function Skel({ w, h, className = "" }: { w?: string; h?: string; className?: string }) {
+export function Skel({ w, h, className = "" }: { w?: string; h?: string; className?: string }) {
   return (
     <div
       className={`wf-skel ${className}`}
@@ -53,7 +53,7 @@ export function WireframeHomeSkeleton() {
           </div>
         </div>
 
-        <div style={{ borderTop: "1px dashed #a7a59c", margin: "0 0 0" }} />
+        <div style={{ borderTop: "1px dashed #a7a59c" }} />
 
         {/* Experience */}
         <div style={{ padding: "84px 0 40px" }}>

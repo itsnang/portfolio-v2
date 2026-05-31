@@ -30,14 +30,7 @@ const WOBBLE = (
 );
 
 function stripHtml(html: string) {
-  if (typeof window === "undefined")
-    return html
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  const el = document.createElement("div");
-  el.innerHTML = html;
-  return el.textContent ?? "";
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function fmt(d: Date | null | undefined, fallback = "Present") {
@@ -368,7 +361,6 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                   style={{ display: "flex", alignItems: "flex-start", gap: 16 }}
                 >
                   <div
-                    className="wf-sketch wf-badge"
                     style={{
                       width: 46,
                       height: 46,

@@ -1,15 +1,7 @@
 import { getAppConfig } from "@/app/action";
+import { Skel } from "@/components/wireframe-home-skeleton";
 
-function Skel({ w, h }: { w?: string; h?: string }) {
-  return (
-    <div
-      className="wf-skel"
-      style={{ width: w ?? "100%", height: h ?? "16px" }}
-    />
-  );
-}
-
-async function WireframeProjectDetailSkeleton() {
+function WireframeProjectDetailSkeleton() {
   return (
     <div className="sketch-page" style={{ minHeight: "100vh" }}>
 

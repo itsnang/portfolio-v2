@@ -11,7 +11,6 @@ import { WireframeHome } from "@/components/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig, getProfile } from "../action";
 
-export const revalidate = 3600;
 
 export default async function Home() {
   const [profile, appConfig] = await Promise.all([getProfile(), getAppConfig()]);
