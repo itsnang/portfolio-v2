@@ -710,6 +710,51 @@
   display: none;
 }
 
+/* contact strip */
+.contact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+.contact-mini {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--wf-marker);
+  font-size: 14px;
+  color: var(--wf-ink);
+  text-decoration: none;
+  padding: 7px 13px 7px 11px;
+  background: var(--wf-paper);
+}
+.contact-mini > .sketch-edge {
+  position: absolute;
+  inset: 0;
+  border: 2.2px solid var(--wf-ink);
+  border-radius: 18px;
+  filter: url(#wobble);
+  pointer-events: none;
+}
+.contact-mini svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: var(--wf-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+a.contact-mini:hover {
+  color: var(--wf-accent);
+}
+a.contact-mini:hover svg {
+  stroke: var(--wf-accent);
+}
+
 @media (max-width: 640px) {
   .wf-hero-grid {
     grid-template-columns: 1fr !important;
