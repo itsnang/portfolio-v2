@@ -229,6 +229,40 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px" }}>
         {/* ── SKILLS ── */}
         <section style={{ padding: "84px 0" }} id="skills">
+          <div className="contact-strip">
+            <span className="contact-mini">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+              Phnom Penh, KH
+            </span>
+            <a className="contact-mini" href="tel:+85570647779">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5c0 9 6 15 15 15a2 2 0 0 0 2-2v-2.5a1 1 0 0 0-.8-1l-3.4-.7a1 1 0 0 0-1 .4l-1 1.3a12 12 0 0 1-5-5l1.3-1a1 1 0 0 0 .4-1L10.5 5.8a1 1 0 0 0-1-.8H6a2 2 0 0 0-2 2z" />
+              </svg>
+              +855 70 647 779
+            </a>
+            <a className="contact-mini" href="mailto:lorn.samnang.it@gmail.com">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M4 7l8 6 8-6" />
+              </svg>
+              lorn.samnang.it@gmail.com
+            </a>
+            <a
+              className="contact-mini"
+              href="https://lornsamnang.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M10 14a4 4 0 0 0 5.6 0l3-3a4 4 0 0 0-5.6-5.6l-1.5 1.5" />
+                <path d="M14 10a4 4 0 0 0-5.6 0l-3 3a4 4 0 0 0 5.6 5.6l1.5-1.5" />
+              </svg>
+              lornsamnang.com
+            </a>
+          </div>
           <div
             className="wf-reveal"
             style={{

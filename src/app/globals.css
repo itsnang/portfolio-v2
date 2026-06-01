@@ -744,6 +744,118 @@
   }
 }
 
+.wf-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(251, 250, 245, 0.86);
+  backdrop-filter: blur(4px);
+  border-bottom: 2px solid var(--wf-ink);
+}
+.wf-nav-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: var(--wf-ink);
+  filter: url(#wobble);
+}
+.wf-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.wf-brand {
+  font-family: var(--wf-hand);
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--wf-ink);
+  text-decoration: none;
+}
+.wf-brand-tag {
+  font-size: 13px;
+  color: var(--wf-accent);
+  font-family: var(--wf-marker);
+  transform: rotate(-4deg);
+  display: inline-block;
+}
+.wf-nav-links {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.wf-nav-links a {
+  font-family: var(--wf-marker);
+  font-size: 15px;
+  color: var(--wf-ink-soft);
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  position: relative;
+}
+.wf-nav-links a:hover {
+  color: var(--wf-ink);
+}
+.wf-nav-links a:hover::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 3px;
+  height: 2px;
+  background: var(--wf-accent);
+  filter: url(#wobble);
+}
+@media (max-width: 860px) {
+  .wf-nav-links {
+    display: none;
+  }
+}
+
+.contact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 30px;
+}
+.contact-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--wf-marker);
+  font-size: 14px;
+  color: var(--wf-ink);
+  text-decoration: none;
+  padding: 7px 13px 7px 11px;
+  background: var(--wf-paper-2);
+  border-radius: 6px;
+  border: none;
+}
+.contact-mini svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: var(--wf-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+a.contact-mini:hover {
+  color: var(--wf-accent);
+}
+a.contact-mini:hover svg {
+  stroke: var(--wf-accent);
+}
+
 @media (max-width: 860px) {
   .sketch-page [style*="grid-template-columns: 1.25fr"] {
     grid-template-columns: 1fr !important;
