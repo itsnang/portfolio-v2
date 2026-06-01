@@ -3,6 +3,23 @@ import { GlobeIcon, MailIcon, FileBadge2 } from "lucide-react";
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
+  mapPin: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  ),
+  phone: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M4 5c0 9 6 15 15 15a2 2 0 0 0 2-2v-2.5a1 1 0 0 0-.8-1l-3.4-.7a1 1 0 0 0-1 .4l-1 1.3a12 12 0 0 1-5-5l1.3-1a1 1 0 0 0 .4-1L10.5 5.8a1 1 0 0 0-1-.8H6a2 2 0 0 0-2 2z" />
+    </svg>
+  ),
+  linkChain: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M10 14a4 4 0 0 0 5.6 0l3-3a4 4 0 0 0-5.6-5.6l-1.5 1.5" />
+      <path d="M14 10a4 4 0 0 0-5.6 0l-3 3a4 4 0 0 0 5.6 5.6l1.5-1.5" />
+    </svg>
+  ),
   globe: (props: IconProps) => <GlobeIcon {...props} />,
   email: (props: IconProps) => <MailIcon {...props} />,
   certificate: (props: IconProps) => (

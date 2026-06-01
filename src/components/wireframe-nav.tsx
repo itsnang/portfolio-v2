@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface WireframeNavProps {
   name: string;
 }
@@ -14,17 +16,17 @@ export function WireframeNav({ name }: WireframeNavProps) {
     <nav className="wf-nav">
       <div className="wf-nav-edge" />
       <div className="wf-nav-inner">
-        <a className="wf-brand" href="#top">
+        <Link className="wf-brand" href="#top">
           {initials}
           <span className="wf-brand-tag">/ wireframe v3</span>
-        </a>
+        </Link>
         <div className="wf-nav-links">
-          <a href="#skills">skills</a>
-          <a href="#work">work</a>
-          <a href="#projects">projects</a>
-          <a href="#edu">education</a>
-          <a href="#gallery">gallery</a>
-          <a href="#contact">say hi</a>
+          <Link href="#skills">skills</Link>
+          <Link href="#work">work</Link>
+          <Link href="#projects">projects</Link>
+          <Link href="#edu">education</Link>
+          <Link href="#gallery">gallery</Link>
+          <Link href="#contact">say hi</Link>
         </div>
       </div>
     </nav>
