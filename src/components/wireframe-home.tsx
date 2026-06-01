@@ -72,7 +72,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
 
   // Re-apply .in after every render so React className updates don't wipe it
   useLayoutEffect(() => {
-    revealedEls.current.forEach((el) => el.classList.add("in"));
+    revealedEls.current.forEach((el) => el.classList.add("in", "wf-revealed"));
   });
 
   return (
