@@ -47,7 +47,7 @@ export const achievements = [
     gradient: "from-emerald-400/20 to-teal-500/20",
     links: [
       {
-        title: "News",
+        title: "View more",
         icon: <Icons.globe className="h-4 w-4" />,
         href: "https://sabaicode.com",
       },

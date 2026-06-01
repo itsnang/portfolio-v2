@@ -820,6 +820,80 @@
   }
 }
 
+/* ── VERTICAL TIMELINE ── */
+.wf-vtimeline {
+  position: relative;
+  padding-left: 48px;
+}
+.wf-vtroad {
+  position: absolute;
+  left: 15px;
+  top: 6px;
+  bottom: 32px;
+  width: 2px;
+  background: var(--wf-ink);
+  filter: url(#wobble);
+  pointer-events: none;
+}
+.wf-vt-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.wf-vt-item:last-child {
+  margin-bottom: 0;
+}
+.wf-vt-dot {
+  position: absolute;
+  left: -41px;
+  top: 16px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--wf-paper);
+  border: 2.5px solid var(--wf-ink);
+  z-index: 2;
+  flex-shrink: 0;
+}
+.wf-vt-dot--award  { background: var(--wf-accent); border-color: var(--wf-accent); }
+.wf-vt-dot--career { background: var(--wf-ink); }
+.wf-vt-dot--education { background: var(--wf-paper); }
+.wf-vt-card {
+  flex: 1;
+  padding: 20px 24px;
+  background: var(--wf-paper-2);
+}
+.wf-vt-year {
+  font-family: var(--wf-marker);
+  font-size: 11px;
+  color: var(--wf-accent);
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+.wf-vt-cat {
+  font-family: var(--wf-marker);
+  font-size: 11px;
+  color: var(--wf-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.wf-vt-title {
+  font-family: var(--wf-hand);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--wf-ink);
+  line-height: 1.2;
+  margin: 4px 0 8px;
+}
+.wf-vt-desc {
+  font-family: var(--wf-marker);
+  font-size: 13px;
+  color: var(--wf-ink-soft);
+  line-height: 1.65;
+}
+
 .contact-strip {
   display: flex;
   flex-wrap: wrap;
