@@ -4,12 +4,20 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
+function toOgImageUrl(url: string): string {
+  if (!url.includes("res.cloudinary.com")) return url;
+  return url.replace(/\/upload\//, "/upload/w_1200,h_630,c_fill,g_face/");
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
+  const description =
+    profile.bio ??
+    `${profile.name} is a software developer. Explore projects, skills, and professional journey.`;
   return buildMetadata({
     title: `${profile.name} | Software Developer`,
-    description: profile.bio ?? profile.abouts,
-    imageUrl: profile.imageUrl,
+    description,
+    imageUrl: toOgImageUrl(profile.imageUrl),
   });
 }
 
