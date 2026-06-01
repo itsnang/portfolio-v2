@@ -229,7 +229,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px" }}>
         {/* ── SKILLS ── */}
         <section style={{ padding: "84px 0" }} id="skills">
-          <div className="contact-strip">
+          <div className="contact-strip wf-reveal">
             <span className="contact-mini">
               <svg viewBox="0 0 24 24">
                 <path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z" />
