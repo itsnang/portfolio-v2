@@ -29,9 +29,9 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
 
       <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
         {experience.map((xp, i) => (
+          <div key={xp.id} className={`wf-reveal${i === 0 ? "" : ` d${Math.min(i, 3)}`}`}>
           <article
-            key={xp.id}
-            className={`wf-sketch wf-xp wf-reveal${i === 0 ? "" : ` d${Math.min(i, 3)}`}${openXp === xp.id ? " open" : ""}`}
+            className={`wf-sketch wf-xp${openXp === xp.id ? " open" : ""}`}
             style={{
               position: "relative",
               padding: "22px 26px",
@@ -106,6 +106,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
               dangerouslySetInnerHTML={{ __html: xp.description ?? "" }}
             />
           </article>
+          </div>
         ))}
       </div>
     </section>

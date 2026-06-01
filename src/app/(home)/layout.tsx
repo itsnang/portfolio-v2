@@ -1,13 +1,17 @@
-import { generateMetadata } from "@/lib/metadata";
-import { getAppConfig } from "@/app/action";
+import { generateMetadata as buildMetadata } from "@/lib/metadata";
+import { getAppConfig, getProfile } from "@/app/action";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
 
-export const metadata = generateMetadata({
-  title: "Home",
-  description:
-    "Welcome to the portfolio of Lorn Samnang. Explore my projects, skills, and professional journey.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return buildMetadata({
+    title: `${profile.name} | Software Developer`,
+    description: profile.bio ?? profile.abouts,
+    imageUrl: profile.imageUrl,
+  });
+}
 
 export default async function HomeLayout({
   children,

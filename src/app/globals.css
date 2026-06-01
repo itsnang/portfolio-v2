@@ -857,9 +857,16 @@
   z-index: 2;
   flex-shrink: 0;
 }
-.wf-vt-dot--award  { background: var(--wf-accent); border-color: var(--wf-accent); }
-.wf-vt-dot--career { background: var(--wf-ink); }
-.wf-vt-dot--education { background: var(--wf-paper); }
+.wf-vt-dot--award {
+  background: var(--wf-accent);
+  border-color: var(--wf-accent);
+}
+.wf-vt-dot--career {
+  background: var(--wf-ink);
+}
+.wf-vt-dot--education {
+  background: var(--wf-paper);
+}
 .wf-vt-card {
   flex: 1;
   padding: 20px 24px;
