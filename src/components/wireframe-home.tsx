@@ -205,6 +205,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                 src={profile.imageUrl}
                 alt={profile.name}
                 fill
+                sizes="(max-width: 640px) 100vw, 45vw"
                 className="object-cover"
               />
             </div>
@@ -505,6 +506,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                     src={proj.thumbnail}
                     alt={proj.title}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, 540px"
                     className="wf-proj-img"
                   />
                   <span className="wf-view-cue">open ↗</span>

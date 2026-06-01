@@ -163,7 +163,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           <div className="wf-reveal d2" style={{ position: "relative" }}>
             <div className="wf-sketch wf-photo" style={{ width: "100%", aspectRatio: "4/3" }}>
               <div className="wf-tape" />
-              <Image src={project.thumbnail} alt={project.title} fill className="object-cover" />
+              <Image src={project.thumbnail} alt={project.title} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-cover" />
             </div>
             <div className="wf-note" style={{ top: -26, right: -10, transform: "rotate(5deg)" }}>
               the real thing ↗
@@ -238,7 +238,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                   style={{ aspectRatio: "4/3", overflow: "hidden", cursor: "zoom-in" }}
                   onClick={() => setLightboxIdx(i)}
                 >
-                  <Image src={src} alt={`${project.title} screenshot ${i + 1}`} fill className="object-cover" />
+                  <Image src={src} alt={`${project.title} screenshot ${i + 1}`} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
                 </div>
               ))}
             </div>
