@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
@@ -74,6 +74,8 @@ const CHECK_SVG = (
 
 export function WireframeProjectDetail({ project }: { project: Project }) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const images = project.detailImage ?? [];
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -82,6 +84,29 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
     return () => io.disconnect();
   }, []);
 
+  const closeLightbox = useCallback(() => setLightboxIdx(null), []);
+
+  const handlePrev = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxIdx((prev) => (prev === null ? null : prev === 0 ? images.length - 1 : prev - 1));
+  }, [images.length]);
+
+  const handleNext = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxIdx((prev) => (prev === null ? null : prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]);
+
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") setLightboxIdx((p) => (p === null ? null : p === 0 ? images.length - 1 : p - 1));
+      if (e.key === "ArrowRight") setLightboxIdx((p) => (p === null ? null : p === images.length - 1 ? 0 : p + 1));
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [lightboxIdx, closeLightbox, images.length]);
+
   const { overview, features } = parseDescription(project.description);
   const num = String(project.number).padStart(2, "0");
   const total = String(project.total).padStart(2, "0");
@@ -89,18 +114,6 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
   return (
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
-
-      {/* Nav */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(251,250,245,.9)", backdropFilter: "blur(4px)", borderBottom: "2px solid var(--wf-ink)" }}>
-        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 62 }}>
-          <Link href="/" className="wf-h" style={{ fontSize: 24, fontWeight: 700, textDecoration: "none", color: "var(--wf-ink)" }}>
-            SN
-          </Link>
-          <Link href="/#projects" className="wf-m" style={{ fontSize: 15, color: "var(--wf-ink-soft)", textDecoration: "none" }}>
-            ← back
-          </Link>
-        </div>
-      </nav>
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px 28px 0" }}>
         <Link href="/#projects" className="wf-m" style={{ fontSize: 15, color: "var(--wf-ink-soft)", textDecoration: "none", display: "inline-flex", gap: 8, alignItems: "center" }}>
@@ -211,27 +224,23 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
         </div>
 
         {/* More views */}
-        {(project.detailImage?.length || 0) > 0 && (
+        {images.length > 0 && (
           <section style={{ marginTop: 64 }}>
             <div className="wf-reveal" style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 22 }}>
               <span style={{ color: "var(--wf-accent)", fontFamily: "var(--wf-marker)", fontSize: 14 }}>//</span>
               <h2 className="wf-h" style={{ fontSize: 28 }}>More views</h2>
             </div>
             <div className="wf-reveal" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18 }}>
-              {[0, 1, 2].map((i) => {
-                const src = project.detailImage?.[i];
-                return src ? (
-                  <div key={i} className="wf-sketch wf-photo" style={{ aspectRatio: "4/3", overflow: "hidden" }}>
-                    <Image src={src} alt={`${project.title} screenshot ${i + 1}`} fill className="object-cover" />
-                  </div>
-                ) : (
-                  <div key={i} className="wf-sketch wf-xbox" style={{ aspectRatio: "4/3", display: "grid", placeItems: "center" }}>
-                    <span className="wf-m" style={{ fontSize: 13, color: "var(--wf-ink-faint)", textAlign: "center", position: "relative", zIndex: 2 }}>
-                      screen {String(i + 1).padStart(2, "0")}<br />// to add
-                    </span>
-                  </div>
-                );
-              })}
+              {images.map((src, i) => (
+                <div
+                  key={i}
+                  className="wf-sketch wf-photo"
+                  style={{ aspectRatio: "4/3", overflow: "hidden", cursor: "zoom-in" }}
+                  onClick={() => setLightboxIdx(i)}
+                >
+                  <Image src={src} alt={`${project.title} screenshot ${i + 1}`} fill className="object-cover" />
+                </div>
+              ))}
             </div>
           </section>
         )}
@@ -249,6 +258,49 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           </Link>
         </nav>
       </div>
+
+      {/* Lightbox */}
+      {lightboxIdx !== null && images.length > 0 && (
+        <div
+          style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(0,0,0,0.93)", display: "flex", alignItems: "center", justifyContent: "center" }}
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            style={{ position: "absolute", top: 20, right: 24, background: "none", border: "none", color: "#fff", fontSize: 28, cursor: "pointer", fontFamily: "var(--wf-marker)", zIndex: 10, lineHeight: 1 }}
+          >
+            ✕
+          </button>
+          <button
+            onClick={handlePrev}
+            style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#fff", fontSize: 36, cursor: "pointer", fontFamily: "var(--wf-marker)", zIndex: 10 }}
+          >
+            ←
+          </button>
+          <button
+            onClick={handleNext}
+            style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#fff", fontSize: 36, cursor: "pointer", fontFamily: "var(--wf-marker)", zIndex: 10 }}
+          >
+            →
+          </button>
+          <div
+            style={{ position: "relative", width: "88vw", height: "82vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={images[lightboxIdx]}
+              alt={`${project.title} — ${lightboxIdx + 1}`}
+              fill
+              className="object-contain"
+              priority
+              sizes="88vw"
+            />
+          </div>
+          <div style={{ position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)", color: "rgba(255,255,255,0.7)", fontFamily: "var(--wf-marker)", fontSize: 14, letterSpacing: ".06em" }}>
+            {String(lightboxIdx + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer style={{ borderTop: "2px solid var(--wf-ink)", padding: "46px 0 60px", marginTop: 70, position: "relative" }}>
