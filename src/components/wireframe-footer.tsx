@@ -45,7 +45,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
             maxWidth: 420,
           }}
         >
-          Introverted, but always up for a good build. Find me here:
+          Always building something. Let&apos;s connect:
         </p>
         <div
           className="wf-reveal d1"
