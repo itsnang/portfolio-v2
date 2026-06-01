@@ -88,6 +88,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             src={project.thumbnail}
             fill
             priority
+            sizes="100vw"
             className="object-cover transition-transform duration-700 hover:scale-105"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
@@ -123,6 +124,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
                       <Image
                         fill
                         src={detail}
+                        sizes="(max-width: 640px) 100vw, 50vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         alt={`${project.title} - Image ${index + 1}`}
                       />

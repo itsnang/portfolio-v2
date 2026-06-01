@@ -205,6 +205,7 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                 src={profile.imageUrl}
                 alt={profile.name}
                 fill
+                sizes="(max-width: 640px) 100vw, 45vw"
                 className="object-cover"
               />
             </div>
@@ -257,7 +258,14 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
               // the toolbox
             </span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 28, position: "relative" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 28,
+              position: "relative",
+            }}
+          >
             {skillCategoryEnum.enumValues.map((cat) => {
               const group = profile.skills.filter((s) => s.category === cat);
               if (group.length === 0) return null;
@@ -505,9 +513,10 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
                     src={proj.thumbnail}
                     alt={proj.title}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, 540px"
                     className="wf-proj-img"
                   />
-                  <span className="wf-view-cue">open ↗</span>
+                  <span className="wf-view-cue">open</span>
                 </Link>
                 <div
                   style={{
