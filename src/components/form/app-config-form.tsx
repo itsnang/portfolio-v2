@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -28,81 +29,28 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import modernPreview from "../../../public/theme-config/modern.jpg";
+import wireframePreview from "../../../public/theme-config/wireframe.png";
 
 interface AppConfigFormProps {
   config: AppConfig;
 }
 
-function ModernPreview() {
-  return (
-    <div style={{ background: "#0d0d12", padding: "10px 10px 8px", display: "flex", flexDirection: "column", gap: 6 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-        <div style={{ width: 14, height: 8, background: "#6366f1", borderRadius: 2 }} />
-        <div style={{ display: "flex", gap: 4 }}>
-          {[30, 24, 28, 22].map((w, i) => (
-            <div key={i} style={{ width: w, height: 4, background: "#2d2d3a", borderRadius: 2 }} />
-          ))}
-        </div>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 8, alignItems: "center" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <div style={{ width: "40%", height: 4, background: "#6366f1", borderRadius: 2 }} />
-          <div style={{ height: 9, background: "#e5e7eb", borderRadius: 2 }} />
-          <div style={{ width: "70%", height: 9, background: "#e5e7eb", borderRadius: 2 }} />
-          <div style={{ height: 3, background: "#4b5563", borderRadius: 2, marginTop: 1 }} />
-          <div style={{ height: 3, width: "80%", background: "#4b5563", borderRadius: 2 }} />
-          <div style={{ display: "flex", gap: 4, marginTop: 3 }}>
-            <div style={{ width: 30, height: 6, background: "#6366f1", borderRadius: 2 }} />
-            <div style={{ width: 24, height: 6, background: "#1f2937", borderRadius: 2, border: "1px solid #374151" }} />
-          </div>
-        </div>
-        <div style={{ background: "#1a1a24", borderRadius: 4, height: 52 }} />
-      </div>
-      <div style={{ display: "flex", gap: 5, marginTop: 2 }}>
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} style={{ flex: 1, height: 3, background: "#1f2937", borderRadius: 2 }} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function WireframePreview() {
-  return (
-    <div style={{ background: "#fbfaf5", padding: "10px 10px 8px", display: "flex", flexDirection: "column", gap: 6 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1.5px solid #25252a", paddingBottom: 5, marginBottom: 2 }}>
-        <div style={{ width: 10, height: 8, background: "#25252a" }} />
-        <div style={{ display: "flex", gap: 4 }}>
-          {[28, 22, 26, 20].map((w, i) => (
-            <div key={i} style={{ width: w, height: 3, background: "#25252a", opacity: 0.5 }} />
-          ))}
-        </div>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 8, alignItems: "center" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <div style={{ width: "35%", height: 3, background: "#6b6b40", borderRadius: 1 }} />
-          <div style={{ height: 9, background: "#25252a", borderRadius: 1 }} />
-          <div style={{ width: "65%", height: 9, background: "#25252a", borderRadius: 1 }} />
-          <div style={{ height: 3, width: "85%", background: "#6b6b50", opacity: 0.6 }} />
-          <div style={{ display: "flex", gap: 4, marginTop: 3 }}>
-            <div style={{ width: 28, height: 6, background: "#25252a" }} />
-            <div style={{ width: 22, height: 6, border: "1.5px solid #25252a" }} />
-          </div>
-        </div>
-        <div style={{ border: "1.5px solid #25252a", height: 52, background: "#ede9de" }} />
-      </div>
-      <div style={{ display: "flex", gap: 5, marginTop: 2 }}>
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} style={{ flex: 1, height: 6, background: "#ede9de", border: "1px solid #c8c3b0" }} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; preview: React.ReactNode }[] = [
-  { value: "modern", label: "Modern", preview: <ModernPreview /> },
-  { value: "wireframe", label: "Wireframe", preview: <WireframePreview /> },
+  {
+    value: "modern",
+    label: "Modern",
+    preview: (
+      <Image src={modernPreview} alt="Modern theme preview" className="w-full object-cover object-top" />
+    ),
+  },
+  {
+    value: "wireframe",
+    label: "Wireframe",
+    preview: (
+      <Image src={wireframePreview} alt="Wireframe theme preview" className="w-full object-cover object-top" />
+    ),
+  },
 ];
 
 export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
