@@ -79,7 +79,7 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
             transform: "rotate(-3deg)",
           }}
         >
-          drag-em onto a project,
+          drag &apos;em onto a project,
           <br />
           they actually ship ✦
         </div>
