@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -36,21 +36,9 @@ interface AppConfigFormProps {
   config: AppConfig;
 }
 
-const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; preview: React.ReactNode }[] = [
-  {
-    value: "modern",
-    label: "Modern",
-    preview: (
-      <Image src={modernPreview} alt="Modern theme preview" className="w-full object-cover object-top" />
-    ),
-  },
-  {
-    value: "wireframe",
-    label: "Wireframe",
-    preview: (
-      <Image src={wireframePreview} alt="Wireframe theme preview" className="w-full object-cover object-top" />
-    ),
-  },
+const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; src: StaticImageData; alt: string }[] = [
+  { value: "modern", label: "Modern", src: modernPreview, alt: "Modern theme preview" },
+  { value: "wireframe", label: "Wireframe", src: wireframePreview, alt: "Wireframe theme preview" },
 ];
 
 export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
@@ -143,7 +131,7 @@ export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
                             )}
                           >
                             <div className="pointer-events-none">
-                              {option.preview}
+                              <Image src={option.src} alt={option.alt} className="w-full object-cover object-top" />
                             </div>
                             <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-card">
                               <span className="text-sm font-medium">{option.label}</span>

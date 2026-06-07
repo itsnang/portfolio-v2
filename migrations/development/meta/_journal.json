@@ -15,6 +15,13 @@
       "when": 1780242283487,
       "tag": "0001_shallow_lethal_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780852358320,
+      "tag": "0002_faulty_karma",
+      "breakpoints": true
     }
   ]
 }
