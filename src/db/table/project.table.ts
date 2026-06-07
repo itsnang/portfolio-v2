@@ -20,6 +20,7 @@ export const TbProject = table("project", {
   links: column.json("links").$type<ProjectLinks[]>(),
   thumbnail: column.text("thumbnail").notNull(),
   detailImage: column.json("detail_image").$type<string[]>(),
+  sortOrder: column.int("sort_order"),
   createdAt: column.createdAt,
   updatedAt: column.updatedAt,
   deletedAt: column.deletedAt,
