@@ -104,7 +104,7 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
         <div className="wf-reveal d2" style={{ position: "relative" }}>
           <div
             className="wf-sketch wf-photo"
-            style={{ width: "100%", aspectRatio: "4/5", overflow: "hidden" }}
+            style={{ width: "100%", aspectRatio: "4/5" }}
           >
             <div className="wf-tape" />
             <Image
