@@ -83,7 +83,9 @@ export const updateEducationAction = withAuthAction(
       const [updated] = await db
         .update(TbEducation)
         .set(validated.data)
-        .where(eq(TbEducation.id, id))
+        .where(
+          and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id))
+        )
         .returning();
 
       return {
@@ -120,7 +122,7 @@ export const deleteEducationAction = withAuthAction(
       await db
         .update(TbEducation)
         .set({ deletedAt: new Date() })
-        .where(eq(TbEducation.id, id));
+        .where(and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id)));
 
       return { success: true as const, message: "Education deleted" };
     } catch (error) {
