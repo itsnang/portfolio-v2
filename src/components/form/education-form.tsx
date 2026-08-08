@@ -1,16 +1,21 @@
 "use client";
 
-import {
-  EducationInsert,
-  educationInsertSchema,
-} from "@/db/schema/education.schema";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { insertEducation } from "@/app/dashboard/education/action";
+import {
+  createEducationAction,
+  updateEducationAction,
+} from "@/app/dashboard/education/action";
+import {
+  educationFormSchema,
+  type Education,
+  type EducationFormValues,
+} from "@/db/schema/education.schema";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,42 +36,68 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import React, { useState } from "react";
-import { toast } from "sonner";
 import { ImageSelector } from "../image-selector";
 
 interface EducationFormProps {
   images: IImages[];
+  initialValues?: Education;
+  onSuccess?: () => void;
 }
 
-export const EducationForm: React.FC<EducationFormProps> = ({ images }) => {
+export const EducationForm: React.FC<EducationFormProps> = ({
+  images,
+  initialValues,
+  onSuccess,
+}) => {
   const [isPending, setIsPending] = useState(false);
+  const isEditing = Boolean(initialValues);
 
-  const form = useForm<EducationInsert>({
-    resolver: zodResolver(educationInsertSchema),
-    defaultValues: {
-      school: "",
-      degree: "",
-      logoUrl: "",
-      href: "",
-      isActive: true,
-    },
+  const form = useForm<EducationFormValues>({
+    resolver: zodResolver(educationFormSchema),
+    defaultValues: initialValues
+      ? {
+          school: initialValues.school,
+          degree: initialValues.degree,
+          logoUrl: initialValues.logoUrl,
+          href: initialValues.href ?? undefined,
+          startDate: initialValues.startDate,
+          endDate: initialValues.endDate ?? undefined,
+          isActive: initialValues.isActive ?? true,
+        }
+      : {
+          school: "",
+          degree: "",
+          logoUrl: "",
+          href: "",
+          isActive: true,
+        },
   });
-  async function onSubmit(values: EducationInsert) {
+
+  async function onSubmit(values: EducationFormValues) {
     setIsPending(true);
     try {
-      await insertEducation({
-        ...values,
-        userId: "1",
-      });
-      toast.success("Insert Education successfully");
+      const result = isEditing
+        ? await updateEducationAction(initialValues!.id, values)
+        : await createEducationAction(values);
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(isEditing ? "Education updated" : "Education added");
+      if (!isEditing) form.reset();
+      onSuccess?.();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to Insert Education");
+      toast.error(
+        isEditing ? "Failed to update education" : "Failed to add education"
+      );
     } finally {
       setIsPending(false);
     }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -228,13 +259,13 @@ export const EducationForm: React.FC<EducationFormProps> = ({ images }) => {
           )}
         />
 
-        <Button type="submit" className="w-full h-12">
+        <Button type="submit" className="w-full h-12" disabled={isPending}>
           <LoaderCircle
             className={cn("animate-spin size-4 hidden", {
               block: isPending,
             })}
           />
-          Submit
+          {isEditing ? "Save Changes" : "Submit"}
         </Button>
       </form>
     </Form>
