@@ -74,9 +74,9 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               display: "inline-block",
             }}
           >
-            &ldquo;Software Developer&rdquo;
+            &ldquo;builds for the web&rdquo;
             <svg viewBox="0 0 220 14" preserveAspectRatio="none">
-              <path d="M3,8 C70,2 160,12 217,5" />
+              <path d="M3,8 C70,2 160,12 217,5" className="wf-uline-path" />
             </svg>
           </div>
           <p
@@ -93,9 +93,11 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
           </p>
           <div style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
             <Link href="#projects" className="wf-sketch wf-btn wf-btn-solid">
+              <div className="wf-edge" />
               see the work →
             </Link>
             <Link href="#contact" className="wf-sketch wf-btn">
+              <div className="wf-edge" />
               say hi 👋
             </Link>
           </div>
@@ -113,7 +115,6 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               fill
               sizes="(max-width: 640px) 100vw, 45vw"
               className="object-cover"
-              loading="eager"
               priority
             />
           </div>
