@@ -201,6 +201,7 @@ export function RecommendationsTable({
         }
       >
         <RecommendationsForm
+          key={editingItem?.id ?? "create"}
           images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}

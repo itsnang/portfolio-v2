@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { LoaderCircle, Trash2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,9 @@ export function DeleteConfirmButton({
     setIsPending(true);
     try {
       await onConfirm();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete");
     } finally {
       setIsPending(false);
     }

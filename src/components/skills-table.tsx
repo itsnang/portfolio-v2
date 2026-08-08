@@ -186,6 +186,7 @@ export function SkillsTable({ items, images }: SkillsTableProps) {
         }
       >
         <SkillForm
+          key={editingItem?.id ?? "create"}
           images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}

@@ -1,6 +1,7 @@
 "use server";
 
 import { and, desc, eq, isNull } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
 import {
@@ -40,6 +41,9 @@ export const createSkillAction = withAuthAction(
         .insert(TbSkills)
         .values(validated.data)
         .returning();
+
+      revalidatePath("/dashboard/skills");
+      revalidatePath("/");
 
       return {
         success: true as const,
@@ -85,6 +89,9 @@ export const updateSkillAction = withAuthAction(
         )
         .returning();
 
+      revalidatePath("/dashboard/skills");
+      revalidatePath("/");
+
       return {
         success: true as const,
         data: updated,
@@ -116,6 +123,9 @@ export const deleteSkillAction = withAuthAction(async (auth, id: string) => {
       .update(TbSkills)
       .set({ deletedAt: new Date() })
       .where(and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id)));
+
+    revalidatePath("/dashboard/skills");
+    revalidatePath("/");
 
     return { success: true as const, message: "Skill deleted" };
   } catch (error) {

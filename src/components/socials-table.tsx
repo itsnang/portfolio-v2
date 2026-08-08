@@ -188,6 +188,7 @@ export function SocialsTable({ items, images }: SocialsTableProps) {
         }
       >
         <SocialsForm
+          key={editingItem?.id ?? "create"}
           images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}

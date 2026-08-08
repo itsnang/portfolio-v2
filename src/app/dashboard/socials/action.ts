@@ -1,6 +1,7 @@
 "use server";
 
 import { and, desc, eq, isNull } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
 import {
@@ -40,6 +41,9 @@ export const createSocialAction = withAuthAction(
         .insert(TbSocials)
         .values(validated.data)
         .returning();
+
+      revalidatePath("/dashboard/socials");
+      revalidatePath("/");
 
       return {
         success: true as const,
@@ -88,6 +92,9 @@ export const updateSocialAction = withAuthAction(
         )
         .returning();
 
+      revalidatePath("/dashboard/socials");
+      revalidatePath("/");
+
       return {
         success: true as const,
         data: updated,
@@ -119,6 +126,9 @@ export const deleteSocialAction = withAuthAction(async (auth, id: string) => {
       .update(TbSocials)
       .set({ deletedAt: new Date() })
       .where(and(eq(TbSocials.id, id), eq(TbSocials.userId, auth.profile.id)));
+
+    revalidatePath("/dashboard/socials");
+    revalidatePath("/");
 
     return { success: true as const, message: "Social deleted" };
   } catch (error) {

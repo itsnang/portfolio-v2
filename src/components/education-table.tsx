@@ -201,6 +201,7 @@ export function EducationTable({ items, images }: EducationTableProps) {
         }
       >
         <EducationForm
+          key={editingItem?.id ?? "create"}
           images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}

@@ -1,6 +1,7 @@
 "use server";
 
 import { and, desc, eq, isNull } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
 import {
@@ -40,6 +41,9 @@ export const createEducationAction = withAuthAction(
         .insert(TbEducation)
         .values(validated.data)
         .returning();
+
+      revalidatePath("/dashboard/education");
+      revalidatePath("/");
 
       return {
         success: true as const,
@@ -88,6 +92,9 @@ export const updateEducationAction = withAuthAction(
         )
         .returning();
 
+      revalidatePath("/dashboard/education");
+      revalidatePath("/");
+
       return {
         success: true as const,
         data: updated,
@@ -123,6 +130,9 @@ export const deleteEducationAction = withAuthAction(
         .update(TbEducation)
         .set({ deletedAt: new Date() })
         .where(and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id)));
+
+      revalidatePath("/dashboard/education");
+      revalidatePath("/");
 
       return { success: true as const, message: "Education deleted" };
     } catch (error) {
