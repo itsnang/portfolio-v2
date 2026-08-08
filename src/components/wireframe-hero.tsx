@@ -76,7 +76,7 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
           >
             &ldquo;builds for the web&rdquo;
             <svg viewBox="0 0 220 14" preserveAspectRatio="none">
-              <path d="M3,8 C70,2 160,12 217,5" className="wf-uline-path" />
+              <path d="M3,8 C70,2 160,12 217,5" className="wf-uline-path" pathLength={1} />
             </svg>
           </div>
           <p
@@ -103,7 +103,7 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
           </div>
         </div>
 
-        <div className="wf-reveal d2" style={{ position: "relative" }}>
+        <div className="wf-reveal" style={{ position: "relative" }}>
           <div
             className="wf-sketch wf-photo"
             style={{ width: "100%", aspectRatio: "4/5" }}

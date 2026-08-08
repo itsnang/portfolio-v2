@@ -42,6 +42,7 @@ export function WireframeJourney() {
               fill="none"
               stroke="var(--wf-ink)"
               strokeWidth={2}
+              pathLength={1}
             />
           </svg>
         </div>

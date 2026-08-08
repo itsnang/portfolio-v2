@@ -472,6 +472,17 @@
   opacity: 0;
   transform: translateY(16px) rotate(-0.4deg);
 }
+/* Used by src/app/projects/[projectId]/wireframe-project-detail.tsx's own
+   IntersectionObserver-based observeReveals() mechanism (that page does not
+   use GSAP). Not used by the wireframe homepage — GSAP tweens those elements'
+   opacity/transform directly instead of toggling this class. */
+.wf-reveal.in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1);
+}
+.wf-reveal.d1 { transition-delay: .08s; }
+.wf-reveal.d2 { transition-delay: .16s; }
 
 /* skeleton shimmer */
 @keyframes wf-shimmer {
@@ -511,8 +522,8 @@
   filter: url(#wobble);
 }
 .wf-uline-path {
-  stroke-dasharray: 220;
-  stroke-dashoffset: 220;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
 }
 
 /* experience card */
@@ -676,24 +687,6 @@
   }
 }
 
-.wf-brand {
-  font-family: var(--wf-hand);
-  font-size: 26px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--wf-ink);
-  text-decoration: none;
-}
-.wf-brand-tag {
-  font-size: 13px;
-  color: var(--wf-accent);
-  font-family: var(--wf-marker);
-  transform: rotate(-4deg);
-  display: inline-block;
-}
-
 /* ── VERTICAL TIMELINE ── */
 .wf-vtimeline {
   position: relative;
@@ -706,6 +699,10 @@
   bottom: 32px;
   width: 2px;
   pointer-events: none;
+}
+.wf-vtroad-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
 }
 .wf-vt-item {
   position: relative;

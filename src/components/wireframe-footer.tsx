@@ -49,7 +49,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
           Open to new projects, collabs, or just talking shop.
         </p>
         <div
-          className="wf-reveal d1"
+          className="wf-reveal"
           style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
         >
           {socials.map((social) => (
@@ -59,7 +59,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
               target="_blank"
               rel="noopener noreferrer"
               className="wf-btn"
-              style={{ display: "inline-flex", alignItems: "center", gap: 7, flexShrink: 0 }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
             >
               {social.icon && (
                 <Image
@@ -67,7 +67,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
                   alt={social.name}
                   width={16}
                   height={16}
-                  style={{ objectFit: "contain" }}
+                  style={{ objectFit: "contain", flexShrink: 0 }}
                 />
               )}
               {social.name}

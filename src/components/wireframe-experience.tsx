@@ -18,7 +18,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
           02
         </span>
         <h2 className="wf-h" style={{ fontSize: 40 }}>
-          Where I've Worked
+          Where I&apos;ve Worked
         </h2>
         <span
           className="wf-m"
@@ -62,8 +62,8 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
                   <Image
                     src={xp.imageUrl}
                     alt={xp.company}
-                    fill
-                    sizes="46px"
+                    width={38}
+                    height={38}
                     className="object-contain"
                   />
                 ) : (
