@@ -59,7 +59,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
               target="_blank"
               rel="noopener noreferrer"
               className="wf-btn"
-              style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 7, flexShrink: 0 }}
             >
               {social.icon && (
                 <Image
