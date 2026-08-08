@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ISocial } from "@/types/profile.type";
 
 export function WireframeFooter({ socials }: { socials: ISocial[] }) {
@@ -34,7 +35,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
           // let&apos;s talk
         </div>
         <h2 className="wf-h wf-reveal" style={{ fontSize: 52 }}>
-          Say hi 👋
+          Let&apos;s build something
         </h2>
         <p
           className="wf-m wf-reveal"
@@ -45,7 +46,7 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
             maxWidth: 420,
           }}
         >
-          Always building something. Let&apos;s connect:
+          Open to new projects, collabs, or just talking shop.
         </p>
         <div
           className="wf-reveal d1"
@@ -61,10 +62,12 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
               style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
             >
               {social.icon && (
-                <img
+                <Image
                   src={social.icon}
                   alt={social.name}
-                  style={{ width: 16, height: 16, objectFit: "contain", flexShrink: 0 }}
+                  width={16}
+                  height={16}
+                  style={{ objectFit: "contain" }}
                 />
               )}
               {social.name}
