@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { skillCategoryEnum } from "@/db/table";
 import type { ISkill } from "@/types/profile.type";
 import { Icons } from "@/components/icons";
@@ -5,21 +6,21 @@ import { Icons } from "@/components/icons";
 export function WireframeSkills({ skills }: { skills: ISkill[] }) {
   return (
     <section style={{ padding: "84px 0" }} id="skills">
-      <div className="contact-strip wf-reveal">
-        <span className="contact-mini">
+      <div className="wf-contact-strip wf-reveal">
+        <span className="wf-contact-mini">
           <Icons.mapPin />
           Phnom Penh, KH
         </span>
-        <a className="contact-mini" href="tel:+85570647779">
+        <a className="wf-contact-mini" href="tel:+85570647779">
           <Icons.phone />
           +855 70 647 779
         </a>
-        <a className="contact-mini" href="mailto:lorn.samnang.it@gmail.com">
+        <a className="wf-contact-mini" href="mailto:lorn.samnang.it@gmail.com">
           <Icons.email />
           lorn.samnang.it@gmail.com
         </a>
         <a
-          className="contact-mini"
+          className="wf-contact-mini"
           href="https://lornsamnang.com"
           target="_blank"
           rel="noopener noreferrer"
@@ -60,7 +61,7 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
                 {group.map((skill) => (
                   <span key={skill.id} className="wf-sketch wf-chip">
                     {skill.logoUrl && (
-                      <img src={skill.logoUrl} alt="" className="wf-logo" />
+                      <Image src={skill.logoUrl} alt="" width={18} height={18} className="wf-logo" />
                     )}
                     {skill.name}
                   </span>
