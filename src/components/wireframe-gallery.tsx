@@ -31,7 +31,7 @@ export function WireframeGallery({ images }: Props) {
             className="wf-sketch wf-photo"
             style={{ width: "100%", marginBottom: 16, breakInside: "avoid" }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- images has no stored width/height; masonry needs each image's natural aspect ratio, which next/image can't provide without explicit dimensions or a fill box */}
             <img
               src={src}
               alt={`Gallery ${i + 1}`}
