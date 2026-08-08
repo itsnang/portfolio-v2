@@ -12,5 +12,8 @@ export const skillsInsertSchema = createInsertSchema(TbSkills, {
   category: z.enum(skillCategoryEnum.enumValues),
 });
 
+export const skillsFormSchema = skillsInsertSchema.omit({ userId: true });
+
 export type Skills = z.infer<typeof skillsSchema>;
 export type SkillsInsert = z.infer<typeof skillsInsertSchema>;
+export type SkillsFormValues = z.infer<typeof skillsFormSchema>;
