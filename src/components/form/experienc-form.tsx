@@ -59,7 +59,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { ImageSelector } from "../image-selector";
-import { RichTextEditor } from "../ui/editor";
+import { SimpleEditor } from "../tiptap-templates/simple/simple-editor";
 
 interface ExperienceProps {
   images: IImages[];
@@ -250,13 +250,11 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <div className="border rounded-lg overflow-hidden">
-                        <RichTextEditor
-                          content={field.value ?? ""}
-                          onChange={field.onChange}
-                          placeholder="Share your key responsibilities, notable achievements, technologies used, and impact made in this role..."
-                        />
-                      </div>
+                      <SimpleEditor
+                        content={field.value ?? ""}
+                        onChange={field.onChange}
+                        placeholder="Share your key responsibilities, notable achievements, technologies used, and impact made in this role..."
+                      />
                     </FormControl>
                     <FormDescription>
                       Use bullet points, bold text, and formatting to make your

@@ -112,7 +112,7 @@ export const RichTextEditor = ({
   // Update editor content when prop changes
   React.useEffect(() => {
     if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content, false);
+      editor.commands.setContent(content, { emitUpdate: false });
     }
   }, [content, editor]);
 

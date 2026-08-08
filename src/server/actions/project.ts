@@ -4,7 +4,7 @@ import { db } from "@/db/drizzle";
 import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
 import { TbProject } from "@/db/table";
 import { withAuthAction } from "./middleware";
-import { eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 
 export const createProjectAction = withAuthAction(
   async (auth, project: ProjectInsert) => {
@@ -76,7 +76,10 @@ export const updateProjectAction = withAuthAction(
 export const getProjects = async () => {
   try {
     const projects = await db.query.TbProject.findMany({
-      orderBy: (project, { desc }) => [desc(project.createdAt)],
+      orderBy: (project, { asc, desc }) => [
+        asc(project.sortOrder),
+        desc(project.createdAt),
+      ],
     });
     return projects;
   } catch (error) {
@@ -84,6 +87,24 @@ export const getProjects = async () => {
     throw new Error("Failed to fetch projects");
   }
 };
+
+export const reorderProjectsAction = withAuthAction(
+  async (_, items: { id: string; sortOrder: number }[]) => {
+    try {
+      await Promise.all(
+        items.map(({ id, sortOrder }) =>
+          db.update(TbProject).set({ sortOrder }).where(eq(TbProject.id, id))
+        )
+      );
+      return { success: true, message: "Projects reordered" };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { success: false, error: error.message };
+      }
+      return { success: false, error: "Failed to reorder projects" };
+    }
+  }
+);
 
 export const getProjectById = async (id: string) => {
   try {

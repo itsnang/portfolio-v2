@@ -21,9 +21,9 @@ export const achievements = [
   },
   {
     id: 2,
-    title: "TOP 2 Turing Hackaton team",
+    title: "TOP 2 Turing Hackathon team",
     description:
-      "a five-day program that provides participants with the opportunity to test their ideas in fulfilling societal needs and build a strong foundation for their startups.",
+      "A five-day program that provides participants with the opportunity to test their ideas in fulfilling societal needs and build a strong foundation for their startups.",
     icon: <Trophy className="h-12 w-12 text-yellow-500" />,
     year: "2024",
     category: "Award",
@@ -47,7 +47,7 @@ export const achievements = [
     gradient: "from-emerald-400/20 to-teal-500/20",
     links: [
       {
-        title: "News",
+        title: "View more",
         icon: <Icons.globe className="h-4 w-4" />,
         href: "https://sabaicode.com",
       },

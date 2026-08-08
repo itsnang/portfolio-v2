@@ -13,3 +13,6 @@ export const socialsInsertSchema = createInsertSchema(TbSocials, {
 });
 export type Socials = z.infer<typeof socialsSchema>;
 export type SocialsInsert = z.infer<typeof socialsInsertSchema>;
+
+export const socialsFormSchema = socialsInsertSchema.omit({ userId: true });
+export type SocialsFormValues = z.infer<typeof socialsFormSchema>;

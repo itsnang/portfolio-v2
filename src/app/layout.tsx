@@ -4,8 +4,23 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Architects_Daughter, Caveat } from "next/font/google";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
+import { getAppConfig } from "@/app/action";
+
+const architectsDaughter = Architects_Daughter({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-architects-daughter",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -13,16 +28,25 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
   weight: ["400", "500", "600", "700"],
   preload: true,
-  fallback: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+  fallback: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "sans-serif",
+  ],
 });
 
 export const metadata: Metadata = generateMetadata({});
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const config = await getAppConfig();
+  const htmlClass = config.theme === "wireframe" ? "wireframe" : "dark";
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -41,14 +65,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className={htmlClass} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${spaceGrotesk.className}`}>
+      <body className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster richColors theme="light" position="top-center" />
         <Analytics />

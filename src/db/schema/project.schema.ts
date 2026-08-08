@@ -28,6 +28,7 @@ export const projecInsertSchema = createInsertSchema(TbProject, {
     .optional(),
   thumbnail: z.string().url().nonempty("Thumbnail is required"),
   detailImage: z.array(z.string().url()).optional(),
+  sortOrder: z.number().int().optional(),
 });
 
 export type Project = z.infer<typeof projectSchema>;

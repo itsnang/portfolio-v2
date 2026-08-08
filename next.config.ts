@@ -17,12 +17,6 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "5mb",
-    },
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
-  },
   turbopack: {
     rules: {
       "*.svg": {

@@ -102,20 +102,8 @@ const data = {
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "App Config",
+          url: "/dashboard/config",
         },
       ],
     },
@@ -153,7 +141,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Image alt="logo" src={favIcon} height={28} width={28} />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Porfolio CMS</span>
+                  <span className="truncate font-semibold">Portfolio CMS</span>
                 </div>
               </Link>
             </SidebarMenuButton>

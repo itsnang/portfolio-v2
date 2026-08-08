@@ -17,3 +17,6 @@ export const educationInsertSchema = createInsertSchema(TbEducation, {
 
 export type Education = z.infer<typeof educationSchema>;
 export type EducationInsert = z.infer<typeof educationInsertSchema>;
+
+export const educationFormSchema = educationInsertSchema.omit({ userId: true });
+export type EducationFormValues = z.infer<typeof educationFormSchema>;

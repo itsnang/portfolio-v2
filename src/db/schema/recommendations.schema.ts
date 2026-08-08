@@ -21,3 +21,10 @@ export const recommendationsInsertSchema = createInsertSchema(
 
 export type Recommendations = z.infer<typeof recommendationsSchema>;
 export type RecommendationsInsert = z.infer<typeof recommendationsInsertSchema>;
+
+export const recommendationsFormSchema = recommendationsInsertSchema.omit({
+  profileId: true,
+});
+export type RecommendationsFormValues = z.infer<
+  typeof recommendationsFormSchema
+>;
