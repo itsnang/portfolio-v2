@@ -24,12 +24,29 @@ export function WireframeJourney() {
       </div>
 
       <div className="wf-vtimeline">
-        <div className="wf-vtroad" />
-        {sorted.map((a, i) => (
-          <div
-            key={a.id}
-            className={`wf-vt-item wf-reveal${i > 0 ? ` d${Math.min(i, 3)}` : ""}`}
+        <div className="wf-vtroad">
+          <svg
+            width="100%"
+            height="100%"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            focusable="false"
+            style={{ display: "block", filter: "url(#wobble)" }}
           >
+            <line
+              className="wf-vtroad-line"
+              x1="1"
+              y1="0"
+              x2="1"
+              y2="100%"
+              fill="none"
+              stroke="var(--wf-ink)"
+              strokeWidth={2}
+            />
+          </svg>
+        </div>
+        {sorted.map((a, i) => (
+          <div key={a.id} className="wf-vt-item wf-reveal">
             <div className={`wf-vt-dot wf-vt-dot--${a.category.toLowerCase()}`} />
             <div className="wf-sketch wf-stack wf-vt-card">
               <div
@@ -56,6 +73,7 @@ export function WireframeJourney() {
                       className="wf-sketch wf-btn"
                       style={{ fontSize: 13 }}
                     >
+                      <div className="wf-edge" />
                       {link.title} →
                     </a>
                   ))}
