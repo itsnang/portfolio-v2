@@ -1,14 +1,20 @@
 "use client";
-import { insertSkill } from "@/app/dashboard/skills/action";
-import { SkillsInsert, skillsInsertSchema } from "@/db/schema/skills.schma";
-import { skillCategoryEnum } from "@/db/table";
-import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { createSkillAction, updateSkillAction } from "@/app/dashboard/skills/action";
+import {
+  skillsFormSchema,
+  type Skills,
+  type SkillsFormValues,
+} from "@/db/schema/skills.schma";
+import { skillCategoryEnum } from "@/db/table";
+import { cn } from "@/lib/utils";
+import { IImages } from "@/types/profile.type";
 import { ImageSelector } from "../image-selector";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
@@ -31,30 +37,53 @@ import {
 
 interface SkillFormProps {
   images: IImages[];
+  initialValues?: Skills;
+  onSuccess?: () => void;
 }
 
-export const SkillForm: React.FC<SkillFormProps> = ({ images }) => {
+export const SkillForm: React.FC<SkillFormProps> = ({
+  images,
+  initialValues,
+  onSuccess,
+}) => {
   const [isPending, setIsPending] = useState(false);
+  const isEditing = Boolean(initialValues);
 
-  const form = useForm<SkillsInsert>({
-    resolver: zodResolver(skillsInsertSchema),
-    defaultValues: {
-      userId: "1",
-      name: "",
-      logoUrl: "",
-      isActive: true,
-      category: "Frontend",
-    },
+  const form = useForm<SkillsFormValues>({
+    resolver: zodResolver(skillsFormSchema),
+    defaultValues: initialValues
+      ? {
+          name: initialValues.name,
+          logoUrl: initialValues.logoUrl,
+          isActive: initialValues.isActive ?? true,
+          category: initialValues.category,
+        }
+      : {
+          name: "",
+          logoUrl: "",
+          isActive: true,
+          category: "Frontend",
+        },
   });
 
-  async function onSubmit(values: SkillsInsert) {
+  async function onSubmit(values: SkillsFormValues) {
     setIsPending(true);
     try {
-      await insertSkill(values);
-      toast.success("Insert Skill successfully");
+      const result = isEditing
+        ? await updateSkillAction(initialValues!.id, values)
+        : await createSkillAction(values);
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(isEditing ? "Skill updated" : "Skill added");
+      if (!isEditing) form.reset();
+      onSuccess?.();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to Insert Skill");
+      toast.error(isEditing ? "Failed to update skill" : "Failed to add skill");
     } finally {
       setIsPending(false);
     }
@@ -140,13 +169,13 @@ export const SkillForm: React.FC<SkillFormProps> = ({ images }) => {
           )}
         />
 
-        <Button type="submit" className="w-full h-12">
+        <Button type="submit" className="w-full h-12" disabled={isPending}>
           <LoaderCircle
             className={cn("animate-spin size-4 hidden", {
               block: isPending,
             })}
           />
-          Submit
+          {isEditing ? "Save Changes" : "Submit"}
         </Button>
       </form>
     </Form>

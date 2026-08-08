@@ -188,7 +188,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
             display: "grid",
             gridTemplateColumns: "1.05fr 1fr",
             gap: 48,
-            alignItems: "center",
+            alignItems: "start",
             padding: "28px 0 30px",
             position: "relative",
           }}
@@ -215,45 +215,6 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                 {project.href}
               </p>
             )}
-            <div
-              style={{
-                display: "flex",
-                gap: 20,
-                flexWrap: "wrap",
-                marginTop: 22,
-              }}
-            >
-              <div className="wf-m" style={{ fontSize: 13 }}>
-                <b
-                  style={{
-                    display: "block",
-                    fontSize: 11,
-                    letterSpacing: ".12em",
-                    textTransform: "uppercase",
-                    color: "var(--wf-ink-soft)",
-                    marginBottom: 3,
-                  }}
-                >
-                  Role
-                </b>
-                Solo Build
-              </div>
-              <div className="wf-m" style={{ fontSize: 13 }}>
-                <b
-                  style={{
-                    display: "block",
-                    fontSize: 11,
-                    letterSpacing: ".12em",
-                    textTransform: "uppercase",
-                    color: "var(--wf-ink-soft)",
-                    marginBottom: 3,
-                  }}
-                >
-                  Type
-                </b>
-                {project.technologies[0]?.name ? "Full-Stack" : "Project"}
-              </div>
-            </div>
             <div
               style={{
                 display: "flex",

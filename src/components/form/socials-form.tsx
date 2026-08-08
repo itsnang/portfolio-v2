@@ -1,13 +1,19 @@
 "use client";
-import { inserSocial } from "@/app/dashboard/socials/action";
-import { SocialsInsert, socialsInsertSchema } from "@/db/schema/socials.schme";
-import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { createSocialAction, updateSocialAction } from "@/app/dashboard/socials/action";
+import {
+  socialsFormSchema,
+  type Socials,
+  type SocialsFormValues,
+} from "@/db/schema/socials.schme";
+import { cn } from "@/lib/utils";
+import { IImages } from "@/types/profile.type";
 import { ImageSelector } from "../image-selector";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
@@ -24,33 +30,58 @@ import { Input } from "../ui/input";
 
 interface SocialsFormProps {
   images: IImages[];
+  initialValues?: Socials;
+  onSuccess?: () => void;
 }
-export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
+
+export const SocialsForm: React.FC<SocialsFormProps> = ({
+  images,
+  initialValues,
+  onSuccess,
+}) => {
   const [isPending, setIsPending] = useState(false);
-  const form = useForm<SocialsInsert>({
-    resolver: zodResolver(socialsInsertSchema),
-    defaultValues: {
-      userId: "1",
-      name: "",
-      icon: "",
-      url: "",
-      isActive: true,
-    },
+  const isEditing = Boolean(initialValues);
+
+  const form = useForm<SocialsFormValues>({
+    resolver: zodResolver(socialsFormSchema),
+    defaultValues: initialValues
+      ? {
+          name: initialValues.name,
+          icon: initialValues.icon,
+          url: initialValues.url,
+          isActive: initialValues.isActive ?? true,
+        }
+      : {
+          name: "",
+          icon: "",
+          url: "",
+          isActive: true,
+        },
   });
 
-  async function onSubmit(values: SocialsInsert) {
+  async function onSubmit(values: SocialsFormValues) {
     setIsPending(true);
     try {
-      console.log(values);
-      await inserSocial(values);
-      toast.success("Insert Social successfully");
+      const result = isEditing
+        ? await updateSocialAction(initialValues!.id, values)
+        : await createSocialAction(values);
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(isEditing ? "Social updated" : "Social added");
+      if (!isEditing) form.reset();
+      onSuccess?.();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to Insert Social");
+      toast.error(isEditing ? "Failed to update social" : "Failed to add social");
     } finally {
       setIsPending(false);
     }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -81,7 +112,7 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
             <FormItem>
               <FormLabel>Social name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter socail name" {...field} />
+                <Input placeholder="Enter social name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +126,7 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
             <FormItem>
               <FormLabel>Social Link</FormLabel>
               <FormControl>
-                <Input placeholder="Enter socail url" {...field} />
+                <Input placeholder="Enter social url" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -122,13 +153,13 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({ images }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full h-12">
+        <Button type="submit" className="w-full h-12" disabled={isPending}>
           <LoaderCircle
             className={cn("animate-spin size-4 hidden", {
               block: isPending,
             })}
           />
-          Submit
+          {isEditing ? "Save Changes" : "Submit"}
         </Button>
       </form>
     </Form>
