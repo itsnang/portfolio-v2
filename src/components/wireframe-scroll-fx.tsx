@@ -105,6 +105,31 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
           gsap.to(batch, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out", stagger: 0.05, overwrite: true }),
       });
 
+      // Footer: tightened into its own closing sequence instead of the shared batch.
+      const footer = rootRef.current?.querySelector("footer");
+      if (footer) {
+        const footerEyebrow = footer.querySelector(".wf-eyebrow");
+        const footerHeading = footer.querySelector(".wf-h");
+        const footerPara = footer.querySelector(".wf-m");
+        const footerSocials = footer.querySelector(".wf-footer-socials");
+        const footerEls = [footerEyebrow, footerHeading, footerPara, footerSocials].filter(
+          (el): el is Element => el !== null,
+        );
+        gsap.set(footerEls, { opacity: 0, y: 16 });
+        ScrollTrigger.create({
+          trigger: footer,
+          start: "top 85%",
+          once: true,
+          onEnter: () => {
+            const tl = gsap.timeline({ defaults: { ease: "power2.out", duration: 0.5 } });
+            if (footerEyebrow) tl.to(footerEyebrow, { opacity: 1, y: 0 });
+            if (footerHeading) tl.to(footerHeading, { opacity: 1, y: 0 }, "-=0.3");
+            if (footerPara) tl.to(footerPara, { opacity: 1, y: 0 }, "-=0.3");
+            if (footerSocials) tl.to(footerSocials, { opacity: 1, y: 0 }, "-=0.3");
+          },
+        });
+      }
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and
