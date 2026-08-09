@@ -22,6 +22,15 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
           gsap.to(batch, { opacity: 1, y: 0, rotate: 0, duration: 0.6, ease: "power2.out", stagger: 0.08, overwrite: true }),
       });
 
+      // Skills: each chip stamps in individually instead of the whole row fading as one block.
+      gsap.set(".wf-chip.wf-fx", { opacity: 0, scale: 0.85, rotate: () => gsap.utils.random(-3, 3) });
+      ScrollTrigger.batch(".wf-chip.wf-fx", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: "back.out(1.7)", stagger: 0.04, overwrite: true }),
+      });
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and

@@ -57,9 +57,9 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
               <div className="wf-eyebrow wf-reveal" style={{ fontSize: 12, marginBottom: 10 }}>
                 // {cat.toLowerCase()}
               </div>
-              <div className="wf-reveal" style={{ display: "flex", flexWrap: "wrap", gap: 11 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 11 }}>
                 {group.map((skill) => (
-                  <span key={skill.id} className="wf-sketch wf-chip">
+                  <span key={skill.id} className="wf-sketch wf-chip wf-reveal wf-fx">
                     {skill.logoUrl && (
                       <Image src={skill.logoUrl} alt="" width={18} height={18} className="wf-logo" />
                     )}
