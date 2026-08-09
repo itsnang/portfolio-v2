@@ -23,7 +23,7 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       });
 
       // Skills: each chip stamps in individually instead of the whole row fading as one block.
-      gsap.set(".wf-chip.wf-fx", { opacity: 0, scale: 0.85, rotate: () => gsap.utils.random(-3, 3) });
+      gsap.set(".wf-chip.wf-fx", { opacity: 0, y: 0, scale: 0.85, rotate: () => gsap.utils.random(-3, 3) });
       ScrollTrigger.batch(".wf-chip.wf-fx", {
         start: "top 88%",
         once: true,
@@ -46,7 +46,7 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       });
 
       // Projects: cards scale up with a "placed down" settle, staggered in grid order.
-      gsap.set(".wf-proj.wf-fx", { opacity: 0, scale: 0.92, y: 16 });
+      gsap.set(".wf-proj.wf-fx", { opacity: 0, scale: 0.92, y: 16, rotate: 0 });
       ScrollTrigger.batch(".wf-proj.wf-fx", {
         start: "top 88%",
         once: true,
@@ -57,6 +57,8 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       // Journey: timeline items alternate slide left/right; each dot pops in with its card.
       gsap.set(".wf-vt-item.wf-fx", {
         opacity: 0,
+        y: 0,
+        rotate: 0,
         x: (_i, target) => Number((target as HTMLElement).dataset.dir) * 28,
       });
       gsap.set(".wf-vt-item.wf-fx .wf-vt-dot", { scale: 0 });
@@ -97,7 +99,7 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       });
 
       // Gallery: tiles cascade in individually instead of the whole masonry grid popping in at once.
-      gsap.set(".wf-gallery-grid .wf-photo.wf-fx", { opacity: 0, scale: 0.9 });
+      gsap.set(".wf-gallery-grid .wf-photo.wf-fx", { opacity: 0, y: 0, rotate: 0, scale: 0.9 });
       ScrollTrigger.batch(".wf-gallery-grid .wf-photo.wf-fx", {
         start: "top 88%",
         once: true,
@@ -115,7 +117,7 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
         const footerEls = [footerEyebrow, footerHeading, footerPara, footerSocials].filter(
           (el): el is Element => el !== null,
         );
-        gsap.set(footerEls, { opacity: 0, y: 16 });
+        gsap.set(footerEls, { opacity: 0, y: 16, rotate: 0 });
         ScrollTrigger.create({
           trigger: footer,
           start: "top 85%",
@@ -137,7 +139,7 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       const heroLeft = rootRef.current?.querySelector<HTMLElement>(".wf-hero-left");
       const heroPhotoCol = rootRef.current?.querySelector<HTMLElement>(".wf-hero-photo-col");
       if (heroLeft && heroPhotoCol) {
-        gsap.set([heroLeft, heroPhotoCol], { opacity: 1 });
+        gsap.set([heroLeft, heroPhotoCol], { opacity: 1, y: 0, rotate: 0 });
 
         const badge = heroLeft.querySelector(".wf-hero-badge");
         const eyebrow = heroLeft.querySelector(".wf-hero-eyebrow");
