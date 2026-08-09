@@ -54,6 +54,24 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
           gsap.to(batch, { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "power2.out", stagger: 0.08, overwrite: true }),
       });
 
+      // Journey: timeline items alternate slide left/right; each dot pops in with its card.
+      gsap.set(".wf-vt-item.wf-fx", {
+        opacity: 0,
+        x: (_i, target) => Number((target as HTMLElement).dataset.dir) * 28,
+      });
+      gsap.set(".wf-vt-item.wf-fx .wf-vt-dot", { scale: 0 });
+      ScrollTrigger.batch(".wf-vt-item.wf-fx", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) => {
+          gsap.to(batch, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out", stagger: 0.08, overwrite: true });
+          const dots = batch
+            .map((el) => el.querySelector(".wf-vt-dot"))
+            .filter((el): el is Element => el !== null);
+          gsap.to(dots, { scale: 1, duration: 0.4, ease: "back.out(1.7)", stagger: 0.08, delay: 0.15, overwrite: true });
+        },
+      });
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and

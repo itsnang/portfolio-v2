@@ -47,7 +47,7 @@ export function WireframeJourney() {
           </svg>
         </div>
         {sorted.map((a, i) => (
-          <div key={a.id} className="wf-vt-item wf-reveal">
+          <div key={a.id} className="wf-vt-item wf-reveal wf-fx" data-dir={i % 2 === 0 ? -1 : 1}>
             <div className={`wf-vt-dot wf-vt-dot--${a.category.toLowerCase()}`} />
             <div className="wf-sketch wf-stack wf-vt-card">
               <div
