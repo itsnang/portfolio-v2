@@ -31,6 +31,20 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
           gsap.to(batch, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: "back.out(1.7)", stagger: 0.04, overwrite: true }),
       });
 
+      // Experience: cards alternate a slight x-slide (odd from left, even from right) into the fade+rise.
+      gsap.set(".wf-xp-wrap", {
+        opacity: 0,
+        y: 16,
+        rotate: -0.4,
+        x: (_i, target) => (Number((target as HTMLElement).dataset.idx) % 2 === 0 ? -24 : 24),
+      });
+      ScrollTrigger.batch(".wf-xp-wrap", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, y: 0, rotate: 0, x: 0, duration: 0.6, ease: "power2.out", stagger: 0.08, overwrite: true }),
+      });
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and

@@ -30,7 +30,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
 
       <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
         {experience.map((xp, i) => (
-          <div key={xp.id} className="wf-reveal">
+          <div key={xp.id} className="wf-reveal wf-xp-wrap wf-fx" data-idx={i}>
           <article
             className={`wf-sketch wf-xp${openXp === xp.id ? " open" : ""}`}
             style={{
