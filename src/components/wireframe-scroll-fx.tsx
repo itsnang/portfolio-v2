@@ -96,6 +96,15 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
           gsap.to(batch, { opacity: 0.5, scale: 1, rotate: 0, duration: 0.5, ease: "back.out(1.7)", stagger: 0.08, delay: 0.15, overwrite: true }),
       });
 
+      // Gallery: tiles cascade in individually instead of the whole masonry grid popping in at once.
+      gsap.set(".wf-gallery-grid .wf-photo.wf-fx", { opacity: 0, scale: 0.9 });
+      ScrollTrigger.batch(".wf-gallery-grid .wf-photo.wf-fx", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out", stagger: 0.05, overwrite: true }),
+      });
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and
