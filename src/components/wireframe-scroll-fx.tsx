@@ -72,6 +72,30 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
         },
       });
 
+      // Education & recommendations: cards stagger with alternating slight rotate (stacked-papers feel).
+      gsap.set(".wf-edu-card.wf-fx, .wf-quote.wf-fx", {
+        opacity: 0,
+        y: 16,
+        rotate: (i) => (i % 2 === 0 ? -1.2 : 1.2),
+      });
+      ScrollTrigger.batch(".wf-edu-card.wf-fx, .wf-quote.wf-fx", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, y: 0, rotate: 0, duration: 0.6, ease: "power2.out", stagger: 0.08, overwrite: true }),
+      });
+
+      // Recommendation quote-mark glyph: scales/rotates in just after its card settles.
+      // .wf-quote-mark has no CSS default hidden state of its own — it's nested inside .wf-quote,
+      // which already hides the whole subtree via .wf-reveal's opacity:0, so no FOUC risk pre-JS.
+      gsap.set(".wf-quote-mark", { opacity: 0, scale: 0, rotate: -8 });
+      ScrollTrigger.batch(".wf-quote-mark", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 0.5, scale: 1, rotate: 0, duration: 0.5, ease: "back.out(1.7)", stagger: 0.08, delay: 0.15, overwrite: true }),
+      });
+
       // Hero: sequenced load-in (mount-time, not scroll-gated — hero is always above the fold).
       // .wf-hero-left/.wf-hero-photo-col keep the .wf-reveal CSS default (opacity:0) for SSR/no-JS safety
       // and are excluded from the default batch below via .wf-fx; this timeline unhides them and
