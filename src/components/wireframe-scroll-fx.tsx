@@ -110,9 +110,9 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       // Footer: tightened into its own closing sequence instead of the shared batch.
       const footer = rootRef.current?.querySelector("footer");
       if (footer) {
-        const footerEyebrow = footer.querySelector(".wf-eyebrow");
-        const footerHeading = footer.querySelector(".wf-h");
-        const footerPara = footer.querySelector(".wf-m");
+        const footerEyebrow = footer.querySelector(".wf-footer-eyebrow");
+        const footerHeading = footer.querySelector(".wf-footer-heading");
+        const footerPara = footer.querySelector(".wf-footer-para");
         const footerSocials = footer.querySelector(".wf-footer-socials");
         const footerEls = [footerEyebrow, footerHeading, footerPara, footerSocials].filter(
           (el): el is Element => el !== null,
@@ -138,8 +138,9 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
       // animates their children individually instead of as one block.
       const heroLeft = rootRef.current?.querySelector<HTMLElement>(".wf-hero-left");
       const heroPhotoCol = rootRef.current?.querySelector<HTMLElement>(".wf-hero-photo-col");
-      if (heroLeft && heroPhotoCol) {
-        gsap.set([heroLeft, heroPhotoCol], { opacity: 1, y: 0, rotate: 0 });
+
+      if (heroLeft) {
+        gsap.set(heroLeft, { opacity: 1, y: 0, rotate: 0 });
 
         const badge = heroLeft.querySelector(".wf-hero-badge");
         const eyebrow = heroLeft.querySelector(".wf-hero-eyebrow");
@@ -159,6 +160,10 @@ export function WireframeScrollFx({ children }: { children: React.ReactNode }) {
         if (underline) heroTl.to(underline, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" }, "-=0.1");
         if (about) heroTl.from(about, { opacity: 0, y: 10, duration: 0.4 }, "-=0.5");
         if (cta.length) heroTl.from(cta, { opacity: 0, y: 10, duration: 0.4, stagger: 0.08 }, "-=0.2");
+      }
+
+      if (heroPhotoCol) {
+        gsap.set(heroPhotoCol, { opacity: 1, y: 0, rotate: 0 });
 
         // Photo column: "drop and settle" with a slight overshoot, tape/note land last.
         const photo = heroPhotoCol.querySelector(".wf-photo");

@@ -68,11 +68,17 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               <span
                 key={i}
                 className="wf-hero-word-mask"
-                style={{ display: "inline-block", overflow: "hidden", verticalAlign: "top" }}
+                style={{
+                  display: "inline-block",
+                  overflow: "hidden",
+                  verticalAlign: "top",
+                  padding: "0.25em 0",
+                  margin: "-0.25em 0",
+                }}
               >
                 <span className="wf-hero-word" style={{ display: "inline-block" }}>
                   {word}
-                  {i < words.length - 1 ? " " : ""}
+                  {i < words.length - 1 ? " " : ""}
                 </span>
               </span>
             ))}

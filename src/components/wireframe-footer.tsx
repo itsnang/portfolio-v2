@@ -31,14 +31,14 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
           textAlign: "center",
         }}
       >
-        <div className="wf-eyebrow wf-reveal wf-fx" style={{ marginBottom: 10 }}>
+        <div className="wf-eyebrow wf-footer-eyebrow wf-reveal wf-fx" style={{ marginBottom: 10 }}>
           // let&apos;s talk
         </div>
-        <h2 className="wf-h wf-reveal wf-fx" style={{ fontSize: 52 }}>
+        <h2 className="wf-h wf-footer-heading wf-reveal wf-fx" style={{ fontSize: 52 }}>
           Let&apos;s build something
         </h2>
         <p
-          className="wf-m wf-reveal wf-fx"
+          className="wf-m wf-footer-para wf-reveal wf-fx"
           style={{
             fontSize: 16,
             color: "var(--wf-ink-soft)",
