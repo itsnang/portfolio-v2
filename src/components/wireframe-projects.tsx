@@ -31,7 +31,7 @@ export function WireframeProjects({ projects }: { projects: IProject[] }) {
         {projects.map((proj, i) => (
           <article
             key={proj.id}
-            className="wf-sketch wf-proj wf-reveal"
+            className="wf-sketch wf-proj wf-reveal wf-fx"
             style={{ background: "var(--wf-paper-2)", display: "flex", flexDirection: "column" }}
           >
             <Link
