@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { IExperience } from "@/types/profile.type";
 import { fmt } from "./wireframe-utils";
@@ -17,7 +18,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
           02
         </span>
         <h2 className="wf-h" style={{ fontSize: 40 }}>
-          Work Experience
+          Where I&apos;ve Worked
         </h2>
         <span
           className="wf-m"
@@ -29,7 +30,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
 
       <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
         {experience.map((xp, i) => (
-          <div key={xp.id} className={`wf-reveal${i === 0 ? "" : ` d${Math.min(i, 3)}`}`}>
+          <div key={xp.id} className="wf-reveal wf-xp-wrap wf-fx" data-idx={i}>
           <article
             className={`wf-sketch wf-xp${openXp === xp.id ? " open" : ""}`}
             style={{
@@ -58,10 +59,12 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
                 }}
               >
                 {xp.imageUrl ? (
-                  <img
+                  <Image
                     src={xp.imageUrl}
                     alt={xp.company}
-                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    width={38}
+                    height={38}
+                    className="object-contain"
                   />
                 ) : (
                   <span className="wf-h" style={{ fontSize: 22, fontWeight: 700 }}>

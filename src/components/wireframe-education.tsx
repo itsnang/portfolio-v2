@@ -32,7 +32,7 @@ export function WireframeEducation({ education, recommendations }: Props) {
               href={edu.href ?? "#"}
               target={edu.href ? "_blank" : undefined}
               rel="noopener noreferrer"
-              className={`wf-sketch wf-edu-card wf-reveal${i > 0 ? " d1" : ""}`}
+              className="wf-sketch wf-edu-card wf-reveal wf-fx"
               style={{
                 background: "var(--wf-paper-2)",
                 padding: "22px 24px",
@@ -65,11 +65,11 @@ export function WireframeEducation({ education, recommendations }: Props) {
           {recommendations.map((rec, i) => (
             <div
               key={rec.id}
-              className={`wf-sketch wf-quote wf-reveal d${Math.min(i + 2, 3)}`}
+              className="wf-sketch wf-quote wf-reveal wf-fx"
               style={{ background: "var(--wf-paper-2)", padding: "30px 34px", position: "relative" }}
             >
               <div
-                className="wf-h"
+                className="wf-h wf-quote-mark"
                 style={{
                   fontSize: 74,
                   color: "var(--wf-accent)",
@@ -108,6 +108,7 @@ export function WireframeEducation({ education, recommendations }: Props) {
                     background: "var(--wf-paper-2)",
                   }}
                 >
+                  <div className="wf-edge" />
                   <span className="wf-h" style={{ fontSize: 16, fontWeight: 700 }}>
                     {rec.name
                       .split(" ")

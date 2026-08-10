@@ -31,7 +31,7 @@ export function WireframeProjects({ projects }: { projects: IProject[] }) {
         {projects.map((proj, i) => (
           <article
             key={proj.id}
-            className={`wf-sketch wf-proj wf-reveal${i % 2 === 1 ? " d1" : ""}`}
+            className="wf-sketch wf-proj wf-reveal wf-fx"
             style={{ background: "var(--wf-paper-2)", display: "flex", flexDirection: "column" }}
           >
             <Link
@@ -99,6 +99,7 @@ export function WireframeProjects({ projects }: { projects: IProject[] }) {
                   className="wf-sketch wf-btn wf-btn-solid"
                   style={{ fontSize: 14 }}
                 >
+                  <div className="wf-edge" />
                   details →
                 </Link>
                 {proj.href && (
@@ -109,6 +110,7 @@ export function WireframeProjects({ projects }: { projects: IProject[] }) {
                     className="wf-sketch wf-btn"
                     style={{ fontSize: 14, color: "var(--wf-accent)" }}
                   >
+                    <div className="wf-edge" />
                     live
                   </a>
                 )}

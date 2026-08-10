@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ISocial } from "@/types/profile.type";
 
 export function WireframeFooter({ socials }: { socials: ISocial[] }) {
@@ -30,14 +31,14 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
           textAlign: "center",
         }}
       >
-        <div className="wf-eyebrow wf-reveal" style={{ marginBottom: 10 }}>
+        <div className="wf-eyebrow wf-footer-eyebrow wf-reveal wf-fx" style={{ marginBottom: 10 }}>
           // let&apos;s talk
         </div>
-        <h2 className="wf-h wf-reveal" style={{ fontSize: 52 }}>
-          Say hi 👋
+        <h2 className="wf-h wf-footer-heading wf-reveal wf-fx" style={{ fontSize: 52 }}>
+          Let&apos;s build something
         </h2>
         <p
-          className="wf-m wf-reveal"
+          className="wf-m wf-footer-para wf-reveal wf-fx"
           style={{
             fontSize: 16,
             color: "var(--wf-ink-soft)",
@@ -45,10 +46,10 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
             maxWidth: 420,
           }}
         >
-          Always building something. Let&apos;s connect:
+          Open to new projects, collabs, or just talking shop.
         </p>
         <div
-          className="wf-reveal d1"
+          className="wf-reveal wf-fx wf-footer-socials"
           style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
         >
           {socials.map((social) => (
@@ -61,10 +62,12 @@ export function WireframeFooter({ socials }: { socials: ISocial[] }) {
               style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
             >
               {social.icon && (
-                <img
+                <Image
                   src={social.icon}
                   alt={social.name}
-                  style={{ width: 16, height: 16, objectFit: "contain", flexShrink: 0 }}
+                  width={16}
+                  height={16}
+                  style={{ objectFit: "contain", flexShrink: 0 }}
                 />
               )}
               {social.name}
