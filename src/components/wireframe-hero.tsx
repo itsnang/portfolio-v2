@@ -29,10 +29,9 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
           alignItems: "center",
         }}
       >
-        <div className="wf-reveal wf-fx wf-hero-left">
+        <div className="wf-reveal">
           {isAvailable && (
             <div
-              className="wf-hero-badge"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -60,31 +59,14 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               </span>
             </div>
           )}
-          <div className="wf-eyebrow wf-hero-eyebrow" style={{ marginBottom: 10 }}>
+          <div className="wf-eyebrow" style={{ marginBottom: 10 }}>
             // hello world, this is
           </div>
-          <h1 className="wf-h wf-hero-name" style={{ fontSize: 84, lineHeight: 0.92 }}>
-            {name.split(" ").map((word, i, words) => (
-              <span
-                key={i}
-                className="wf-hero-word-mask"
-                style={{
-                  display: "inline-block",
-                  overflow: "hidden",
-                  verticalAlign: "top",
-                  padding: "0.25em 0",
-                  margin: "-0.25em 0",
-                }}
-              >
-                <span className="wf-hero-word" style={{ display: "inline-block" }}>
-                  {word}
-                  {i < words.length - 1 ? " " : ""}
-                </span>
-              </span>
-            ))}
+          <h1 className="wf-h" style={{ fontSize: 84, lineHeight: 0.92 }}>
+            {name}
           </h1>
           <div
-            className="wf-m wf-uline wf-hero-tagline"
+            className="wf-m wf-uline"
             style={{
               fontSize: 22,
               color: "var(--wf-ink-soft)",
@@ -92,13 +74,13 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               display: "inline-block",
             }}
           >
-            &ldquo;builds for the web&rdquo;
+            &ldquo;Software Developer&rdquo;
             <svg viewBox="0 0 220 14" preserveAspectRatio="none">
-              <path d="M3,8 C70,2 160,12 217,5" className="wf-uline-path" pathLength={1} />
+              <path d="M3,8 C70,2 160,12 217,5" />
             </svg>
           </div>
           <p
-            className="wf-m wf-hero-about"
+            className="wf-m"
             style={{
               fontSize: 16,
               color: "var(--wf-ink-soft)",
@@ -109,19 +91,17 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
           >
             {abouts}
           </p>
-          <div className="wf-hero-cta" style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
             <Link href="#projects" className="wf-sketch wf-btn wf-btn-solid">
-              <div className="wf-edge" />
               see the work →
             </Link>
             <Link href="#contact" className="wf-sketch wf-btn">
-              <div className="wf-edge" />
               say hi 👋
             </Link>
           </div>
         </div>
 
-        <div className="wf-reveal wf-fx wf-hero-photo-col" style={{ position: "relative" }}>
+        <div className="wf-reveal d2" style={{ position: "relative" }}>
           <div
             className="wf-sketch wf-photo"
             style={{ width: "100%", aspectRatio: "4/5" }}
@@ -133,6 +113,7 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               fill
               sizes="(max-width: 640px) 100vw, 45vw"
               className="object-cover"
+              loading="eager"
               priority
             />
           </div>

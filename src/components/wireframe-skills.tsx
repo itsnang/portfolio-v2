@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { skillCategoryEnum } from "@/db/table";
 import type { ISkill } from "@/types/profile.type";
 import { Icons } from "@/components/icons";
@@ -6,21 +5,21 @@ import { Icons } from "@/components/icons";
 export function WireframeSkills({ skills }: { skills: ISkill[] }) {
   return (
     <section style={{ padding: "84px 0" }} id="skills">
-      <div className="wf-contact-strip wf-reveal">
-        <span className="wf-contact-mini">
+      <div className="contact-strip wf-reveal">
+        <span className="contact-mini">
           <Icons.mapPin />
           Phnom Penh, KH
         </span>
-        <a className="wf-contact-mini" href="tel:+85570647779">
+        <a className="contact-mini" href="tel:+85570647779">
           <Icons.phone />
           +855 70 647 779
         </a>
-        <a className="wf-contact-mini" href="mailto:lorn.samnang.it@gmail.com">
+        <a className="contact-mini" href="mailto:lorn.samnang.it@gmail.com">
           <Icons.email />
           lorn.samnang.it@gmail.com
         </a>
         <a
-          className="wf-contact-mini"
+          className="contact-mini"
           href="https://lornsamnang.com"
           target="_blank"
           rel="noopener noreferrer"
@@ -57,11 +56,11 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
               <div className="wf-eyebrow wf-reveal" style={{ fontSize: 12, marginBottom: 10 }}>
                 // {cat.toLowerCase()}
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 11 }}>
+              <div className="wf-reveal" style={{ display: "flex", flexWrap: "wrap", gap: 11 }}>
                 {group.map((skill) => (
-                  <span key={skill.id} className="wf-sketch wf-chip wf-reveal wf-fx">
+                  <span key={skill.id} className="wf-sketch wf-chip">
                     {skill.logoUrl && (
-                      <Image src={skill.logoUrl} alt="" width={18} height={18} className="wf-logo" />
+                      <img src={skill.logoUrl} alt="" className="wf-logo" />
                     )}
                     {skill.name}
                   </span>

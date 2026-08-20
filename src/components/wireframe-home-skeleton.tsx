@@ -10,6 +10,17 @@ export function Skel({ w, h, className = "" }: { w?: string; h?: string; classNa
 export function WireframeHomeSkeleton() {
   return (
     <div className="sketch-page" style={{ minHeight: "100vh" }}>
+
+      {/* Nav */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(251,250,245,.9)", backdropFilter: "blur(4px)", borderBottom: "2px solid #25252a" }}>
+        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 62 }}>
+          <Skel w="32px" h="26px" />
+          <div style={{ display: "flex", gap: 20 }}>
+            {[80, 60, 72, 70, 56, 52].map((w, i) => <Skel key={i} w={`${w}px`} h="14px" />)}
+          </div>
+        </div>
+      </nav>
+
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px" }}>
 
         {/* Hero */}

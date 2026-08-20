@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useLayoutEffect, useRef } from "react";
 import type { IProfile } from "@/types/profile.type";
 import { WireframeHero } from "./wireframe-hero";
 import { WireframeSkills } from "./wireframe-skills";
@@ -7,7 +10,6 @@ import { WireframeJourney } from "./wireframe-journey";
 import { WireframeEducation } from "./wireframe-education";
 import { WireframeGallery } from "./wireframe-gallery";
 import { WireframeFooter } from "./wireframe-footer";
-import { WireframeScrollFx } from "./wireframe-scroll-fx";
 
 const WOBBLE = (
   <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
@@ -32,9 +34,49 @@ const WOBBLE = (
   </svg>
 );
 
+function paintEdges(root: HTMLElement) {
+  root
+    .querySelectorAll(
+      ".wf-sketch, .wf-photo, .wf-chip, .wf-btn, .wf-xp, .wf-badge, .wf-proj, .wf-edu-card, .wf-quote",
+    )
+    .forEach((el) => {
+      if (!el.querySelector(":scope > .wf-edge")) {
+        const edge = document.createElement("div");
+        edge.className = "wf-edge";
+        el.insertBefore(edge, el.firstChild);
+      }
+    });
+}
+
 export function WireframeHome({ profile }: { profile: IProfile }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const revealedEls = useRef<Set<Element>>(new Set());
+
+  useEffect(() => {
+    if (!rootRef.current) return;
+    paintEdges(rootRef.current);
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            revealedEls.current.add(e.target);
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+    rootRef.current.querySelectorAll(".wf-reveal").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // Re-apply .in after every render so React className updates don't wipe it
+  useLayoutEffect(() => {
+    revealedEls.current.forEach((el) => el.classList.add("in", "wf-revealed"));
+  });
+
   return (
-    <WireframeScrollFx>
+    <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
       <WireframeHero
         name={profile.name}
@@ -61,6 +103,6 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
         )}
       </div>
       <WireframeFooter socials={profile.socials} />
-    </WireframeScrollFx>
+    </div>
   );
 }

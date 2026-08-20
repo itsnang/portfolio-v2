@@ -24,14 +24,14 @@ export function WireframeGallery({ images }: Props) {
           // moments
         </span>
       </div>
-      <div className="wf-gallery-grid" style={{ columnCount: 4, columnGap: 16 }}>
+      <div className="wf-reveal wf-gallery-grid" style={{ columnCount: 4, columnGap: 16 }}>
         {images.map((src, i) => (
           <div
             key={i}
-            className="wf-sketch wf-photo wf-reveal wf-fx"
+            className="wf-sketch wf-photo"
             style={{ width: "100%", marginBottom: 16, breakInside: "avoid" }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element -- images has no stored width/height; masonry needs each image's natural aspect ratio, which next/image can't provide without explicit dimensions or a fill box */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={src}
               alt={`Gallery ${i + 1}`}
