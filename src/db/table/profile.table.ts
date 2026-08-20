@@ -1,5 +1,6 @@
 import { column, table } from "@/utils";
 import { relations } from "drizzle-orm";
+import { TbBlogPost } from "./blog.table";
 import { TbEducation } from "./education.table";
 import { TbExperiences } from "./experiences.table";
 import { TbProject } from "./project.table";
@@ -34,4 +35,5 @@ export const ProfileRelations = relations(TbProfile, ({ many }) => ({
   projects: many(TbProject),
   socials: many(TbSocials),
   recommendations: many(TbRecommendations),
+  blogPosts: many(TbBlogPost),
 }));
