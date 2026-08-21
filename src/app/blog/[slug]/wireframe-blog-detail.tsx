@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -145,7 +146,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
         <div
           className="wf-reveal wf-m"
           style={{ fontSize: 16, lineHeight: 1.75, color: "var(--wf-ink)" }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
         {(post.prev || post.next) && (
