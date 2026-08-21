@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,12 +22,13 @@ import {
   Grid3X3,
   LayoutGrid,
   Check,
+  UploadCloud,
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
 import { FolderSelector } from "./folder-selector";
-import { getImages } from "@/app/dashboard/images/action";
+import { getImages, uploadStagedFile } from "@/app/dashboard/images/action";
 import { toast } from "sonner";
 
 interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {
@@ -53,6 +55,7 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
   const [images, setImages] = useState<IImages[]>(initialImages);
   const [isLoading, setIsLoading] = useState(false);
   const [gridSize, setGridSize] = useState(4);
+  const [isUploading, setIsUploading] = useState(false);
   const { field } = useController({
     name,
     control,
@@ -113,6 +116,38 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
       field.onChange(updatedSelection);
     }
   };
+
+  const handleUpload = useCallback(
+    async (files: File[]) => {
+      if (!files[0]) return;
+      if (!selectedFolder) {
+        toast.error("Select a folder first");
+        return;
+      }
+      setIsUploading(true);
+      try {
+        const [uploaded] = await uploadStagedFile(files[0], selectedFolder);
+        setImages((prev) => [
+          { id: uploaded.id, imageUrl: uploaded.imageUrl },
+          ...prev,
+        ]);
+        handleImageSelect(uploaded.imageUrl);
+        toast.success("Image uploaded");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast.error("Failed to upload image");
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [selectedFolder, handleImageSelect]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: { "image/png": [], "image/jpeg": [], "image/webp": [] },
+    multiple: false,
+    onDrop: handleUpload,
+  });
 
   const handleClearSelection = () => {
     if (mode === "single") {
@@ -311,6 +346,25 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
 
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full px-4 sm:px-6">
+              <div
+                {...getRootProps()}
+                className={cn(
+                  "mt-4 sm:mt-6 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors cursor-pointer",
+                  isDragActive
+                    ? "border-primary bg-primary/5"
+                    : "border-muted-foreground/25 hover:bg-muted/10"
+                )}
+              >
+                <input {...getInputProps()} disabled={isUploading || !selectedFolder} />
+                <UploadCloud className="h-6 w-6 text-muted-foreground/60" />
+                <p className="text-sm text-muted-foreground">
+                  {isUploading
+                    ? "Uploading..."
+                    : !selectedFolder
+                      ? "Select a folder above to enable upload"
+                      : "Drag & drop an image here, or click to upload"}
+                </p>
+              </div>
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4">
                   <div className="relative">

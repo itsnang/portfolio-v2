@@ -5,6 +5,7 @@ export * from "./user.table";
 export * from "./verification.table";
 
 // Then export tables that reference the user table
+export * from "./blog.table";
 export * from "./education.table";
 export * from "./experiences.table";
 export * from "./images.table";

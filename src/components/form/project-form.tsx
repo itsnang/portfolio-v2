@@ -3,7 +3,6 @@
 import React, { useTransition } from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LoaderCircle, Minus, Plus, Link2, Settings2 } from "lucide-react";
 import Image from "next/image";
@@ -45,7 +44,7 @@ import {
 interface ProjectFormProps {
   images: IImages[];
   initialData?: Project;
-  redirectUrl: string;
+  onSuccess?: () => void;
 }
 
 const getDefaultValues = (initialData?: Project): ProjectInsert => {
@@ -96,9 +95,6 @@ const ThumbnailCard = ({ images }: { images: IImages[] }) => {
           <Settings2 className="w-5 h-5" />
           Project Thumbnail
         </CardTitle>
-        <CardDescription>
-          Choose a thumbnail image that best represents your project
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <ImageSelector
@@ -119,9 +115,6 @@ const BasicInfoCard = () => {
     <Card>
       <CardHeader>
         <CardTitle>Basic Information</CardTitle>
-        <CardDescription>
-          Provide the essential details about your project
-        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -362,9 +355,6 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
     <Card>
       <CardHeader>
         <CardTitle>Project Gallery</CardTitle>
-        <CardDescription>
-          Upload additional images to showcase your project in detail
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <ImageSelector
@@ -381,10 +371,9 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
 const ProjectForm: React.FC<ProjectFormProps> = ({
   images,
   initialData,
-  redirectUrl,
+  onSuccess,
 }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const form = useForm<ProjectInsert>({
     resolver: zodResolver(projecInsertSchema),
@@ -419,7 +408,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
         toast.success(result.message);
         form.reset();
-        router.push(redirectUrl);
+        onSuccess?.();
       } catch (error) {
         console.error("Project error:", error);
         toast.error(
@@ -451,7 +440,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   type="button"
                   variant="outline"
                   className="sm:flex-1 h-12"
-                  onClick={() => router.push(redirectUrl)}
+                  onClick={() => onSuccess?.()}
                   disabled={isPending}
                 >
                   Cancel
