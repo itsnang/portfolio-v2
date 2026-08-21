@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Project } from "@/db/schema/project.schema";
 import { ProjectTechnology } from "@/types/profile.type";
@@ -266,6 +266,10 @@ export const ProjectTable = ({
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Project | null>(null);
 
+  useEffect(() => {
+    setItems(projects);
+  }, [projects]);
+
   function openCreate() {
     setEditingItem(null);
     setSheetOpen(true);
@@ -306,14 +310,6 @@ export const ProjectTable = ({
     [items]
   );
 
-  if (items.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        {EMPTY_STATE_MESSAGE}
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center mb-4">
@@ -323,55 +319,63 @@ export const ProjectTable = ({
         </Button>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={items.map((p) => p.id)}
-          strategy={verticalListSortingStrategy}
+      {items.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          {EMPTY_STATE_MESSAGE}
+        </div>
+      ) : (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          <div className="space-y-4">
-            {/* Desktop Table View */}
-            <div className="hidden md:block rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-10" />
-                    <TableHead className="w-[70px]">Thumbnail</TableHead>
-                    <TableHead className="w-[180px]">Title</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead className="w-[120px]">Technologies</TableHead>
-                    <TableHead className="w-[90px]">Status</TableHead>
-                    <TableHead className="w-[70px]">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {items.map((project) => (
-                    <SortableProjectTableRow
-                      key={project.id}
-                      project={project}
-                      onEdit={openEdit}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+          <SortableContext
+            items={items.map((p) => p.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-4">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-md border overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-10" />
+                      <TableHead className="w-[70px]">Thumbnail</TableHead>
+                      <TableHead className="w-[180px]">Title</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead className="w-[120px]">
+                        Technologies
+                      </TableHead>
+                      <TableHead className="w-[90px]">Status</TableHead>
+                      <TableHead className="w-[70px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {items.map((project) => (
+                      <SortableProjectTableRow
+                        key={project.id}
+                        project={project}
+                        onEdit={openEdit}
+                      />
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-            {/* Mobile Card View */}
-            <div className="md:hidden space-y-4">
-              {items.map((project) => (
-                <SortableProjectCard
-                  key={project.id}
-                  project={project}
-                  onEdit={openEdit}
-                />
-              ))}
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-4">
+                {items.map((project) => (
+                  <SortableProjectCard
+                    key={project.id}
+                    project={project}
+                    onEdit={openEdit}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </SortableContext>
-      </DndContext>
+          </SortableContext>
+        </DndContext>
+      )}
 
       <FormSheet
         open={sheetOpen}

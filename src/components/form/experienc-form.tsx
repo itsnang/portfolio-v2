@@ -133,18 +133,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
   const isFormValid = form.formState.isValid;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {initialData ? "Edit Experience" : "Add New Experience"}
-        </h1>
-        <p className="text-muted-foreground">
-          {initialData
-            ? "Update your work experience details below"
-            : "Fill in the details of your work experience"}
-        </p>
-      </div>
-
+    <div className="max-w-5xl mx-auto space-y-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Company Information Section */}
