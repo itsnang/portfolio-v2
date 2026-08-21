@@ -3,7 +3,6 @@
 import React, { useRef, useTransition } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LoaderCircle, FileText, ImageIcon, Send } from "lucide-react";
 
@@ -52,7 +51,7 @@ import {
 interface BlogFormProps {
   images: IImages[];
   initialData?: BlogPost;
-  redirectUrl: string;
+  onSuccess?: () => void;
 }
 
 const getDefaultValues = (initialData?: BlogPost): BlogPostInsert => {
@@ -111,7 +110,6 @@ const BasicInfoCard = ({ isEditing }: { isEditing: boolean }) => {
     <Card>
       <CardHeader>
         <CardTitle>Basic Information</CardTitle>
-        <CardDescription>Title, URL slug, and a short summary</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <FormField
@@ -200,7 +198,6 @@ const ContentCard = () => {
           <FileText className="w-5 h-5" />
           Content
         </CardTitle>
-        <CardDescription>Write the post body</CardDescription>
       </CardHeader>
       <CardContent>
         <FormField
@@ -271,10 +268,9 @@ const PublishCard = () => {
 const BlogForm: React.FC<BlogFormProps> = ({
   images,
   initialData,
-  redirectUrl,
+  onSuccess,
 }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const form = useForm<BlogPostInsert>({
     resolver: zodResolver(blogPostInsertSchema),
@@ -295,7 +291,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
 
         toast.success(result.message);
         form.reset();
-        router.push(redirectUrl);
+        onSuccess?.();
       } catch (error) {
         console.error("Blog post error:", error);
         toast.error(
@@ -325,7 +321,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
                   type="button"
                   variant="outline"
                   className="sm:flex-1 h-12"
-                  onClick={() => router.push(redirectUrl)}
+                  onClick={() => onSuccess?.()}
                   disabled={isPending}
                 >
                   Cancel
