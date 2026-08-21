@@ -22,6 +22,13 @@
       "when": 1780852358320,
       "tag": "0002_faulty_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1787243442492,
+      "tag": "0003_fearless_texas_twister",
+      "breakpoints": true
     }
   ]
 }

@@ -72,7 +72,10 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}>
+      <body
+        className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}
+        suppressHydrationWarning
+      >
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster richColors theme="light" position="top-center" />
         <Analytics />

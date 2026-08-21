@@ -1,3 +1,5 @@
+import DOMPurify from "isomorphic-dompurify";
+
 import { cn } from "@/lib/utils";
 
 interface RichTextProps {
@@ -13,7 +15,7 @@ export function RichText({ html, className }: RichTextProps) {
         "[&_img]:rounded-lg",
         className
       )}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
     />
   );
 }

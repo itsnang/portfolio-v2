@@ -63,6 +63,10 @@ const data = {
           url: "/dashboard/project",
         },
         {
+          title: "Blog",
+          url: "/dashboard/blog",
+        },
+        {
           title: "Socials",
           url: "/dashboard/socials",
         },
