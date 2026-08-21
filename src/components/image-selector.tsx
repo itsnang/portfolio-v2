@@ -140,7 +140,7 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
         setIsUploading(false);
       }
     },
-    [selectedFolder]
+    [selectedFolder, handleImageSelect]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
