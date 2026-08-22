@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadStagedFile } from "@/features/media/actions";
+import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { FolderSelector } from "./folder-selector";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -35,6 +36,7 @@ export const MultiImageUpload = () => {
       "image/webp": [],
       "image/jfif": [],
     },
+    maxSize: MAX_FILE_SIZE,
     maxFiles: 5,
     onDrop: (acceptedFiles) => {
       if (previewUrls.length + acceptedFiles.length > 5) {
@@ -47,6 +49,12 @@ export const MultiImageUpload = () => {
       );
       setPreviewUrls((prev) => [...prev, ...newPreviewUrls]);
       form.setValue("images", [...form.getValues("images"), ...acceptedFiles]);
+    },
+    onDropRejected: (rejections) => {
+      for (const rejection of rejections) {
+        const reason = rejection.errors[0]?.message ?? "File was rejected";
+        toast.error(`${rejection.file.name}: ${reason}`);
+      }
     },
   });
 
@@ -71,15 +79,28 @@ export const MultiImageUpload = () => {
     }
 
     setIsPending(true);
+    let succeeded = 0;
     try {
       for (const image of data.images) {
-        await uploadStagedFile(image, selectedFolder);
+        try {
+          await uploadStagedFile(image, selectedFolder);
+          succeeded += 1;
+        } catch (error) {
+          console.error(`Failed to upload ${image.name}:`, error);
+          const message =
+            error instanceof Error ? error.message : "Upload failed";
+          toast.error(`${image.name}: ${message}`);
+        }
       }
-      toast.success("Images uploaded successfully");
-      router.push("/dashboard/images");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to upload images");
+
+      if (succeeded === data.images.length) {
+        toast.success("Images uploaded successfully");
+        router.push("/dashboard/images");
+      } else if (succeeded > 0) {
+        toast.warning(
+          `${succeeded}/${data.images.length} images uploaded — see errors above for the rest`
+        );
+      }
     } finally {
       setIsPending(false);
     }

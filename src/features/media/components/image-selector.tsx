@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { IImages } from "@/features/media/types";
 import { FolderSelector } from "./folder-selector";
 import { getImages, uploadStagedFile } from "@/features/media/actions";
+import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { toast } from "sonner";
 
 interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {
@@ -124,6 +125,12 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
         toast.error("Select a folder first");
         return;
       }
+      if (files[0].size > MAX_FILE_SIZE) {
+        toast.error(
+          `File is too large (${(files[0].size / (1024 * 1024)).toFixed(1)}MB). Max is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`
+        );
+        return;
+      }
       setIsUploading(true);
       try {
         const [uploaded] = await uploadStagedFile(files[0], selectedFolder);
@@ -135,7 +142,9 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
         toast.success("Image uploaded");
       } catch (error) {
         console.error("Error uploading image:", error);
-        toast.error("Failed to upload image");
+        const message =
+          error instanceof Error ? error.message : "Failed to upload image";
+        toast.error(message);
       } finally {
         setIsUploading(false);
       }
@@ -145,8 +154,13 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/png": [], "image/jpeg": [], "image/webp": [] },
+    maxSize: MAX_FILE_SIZE,
     multiple: false,
     onDrop: handleUpload,
+    onDropRejected: (rejections) => {
+      const reason = rejections[0]?.errors[0]?.message ?? "File was rejected";
+      toast.error(reason);
+    },
   });
 
   const handleClearSelection = () => {

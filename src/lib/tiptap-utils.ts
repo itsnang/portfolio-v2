@@ -13,8 +13,9 @@ import {
   type NodeWithPos,
 } from "@tiptap/react";
 import { uploadStagedFile } from "@/features/media/actions";
+import { MAX_FILE_SIZE } from "@/features/media/constants";
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+export { MAX_FILE_SIZE };
 
 export const MAC_SYMBOLS: Record<string, string> = {
   mod: "⌘",
