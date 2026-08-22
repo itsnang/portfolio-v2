@@ -9,7 +9,7 @@ import {
   type EducationFormValues,
 } from "@/db/schema/education.schema";
 import { TbEducation } from "@/db/table";
-import { withAuthAction } from "@/server/actions/middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 export const getEducations = withAuthAction(async (auth) => {
   if (!auth.profile) return [];

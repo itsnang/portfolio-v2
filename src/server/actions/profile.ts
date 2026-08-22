@@ -3,7 +3,7 @@ import { db } from "@/db/drizzle";
 import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { TbProfile } from "@/db/table";
 import { eq } from "drizzle-orm";
-import { withAuthAction } from "./middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 export const updateProfileAction = withAuthAction(
   async (auth, profile: ProfileInsert) => {

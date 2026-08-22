@@ -10,7 +10,7 @@ import {
   type SocialsFormValues,
 } from "@/db/schema/socials.schema";
 import { TbSocials } from "@/db/table";
-import { withAuthAction } from "@/server/actions/middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 /** Public, unauthenticated read used by the public site (home page, achievement page, dock nav). */
 export const getSocials = async () => {

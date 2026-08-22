@@ -9,7 +9,7 @@ import {
   type RecommendationsFormValues,
 } from "@/db/schema/recommendations.schema";
 import { TbRecommendations } from "@/db/table";
-import { withAuthAction } from "@/server/actions/middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 export const getRecommendations = withAuthAction(async (auth) => {
   if (!auth.profile) return [];

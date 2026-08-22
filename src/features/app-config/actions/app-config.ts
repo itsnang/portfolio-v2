@@ -4,7 +4,7 @@ import { cache } from "react";
 import { db } from "@/db/drizzle";
 import { TbAppConfig } from "@/db/table";
 import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
-import { withAuthAction } from "@/server/actions/middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 const DEFAULT_APP_CONFIG = { id: "config", maintenance: false, theme: "modern" as const };
 

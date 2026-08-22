@@ -9,7 +9,7 @@ import {
   type SkillsFormValues,
 } from "@/db/schema/skills.schema";
 import { TbSkills } from "@/db/table";
-import { withAuthAction } from "@/server/actions/middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 export const getSkills = withAuthAction(async (auth) => {
   if (!auth.profile) return [];

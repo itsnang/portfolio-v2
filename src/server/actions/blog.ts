@@ -7,7 +7,7 @@ import { db } from "@/db/drizzle";
 import { blogPostInsertSchema, type BlogPostInsert } from "@/db/schema/blog.schema";
 import { TbBlogPost } from "@/db/table";
 import { slugify } from "@/utils/slugify";
-import { withAuthAction } from "./middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 
 async function assertSlugAvailable(slug: string, excludeId?: string) {
   const existing = await db.query.TbBlogPost.findFirst({

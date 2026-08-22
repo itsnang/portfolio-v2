@@ -3,7 +3,7 @@
 import { db } from "@/db/drizzle";
 import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
 import { TbProject } from "@/db/table";
-import { withAuthAction } from "./middleware";
+import { withAuthAction } from "@/lib/auth/middleware";
 import { asc, desc, eq } from "drizzle-orm";
 
 export const createProjectAction = withAuthAction(
