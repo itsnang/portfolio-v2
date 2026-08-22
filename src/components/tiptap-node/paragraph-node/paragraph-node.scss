@@ -145,6 +145,8 @@
   a {
     color: var(--link-text-color);
     text-decoration: underline;
+    // A raw URL pasted as link text has no spaces to wrap at.
+    overflow-wrap: anywhere;
   }
 }
 

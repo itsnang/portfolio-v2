@@ -28,6 +28,15 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
+  experimental: {
+    serverActions: {
+      // Next's default is 1MB, which silently rejects most real photos before
+      // they ever reach Cloudinary — image uploads go through uploadStagedFile
+      // as a Server Action, so this must comfortably clear MAX_FILE_SIZE
+      // (features/media/constants.ts).
+      bodySizeLimit: "8mb",
+    },
+  },
 };
 
 const pwaConfig = withPWA({

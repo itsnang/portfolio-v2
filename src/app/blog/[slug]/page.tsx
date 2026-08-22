@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAppConfig } from "@/app/action";
-import { getBlogDetail } from "./action";
+import { getAppConfig } from "@/features/app-config/actions";
+import { getBlogDetail } from "@/features/blog/actions";
 import { BlogDetail } from "./blog-detail";
 import { WireframeBlogDetail } from "./wireframe-blog-detail";
 

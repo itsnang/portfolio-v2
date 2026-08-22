@@ -144,7 +144,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
         <hr className="wf-divider" style={{ margin: "10px 0 40px" }} />
 
         <div
-          className="wf-reveal wf-m"
+          className="wf-m wf-content"
           style={{ fontSize: 16, lineHeight: 1.75, color: "var(--wf-ink)" }}
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />

@@ -1,39 +1,24 @@
 "use client";
 
-import { FolderSelector } from "@/components/folder-selector";
+import { FolderSelector } from "@/features/media/components/folder-selector";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/get-current-user";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getImages } from "./action";
-
-interface Image {
-  id: string;
-  imageUrl: string;
-  folder: string;
-}
+import { useImages } from "@/features/media/hooks/use-images";
 
 function Page() {
-  const [images, setImages] = useState<Image[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const loadImages = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const imageList = await getImages(selectedFolder);
-      setImages(imageList);
-    } catch (error) {
-      console.error("Error loading images:", error);
-      toast.error("Failed to load images");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedFolder]);
+  const {
+    data: images = [],
+    isLoading,
+    isError,
+  } = useImages(selectedFolder);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -46,10 +31,10 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      loadImages();
+    if (isError) {
+      toast.error("Failed to load images");
     }
-  }, [isAuthenticated, loadImages]);
+  }, [isError]);
 
   if (!isAuthenticated) {
     return null;

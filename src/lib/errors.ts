@@ -19,8 +19,8 @@ export class EmailInUseError extends PublicError {
 }
 
 export class UploadImagesError extends PublicError {
-  constructor() {
-    super("Failed to upload image");
+  constructor(message = "Failed to upload image") {
+    super(message);
     this.name = "UploadImagesError";
   }
 }

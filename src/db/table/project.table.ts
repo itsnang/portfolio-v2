@@ -1,8 +1,10 @@
 import { table, column } from "@/utils";
 import { TbProfile } from "./profile.table";
 import { relations } from "drizzle-orm";
-import { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
 import { genId } from "@/utils/id";
+
+export type ProjectLinks = { type: string; href: string };
+export type ProjectTechnology = { name: string; logoUrl: string };
 
 export type TbProject = typeof TbProject;
 
