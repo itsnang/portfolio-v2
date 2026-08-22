@@ -7,7 +7,7 @@ import { Projects } from "@/features/project/components/project-section";
 import { Recommendations } from "@/features/recommendations/components/recommendations-section";
 import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
-import { WireframeHome } from "@/components/wireframe-home";
+import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/actions";
 import { getProfile } from "@/features/profile/actions";
