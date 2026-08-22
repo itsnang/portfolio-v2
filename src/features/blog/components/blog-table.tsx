@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PencilIcon } from "lucide-react";
 
-import { BlogPost } from "@/db/schema/blog.schema";
-import { deleteBlogPostAction } from "@/server/actions/blog";
-import { Button } from "./ui/button";
+import { BlogPost } from "@/features/blog/schemas";
+import { deleteBlogPostAction } from "@/features/blog/actions";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { IImages } from "@/features/media/types";
-import BlogForm from "@/components/form/blog-form";
+import BlogForm from "@/features/blog/components/blog-form";
 
 const EMPTY_STATE_MESSAGE = "No blog posts yet. Write your first post below.";
 

@@ -1,6 +1,6 @@
 import { getAppConfig } from "@/features/app-config/actions";
-import { getPublishedBlogPosts } from "@/server/actions/blog";
-import { BlogList } from "@/components/blog-list";
+import { getPublishedBlogPosts } from "@/features/blog/actions";
+import { BlogList } from "@/features/blog/components/blog-list";
 import { WireframeBlogList } from "@/components/wireframe-blog-list";
 
 export const revalidate = 3600;

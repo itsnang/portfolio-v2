@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { getProfile } from "./action";
-import { getPublishedBlogPosts } from "@/server/actions/blog";
+import { getPublishedBlogPosts } from "@/features/blog/actions";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://lornsamnang.com";

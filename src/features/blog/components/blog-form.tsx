@@ -39,14 +39,14 @@ import {
   blogPostInsertSchema,
   BlogPostInsert,
   BlogPost,
-} from "@/db/schema/blog.schema";
+} from "@/features/blog/schemas";
 import { blogStatusEnum } from "@/db/table";
 import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {
   createBlogPostAction,
   updateBlogPostAction,
-} from "@/server/actions/blog";
+} from "@/features/blog/actions";
 
 interface BlogFormProps {
   images: IImages[];

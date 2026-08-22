@@ -8,6 +8,8 @@ import { blogPostInsertSchema, type BlogPostInsert } from "@/db/schema/blog.sche
 import { TbBlogPost } from "@/db/table";
 import { slugify } from "@/utils/slugify";
 import { withAuthAction } from "@/lib/auth/middleware";
+import { NotFoundError } from "@/lib/errors";
+import { err, ok } from "@justmiracle/result";
 
 async function assertSlugAvailable(slug: string, excludeId?: string) {
   const existing = await db.query.TbBlogPost.findFirst({
@@ -224,4 +226,40 @@ export const getBlogPostBySlug = async (slug: string) => {
     console.error("Error fetching blog post:", error);
     throw new Error("Failed to fetch blog post");
   }
+};
+
+/** Public detail-page read: the post plus its prev/next neighbors for in-order navigation. */
+export const getBlogDetail = async (slug: string) => {
+  const post = await db.query.TbBlogPost.findFirst({
+    where: (p, { eq, and, isNull }) =>
+      and(eq(p.slug, slug), eq(p.status, "published"), isNull(p.deletedAt)),
+  })
+    .then((p) => {
+      if (!p) throw new NotFoundError();
+      return p;
+    })
+    .then(ok)
+    .catch(err);
+
+  if (post.error) throw new NotFoundError();
+
+  const allPosts = await db.query.TbBlogPost.findMany({
+    where: (p, { eq, and, isNull }) =>
+      and(eq(p.status, "published"), isNull(p.deletedAt)),
+    columns: { id: true, slug: true, title: true },
+    orderBy: (p, { desc }) => [desc(p.publishedAt)],
+  });
+
+  const idx = allPosts.findIndex((p) => p.slug === slug);
+  const total = allPosts.length;
+  const prev = total > 1 ? allPosts[(idx - 1 + total) % total] : null;
+  const next = total > 1 ? allPosts[(idx + 1) % total] : null;
+
+  return {
+    ...post.value,
+    number: idx + 1,
+    total,
+    prev,
+    next,
+  };
 };
