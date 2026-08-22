@@ -613,6 +613,123 @@
   color: var(--wf-accent);
 }
 
+/* blog post body — hand-drawn rich text, matches the rest of the
+   wireframe theme instead of the Tiptap editor's own (dark, modern)
+   styling */
+.wf-content {
+  min-width: 0;
+}
+.wf-content > * + * {
+  margin-top: 20px;
+}
+.wf-content h1,
+.wf-content h2,
+.wf-content h3,
+.wf-content h4 {
+  font-family: var(--wf-hand);
+  color: var(--wf-ink);
+  line-height: 1.15;
+}
+.wf-content h1 {
+  font-size: 32px;
+  margin-top: 48px;
+}
+.wf-content h2 {
+  font-size: 26px;
+  margin-top: 40px;
+}
+.wf-content h3 {
+  font-size: 21px;
+  margin-top: 32px;
+}
+.wf-content h4 {
+  font-size: 18px;
+  margin-top: 28px;
+}
+.wf-content h1:first-child,
+.wf-content h2:first-child,
+.wf-content h3:first-child,
+.wf-content h4:first-child {
+  margin-top: 0;
+}
+.wf-content strong {
+  color: var(--wf-ink);
+}
+.wf-content em {
+  color: var(--wf-ink-soft);
+}
+.wf-content a {
+  color: var(--wf-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.wf-content ul,
+.wf-content ol {
+  padding-left: 20px;
+}
+.wf-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+.wf-content ul > li {
+  position: relative;
+  padding-left: 20px;
+}
+.wf-content ul > li::before {
+  content: "–";
+  position: absolute;
+  left: 4px;
+  color: var(--wf-accent);
+}
+.wf-content ol {
+  list-style: decimal;
+}
+.wf-content li + li {
+  margin-top: 6px;
+}
+.wf-content blockquote {
+  border-left: 3px solid var(--wf-accent);
+  padding-left: 16px;
+  color: var(--wf-ink-soft);
+  font-family: var(--wf-hand);
+  font-size: 19px;
+}
+.wf-content code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--wf-paper-2);
+  border: 1.2px solid var(--wf-ink-faint);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.wf-content pre {
+  background: var(--wf-paper-2);
+  border: 2px solid var(--wf-line);
+  border-radius: var(--wf-r);
+  padding: 16px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.wf-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.wf-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--wf-r);
+  border: 2.2px solid var(--wf-line);
+}
+.wf-content hr {
+  border: none;
+  height: 2px;
+  background: var(--wf-line);
+  margin: 40px 0;
+}
+
 /* badge — rounded square, not circle */
 .wf-badge {
   background: var(--wf-paper-2);
