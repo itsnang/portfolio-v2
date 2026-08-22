@@ -1,4 +1,5 @@
 import type { SkillCategory } from "@/db/table";
+import type { ISocial } from "@/features/socials/types";
 
 export interface IProfile {
   id: string;
@@ -52,13 +53,6 @@ export interface IProject {
   links: ProjectLinks[] | null;
   technologies: ProjectTechnology[] | null;
   detailImage: string[] | null;
-}
-
-export interface ISocial {
-  id: string;
-  name: string;
-  url: string;
-  icon: string;
 }
 
 export interface IRecommendation {

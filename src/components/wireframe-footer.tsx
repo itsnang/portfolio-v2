@@ -1,4 +1,4 @@
-import type { ISocial } from "@/types/profile.type";
+import type { ISocial } from "@/features/socials/types";
 
 export function WireframeFooter({ socials }: { socials: ISocial[] }) {
   return (
