@@ -1,5 +1,5 @@
 import { DockNavClient } from "@/components/nav-dock-client";
-import { Education } from "@/components/sections/education";
+import { Education } from "@/features/education/components/education-section";
 import { Experience } from "@/components/sections/experience";
 import { HeroProfile } from "@/components/sections/hero-profile";
 import { NavBar } from "@/components/sections/navbar";

@@ -1,5 +1,6 @@
 import type { ISocial } from "@/features/socials/types";
 import type { ISkill } from "@/features/skills/types";
+import type { IEducation } from "@/features/education/types";
 
 export interface IProfile {
   id: string;
@@ -25,16 +26,6 @@ export interface IExperience {
   startDate: Date;
   endDate: Date | null;
   description: string | null;
-}
-
-export interface IEducation {
-  id: string;
-  school: string;
-  degree: string;
-  logoUrl: string;
-  href: string | null;
-  startDate: Date;
-  endDate: Date | null;
 }
 
 export interface IProject {

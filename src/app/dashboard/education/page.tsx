@@ -1,5 +1,5 @@
-import { EducationTable } from "@/components/education-table";
-import { getEducations } from "./action";
+import { EducationTable } from "@/features/education/components/education-table";
+import { getEducations } from "@/features/education/actions";
 import { getImages } from "../images/action";
 
 async function EducationPage() {

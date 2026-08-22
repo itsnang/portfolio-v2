@@ -10,12 +10,12 @@ import { toast } from "sonner";
 import {
   createEducationAction,
   updateEducationAction,
-} from "@/app/dashboard/education/action";
+} from "@/features/education/actions";
 import {
   educationFormSchema,
   type Education,
   type EducationFormValues,
-} from "@/db/schema/education.schema";
+} from "@/features/education/schemas";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import { ImageSelector } from "../image-selector";
+import { ImageSelector } from "@/components/image-selector";
 
 interface EducationFormProps {
   images: IImages[];

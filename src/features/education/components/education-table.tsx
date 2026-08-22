@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteEducationAction } from "@/app/dashboard/education/action";
-import { EducationForm } from "@/components/form/education-form";
+import { deleteEducationAction } from "@/features/education/actions";
+import { EducationForm } from "@/features/education/components/education-form";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Education } from "@/db/schema/education.schema";
+import type { Education } from "@/features/education/schemas";
 import type { IImages } from "@/types/profile.type";
 
 const EMPTY_STATE_MESSAGE =
