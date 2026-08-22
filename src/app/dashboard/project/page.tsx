@@ -1,5 +1,5 @@
-import { ProjectTable } from "@/components/project-table";
-import { getProjects } from "@/server/actions/project";
+import { ProjectTable } from "@/features/project/components/project-table";
+import { getProjects } from "@/features/project/actions";
 import { getImages } from "@/features/media/actions";
 
 async function ProjectPage() {

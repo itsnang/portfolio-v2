@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ProjectTechnology } from "@/types/profile.type";
+import { ProjectTechnology } from "@/features/project/types";
 import Image from "next/image";
 import Link from "next/link";
 import Markdown from "react-markdown";

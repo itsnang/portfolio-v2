@@ -3,7 +3,7 @@ import { Education } from "@/features/education/components/education-section";
 import { Experience } from "@/features/experience/components/experience-section";
 import { HeroProfile } from "@/components/sections/hero-profile";
 import { NavBar } from "@/components/sections/navbar";
-import { Projects } from "@/components/sections/project";
+import { Projects } from "@/features/project/components/project-section";
 import { Recommendations } from "@/features/recommendations/components/recommendations-section";
 import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";

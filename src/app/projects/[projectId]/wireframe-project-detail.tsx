@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
+import type { ProjectLinks, ProjectTechnology } from "@/features/project/types";
 
 interface Project {
   id: string;

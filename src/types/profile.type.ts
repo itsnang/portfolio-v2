@@ -3,6 +3,7 @@ import type { ISkill } from "@/features/skills/types";
 import type { IEducation } from "@/features/education/types";
 import type { IExperience } from "@/features/experience/types";
 import type { IRecommendation } from "@/features/recommendations/types";
+import type { IProject } from "@/features/project/types";
 
 export interface IProfile {
   id: string;
@@ -19,17 +20,3 @@ export interface IProfile {
   recommendations: IRecommendation[];
   socials: ISocial[];
 }
-
-export interface IProject {
-  id: string;
-  title: string;
-  href: string | null;
-  thumbnail: string;
-  description: string;
-  links: ProjectLinks[] | null;
-  technologies: ProjectTechnology[] | null;
-  detailImage: string[] | null;
-}
-
-export type ProjectLinks = { type: string; href: string };
-export type ProjectTechnology = { name: string; logoUrl: string };

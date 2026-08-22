@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Project } from "@/db/schema/project.schema";
-import { ProjectTechnology } from "@/types/profile.type";
-import { Button } from "./ui/button";
+import { Project } from "@/features/project/schemas";
+import { ProjectTechnology } from "@/features/project/types";
+import { Button } from "@/components/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
 import {
   Table,
@@ -34,9 +34,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { reorderProjectsAction } from "@/server/actions/project";
+import { reorderProjectsAction } from "@/features/project/actions";
 import { FormSheet } from "@/components/form-sheet";
-import ProjectForm from "@/components/form/project-form";
+import ProjectForm from "@/features/project/components/project-form";
 import type { IImages } from "@/features/media/types";
 
 const MAX_VISIBLE_TECHNOLOGIES = 2;

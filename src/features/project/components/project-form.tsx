@@ -34,13 +34,13 @@ import {
   projecInsertSchema,
   ProjectInsert,
   Project,
-} from "@/db/schema/project.schema";
+} from "@/features/project/schemas";
 import { IImages } from "@/features/media/types";
-import { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
+import { ProjectLinks, ProjectTechnology } from "@/features/project/types";
 import {
   createProjectAction,
   updateProjectAction,
-} from "../../server/actions/project";
+} from "@/features/project/actions";
 
 interface ProjectFormProps {
   images: IImages[];

@@ -1,5 +1,5 @@
 import { getAppConfig } from "@/features/app-config/actions";
-import { getProjectDetail } from "./action";
+import { getProjectDetail } from "@/features/project/actions";
 import { ProjectDetail } from "./project-detail";
 import { WireframeProjectDetail } from "./wireframe-project-detail";
 

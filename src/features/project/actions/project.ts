@@ -4,6 +4,8 @@ import { db } from "@/db/drizzle";
 import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
 import { TbProject } from "@/db/table";
 import { withAuthAction } from "@/lib/auth/middleware";
+import { NotFoundError } from "@/lib/errors";
+import { err, ok } from "@justmiracle/result";
 import { asc, desc, eq } from "drizzle-orm";
 
 export const createProjectAction = withAuthAction(
@@ -116,4 +118,40 @@ export const getProjectById = async (id: string) => {
     console.error("Error fetching project:", error);
     throw new Error("Failed to fetch project");
   }
+};
+
+/** Public detail-page read: the project plus its prev/next neighbors for in-order navigation. */
+export const getProjectDetail = async (projectId: string) => {
+  const project = await db.query.TbProject.findFirst({
+    where: (p, { eq, and, isNull }) =>
+      and(eq(p.id, projectId), isNull(p.deletedAt)),
+  })
+    .then((p) => {
+      if (!p) throw new NotFoundError();
+      return p;
+    })
+    .then(ok)
+    .catch(err);
+
+  if (project.error) throw new NotFoundError();
+
+  const allProjects = await db.query.TbProject.findMany({
+    where: (p, { eq, and, isNull }) =>
+      and(eq(p.isActive, true), isNull(p.deletedAt)),
+    columns: { id: true, title: true },
+    orderBy: (p, { desc }) => [desc(p.createdAt)],
+  });
+
+  const idx = allProjects.findIndex((p) => p.id === projectId);
+  const total = allProjects.length;
+  const prev = allProjects[(idx - 1 + total) % total];
+  const next = allProjects[(idx + 1) % total];
+
+  return {
+    ...project.value,
+    number: idx + 1,
+    total,
+    prev,
+    next,
+  };
 };

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { IProject } from "@/types/profile.type";
+import type { IProject } from "@/features/project/types";
 import { stripHtml } from "./wireframe-utils";
 
 export function WireframeProjects({ projects }: { projects: IProject[] }) {
