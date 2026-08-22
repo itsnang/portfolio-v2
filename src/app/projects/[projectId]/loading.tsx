@@ -1,4 +1,4 @@
-import { getAppConfig } from "@/app/action";
+import { getAppConfig } from "@/features/app-config/actions";
 import { Skel } from "@/components/wireframe-home-skeleton";
 
 function WireframeProjectDetailSkeleton() {

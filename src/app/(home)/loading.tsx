@@ -1,4 +1,4 @@
-import { getAppConfig } from "@/app/action";
+import { getAppConfig } from "@/features/app-config/actions";
 import { WireframeHomeSkeleton } from "@/components/wireframe-home-skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

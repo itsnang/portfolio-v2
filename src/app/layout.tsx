@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk, Architects_Daughter, Caveat } from "next/font/google";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
-import { getAppConfig } from "@/app/action";
+import { getAppConfig } from "@/features/app-config/actions";
 
 const architectsDaughter = Architects_Daughter({
   subsets: ["latin"],

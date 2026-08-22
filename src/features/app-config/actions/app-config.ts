@@ -1,15 +1,23 @@
 "use server";
 
+import { cache } from "react";
 import { db } from "@/db/drizzle";
 import { TbAppConfig } from "@/db/table";
 import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
-import { withAuthAction } from "./middleware";
+import { withAuthAction } from "@/server/actions/middleware";
+
+const DEFAULT_APP_CONFIG = { id: "config", maintenance: false, theme: "modern" as const };
+
+export const getAppConfig = cache(async () => {
+  const config = await db.query.TbAppConfig.findFirst();
+  return config ?? DEFAULT_APP_CONFIG;
+});
 
 export const getAppConfigAction = withAuthAction(async () => {
   const config = await db.query.TbAppConfig.findFirst();
   return {
     success: true,
-    data: config ?? { id: "config", maintenance: false, theme: "modern" as const },
+    data: config ?? DEFAULT_APP_CONFIG,
   };
 });
 

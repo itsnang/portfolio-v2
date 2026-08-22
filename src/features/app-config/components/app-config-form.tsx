@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Check, LoaderCircle, Save } from "lucide-react";
-import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
-import { updateAppConfigAction } from "@/server/actions/app-config";
+import { appConfigInsertSchema, AppConfigInsert } from "@/features/app-config/schemas";
+import { updateAppConfigAction } from "@/features/app-config/actions";
 import { AppConfig } from "@/db/table/app-config.table";
 import { Button } from "@/components/ui/button";
 import {

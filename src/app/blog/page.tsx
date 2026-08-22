@@ -1,4 +1,4 @@
-import { getAppConfig } from "@/app/action";
+import { getAppConfig } from "@/features/app-config/actions";
 import { getPublishedBlogPosts } from "@/server/actions/blog";
 import { BlogList } from "@/components/blog-list";
 import { WireframeBlogList } from "@/components/wireframe-blog-list";

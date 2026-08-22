@@ -9,7 +9,8 @@ import { Skills } from "@/components/sections/skills-component";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getAppConfig, getProfile } from "../action";
+import { getAppConfig } from "@/features/app-config/actions";
+import { getProfile } from "../action";
 
 
 export default async function Home() {
