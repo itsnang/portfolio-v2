@@ -6,7 +6,7 @@ import { TbProject } from "@/db/table";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { NotFoundError } from "@/lib/errors";
 import { err, ok } from "@justmiracle/result";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 export const createProjectAction = withAuthAction(
   async (auth, project: ProjectInsert) => {
@@ -40,25 +40,35 @@ export const createProjectAction = withAuthAction(
 );
 
 export const updateProjectAction = withAuthAction(
-  async (_, id: string, project: ProjectInsert) => {
+  async (auth, id: string, project: ProjectInsert) => {
     try {
       const validated = projecInsertSchema.safeParse(project);
       if (!validated.success) {
         throw new Error("Invalid project data");
       }
 
+      if (!auth.profile) {
+        throw new Error("Profile not found.");
+      }
+
       const existingProject = await db.query.TbProject.findFirst({
-        where: (projectRow, { eq }) => eq(projectRow.id, id),
+        where: (projectRow, { eq, and }) =>
+          and(eq(projectRow.id, id), eq(projectRow.profileId, auth.profile!.id)),
       });
 
       if (!existingProject) {
         throw new Error("Project not found");
       }
 
+      // profileId is never client-controlled — a project's owner can't change.
+      const { profileId: _ignoredProfileId, ...safeProject } = project;
+
       const updatedProject = await db
         .update(TbProject)
-        .set(project)
-        .where(eq(TbProject.id, id))
+        .set(safeProject)
+        .where(
+          and(eq(TbProject.id, id), eq(TbProject.profileId, auth.profile.id))
+        )
         .returning();
 
       return {
@@ -91,11 +101,19 @@ export const getProjects = async () => {
 };
 
 export const reorderProjectsAction = withAuthAction(
-  async (_, items: { id: string; sortOrder: number }[]) => {
+  async (auth, items: { id: string; sortOrder: number }[]) => {
     try {
+      if (!auth.profile) {
+        throw new Error("Profile not found.");
+      }
+      const profileId = auth.profile.id;
+
       await Promise.all(
         items.map(({ id, sortOrder }) =>
-          db.update(TbProject).set({ sortOrder }).where(eq(TbProject.id, id))
+          db
+            .update(TbProject)
+            .set({ sortOrder })
+            .where(and(eq(TbProject.id, id), eq(TbProject.profileId, profileId)))
         )
       );
       return { success: true, message: "Projects reordered" };
