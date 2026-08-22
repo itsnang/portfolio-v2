@@ -7,7 +7,7 @@ import { db } from "@/db/drizzle";
 import {
   skillsInsertSchema,
   type SkillsFormValues,
-} from "@/db/schema/skills.schma";
+} from "@/db/schema/skills.schema";
 import { TbSkills } from "@/db/table";
 import { withAuthAction } from "@/server/actions/middleware";
 

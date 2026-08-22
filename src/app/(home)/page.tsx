@@ -5,7 +5,7 @@ import { HeroProfile } from "@/components/sections/hero-profile";
 import { NavBar } from "@/components/sections/navbar";
 import { Projects } from "@/components/sections/project";
 import { Recommendations } from "@/components/sections/recommendations";
-import { Skills } from "@/components/sections/skills-component";
+import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";

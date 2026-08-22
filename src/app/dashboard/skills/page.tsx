@@ -1,5 +1,5 @@
-import { SkillsTable } from "@/components/skills-table";
-import { getSkills } from "./action";
+import { SkillsTable } from "@/features/skills/components/skills-table";
+import { getSkills } from "@/features/skills/actions";
 import { getImages } from "../images/action";
 
 async function SkillPage() {

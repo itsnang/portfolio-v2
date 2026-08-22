@@ -1,5 +1,5 @@
 import { skillCategoryEnum } from "@/db/table";
-import type { ISkill } from "@/types/profile.type";
+import type { ISkill } from "@/features/skills/types";
 import { Icons } from "@/components/icons";
 
 export function WireframeSkills({ skills }: { skills: ISkill[] }) {

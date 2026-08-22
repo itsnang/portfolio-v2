@@ -6,18 +6,18 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createSkillAction, updateSkillAction } from "@/app/dashboard/skills/action";
+import { createSkillAction, updateSkillAction } from "@/features/skills/actions";
 import {
   skillsFormSchema,
   type Skills,
   type SkillsFormValues,
-} from "@/db/schema/skills.schma";
+} from "@/features/skills/schemas";
 import { skillCategoryEnum } from "@/db/table";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import { ImageSelector } from "../image-selector";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
+import { ImageSelector } from "@/components/image-selector";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -25,15 +25,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 interface SkillFormProps {
   images: IImages[];
