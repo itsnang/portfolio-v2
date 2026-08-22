@@ -13,10 +13,10 @@ import Image from "next/image";
 
 import favIcon from "@/app/favicon.ico";
 
-import { NavMain } from "@/components/nav-main";
+import { NavMain } from "@/components/dashboard-shell/nav-main";
 // import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavSecondary } from "@/components/dashboard-shell/nav-secondary";
+import { NavUser } from "@/components/dashboard-shell/nav-user";
 import {
   Sidebar,
   SidebarContent,
