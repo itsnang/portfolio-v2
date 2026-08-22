@@ -1,7 +1,7 @@
 import { DockNavClient } from "@/components/nav-dock-client";
 import { Education } from "@/features/education/components/education-section";
 import { Experience } from "@/features/experience/components/experience-section";
-import { HeroProfile } from "@/components/sections/hero-profile";
+import { HeroProfile } from "@/features/profile/components/hero-profile";
 import { NavBar } from "@/components/sections/navbar";
 import { Projects } from "@/features/project/components/project-section";
 import { Recommendations } from "@/features/recommendations/components/recommendations-section";
@@ -10,7 +10,7 @@ import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/actions";
-import { getProfile } from "../action";
+import { getProfile } from "@/features/profile/actions";
 
 
 export default async function Home() {

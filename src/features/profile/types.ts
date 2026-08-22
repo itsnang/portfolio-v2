@@ -1,9 +1,9 @@
-import type { ISocial } from "@/features/socials/types";
 import type { ISkill } from "@/features/skills/types";
-import type { IEducation } from "@/features/education/types";
 import type { IExperience } from "@/features/experience/types";
-import type { IRecommendation } from "@/features/recommendations/types";
+import type { IEducation } from "@/features/education/types";
 import type { IProject } from "@/features/project/types";
+import type { IRecommendation } from "@/features/recommendations/types";
+import type { ISocial } from "@/features/socials/types";
 
 export interface IProfile {
   id: string;

@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getProfile } from "./action";
+import { getProfile } from "@/features/profile/actions";
 import { getPublishedBlogPosts } from "@/features/blog/actions";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

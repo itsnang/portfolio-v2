@@ -1,13 +1,13 @@
 "use client";
-import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
+import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
 import { IImages } from "@/features/media/types";
-import { IProfile } from "@/types/profile.type";
+import { IProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageSelector } from "@/features/media/components/image-selector";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,10 +16,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
-import { Textarea } from "../ui/textarea";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 import { useState } from "react";
 import {
@@ -28,9 +28,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Separator } from "../ui/separator";
-import { updateProfileAction } from "../../server/actions/profile";
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { updateProfileAction } from "@/features/profile/actions";
 
 interface ProfileFormProps {
   images: IImages[];

@@ -1,7 +1,7 @@
-import { ProfileForm } from "@/components/form/profile-form";
+import { ProfileForm } from "@/features/profile/components/profile-form";
 import React from "react";
 import { getImages } from "@/features/media/actions";
-import { getProfile } from "@/app/action";
+import { getProfile } from "@/features/profile/actions";
 
 export const revalidate = 0;
 

@@ -1,6 +1,11 @@
 "use server";
 import { db, takeFirstOrThrow } from "@/db/drizzle";
+import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
+import { TbProfile } from "@/db/table";
+import { eq } from "drizzle-orm";
+import { withAuthAction } from "@/lib/auth/middleware";
 
+/** Public, unauthenticated read used by the public site — the whole profile aggregate. */
 export const getProfile = async () => {
   try {
     const data = await db.query.TbProfile.findMany({
@@ -37,3 +42,32 @@ export const getProfile = async () => {
     throw new Error("Failed to fetch profile data");
   }
 };
+
+export const updateProfileAction = withAuthAction(
+  async (auth, profile: ProfileInsert) => {
+    try {
+      const isValidate = profileInsertSchema.safeParse(profile);
+      if (!isValidate.success) {
+        throw new Error("Invalid profile data");
+      }
+      await db
+        .update(TbProfile)
+        .set(profile)
+        .where(eq(TbProfile.userId, auth.user.id))
+        .returning();
+      const profileData = await db.query.TbProfile.findFirst({
+        where: eq(TbProfile.userId, auth.user.id),
+      });
+      return {
+        success: true,
+        data: profileData,
+        message: "Profile updated successfully",
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { success: false, error: error.message };
+      }
+      return { success: false, error: "Failed to create showcase" };
+    }
+  }
+);
