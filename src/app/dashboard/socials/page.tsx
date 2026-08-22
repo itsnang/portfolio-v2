@@ -1,9 +1,9 @@
-import { SocialsTable } from "@/components/socials-table";
-import { getSocials } from "./action";
+import { SocialsTable } from "@/features/socials/components/socials-table";
+import { getSocialsAction } from "@/features/socials/actions";
 import { getImages } from "../images/action";
 
 async function SocialsPage() {
-  const [images, socials] = await Promise.all([getImages(), getSocials()]);
+  const [images, socials] = await Promise.all([getImages(), getSocialsAction()]);
 
   return (
     <section className="antialiased max-w-4xl space-y-16 border-gray-700 my-10 md:border-2 md:rounded-xl py-5 px-7 mx-auto">

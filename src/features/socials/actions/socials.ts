@@ -2,16 +2,32 @@
 
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { err, ok } from "@justmiracle/result";
 
 import { db } from "@/db/drizzle";
 import {
   socialsInsertSchema,
   type SocialsFormValues,
-} from "@/db/schema/socials.schme";
+} from "@/db/schema/socials.schema";
 import { TbSocials } from "@/db/table";
 import { withAuthAction } from "@/server/actions/middleware";
 
-export const getSocials = withAuthAction(async (auth) => {
+/** Public, unauthenticated read used by the public site (home page, achievement page, dock nav). */
+export const getSocials = async () => {
+  const socials = await db.query.TbSocials.findMany({
+    where: (social, { eq, and, isNull }) =>
+      and(eq(social.isActive, true), isNull(social.deletedAt)),
+  })
+    .then(ok)
+    .catch(err);
+  if (socials.error) {
+    throw new Error("Failed to fetch socials data");
+  }
+  return socials.value;
+};
+
+/** Authenticated read for the dashboard CMS table (scoped to the current profile). */
+export const getSocialsAction = withAuthAction(async (auth) => {
   if (!auth.profile) return [];
   return db.query.TbSocials.findMany({
     where: and(

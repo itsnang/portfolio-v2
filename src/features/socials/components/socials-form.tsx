@@ -6,17 +6,17 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createSocialAction, updateSocialAction } from "@/app/dashboard/socials/action";
+import { createSocialAction, updateSocialAction } from "@/features/socials/actions";
 import {
   socialsFormSchema,
   type Socials,
   type SocialsFormValues,
-} from "@/db/schema/socials.schme";
+} from "@/features/socials/schemas";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
-import { ImageSelector } from "../image-selector";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
+import { ImageSelector } from "@/components/image-selector";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -25,8 +25,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface SocialsFormProps {
   images: IImages[];

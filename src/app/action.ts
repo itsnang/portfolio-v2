@@ -1,6 +1,5 @@
 "use server";
 import { db, takeFirstOrThrow } from "@/db/drizzle";
-import { err, ok } from "@justmiracle/result";
 
 export const getProfile = async () => {
   try {
@@ -37,17 +36,4 @@ export const getProfile = async () => {
     console.error("Error fetching profile data:", error);
     throw new Error("Failed to fetch profile data");
   }
-};
-
-export const getSocials = async () => {
-  const socials = await db.query.TbSocials.findMany({
-    where: (social, { eq, and, isNull }) => and(eq(social.isActive, true), isNull(social.deletedAt)),
-  })
-    .then(ok)
-    .catch(err);
-  if (socials.error) {
-    throw new Error("Failed to fetch socials data");
-  }
-  console.log(socials.value);
-  return socials.value;
 };
