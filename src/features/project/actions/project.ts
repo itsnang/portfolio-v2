@@ -7,6 +7,7 @@ import { withAuthAction } from "@/lib/auth/middleware";
 import { NotFoundError } from "@/lib/errors";
 import { err, ok } from "@justmiracle/result";
 import { and, asc, desc, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const createProjectAction = withAuthAction(
   async (auth, project: ProjectInsert) => {
@@ -24,6 +25,9 @@ export const createProjectAction = withAuthAction(
         .insert(TbProject)
         .values({ ...project, profileId: auth.profile.id })
         .returning();
+
+      revalidatePath("/dashboard/project");
+      revalidatePath("/");
 
       return {
         success: true,
@@ -71,6 +75,10 @@ export const updateProjectAction = withAuthAction(
         )
         .returning();
 
+      revalidatePath("/dashboard/project");
+      revalidatePath("/");
+      revalidatePath("/projects/[projectId]", "page");
+
       return {
         success: true,
         data: updatedProject,
@@ -116,6 +124,10 @@ export const reorderProjectsAction = withAuthAction(
             .where(and(eq(TbProject.id, id), eq(TbProject.profileId, profileId)))
         )
       );
+
+      revalidatePath("/dashboard/project");
+      revalidatePath("/");
+
       return { success: true, message: "Projects reordered" };
     } catch (error) {
       if (error instanceof Error) {

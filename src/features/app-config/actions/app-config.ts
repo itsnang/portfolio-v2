@@ -1,6 +1,7 @@
 "use server";
 
 import { cache } from "react";
+import { revalidatePath } from "next/cache";
 import { db } from "@/db/drizzle";
 import { TbAppConfig } from "@/db/table";
 import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
@@ -41,6 +42,13 @@ export const updateAppConfigAction = withAuthAction(
           },
         })
         .returning();
+
+      // Theme + maintenance mode are read on every public page — revalidate all of them.
+      revalidatePath("/dashboard/config");
+      revalidatePath("/");
+      revalidatePath("/blog");
+      revalidatePath("/blog/[slug]", "page");
+      revalidatePath("/projects/[projectId]", "page");
 
       return { success: true, data: result[0], message: "Config updated" };
     } catch (error) {

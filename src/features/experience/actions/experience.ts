@@ -6,6 +6,7 @@ import { TbExperiences } from "@/db/table";
 import { InsertError } from "@/lib/errors";
 import { err, ok } from "@justmiracle/result";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const insertExperiences = async (experience: ExperiencesInsert) => {
   console.log("insert skill body:", experience);
@@ -20,6 +21,9 @@ export const insertExperiences = async (experience: ExperiencesInsert) => {
     console.log(insertExperience.error.message);
     throw new InsertError();
   }
+
+  revalidatePath("/dashboard/experience");
+  revalidatePath("/");
 };
 
 export const getExperiences = async () => {
@@ -66,6 +70,9 @@ export const updateExperience = async (
       console.log(updatedExperience.error.message);
       throw new Error("Failed to update experience");
     }
+
+    revalidatePath("/dashboard/experience");
+    revalidatePath("/");
 
     return updatedExperience.value[0];
   } catch (error) {

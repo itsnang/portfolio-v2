@@ -4,6 +4,7 @@ import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { TbProfile } from "@/db/table";
 import { eq } from "drizzle-orm";
 import { withAuthAction } from "@/lib/auth/middleware";
+import { revalidatePath } from "next/cache";
 
 /** Public, unauthenticated read used by the public site — the whole profile aggregate. */
 export const getProfile = async () => {
@@ -58,6 +59,10 @@ export const updateProfileAction = withAuthAction(
       const profileData = await db.query.TbProfile.findFirst({
         where: eq(TbProfile.userId, auth.user.id),
       });
+
+      revalidatePath("/dashboard/profile");
+      revalidatePath("/");
+
       return {
         success: true,
         data: profileData,
