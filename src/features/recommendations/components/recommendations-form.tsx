@@ -36,12 +36,12 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createRecommendationAction,
   updateRecommendationAction,
-} from "@/app/dashboard/recommendations/action";
+} from "@/features/recommendations/actions";
 import {
   recommendationsFormSchema,
   type Recommendations,
   type RecommendationsFormValues,
-} from "@/db/schema/recommendations.schema";
+} from "@/features/recommendations/schemas";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
 

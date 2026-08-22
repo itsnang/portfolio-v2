@@ -1,5 +1,5 @@
-import { RecommendationsTable } from "@/components/recommendations-table";
-import { getRecommendations } from "./action";
+import { RecommendationsTable } from "@/features/recommendations/components/recommendations-table";
+import { getRecommendations } from "@/features/recommendations/actions";
 import { getImages } from "../images/action";
 
 async function RecommendationsPage() {

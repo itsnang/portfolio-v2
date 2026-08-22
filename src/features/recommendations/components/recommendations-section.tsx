@@ -1,6 +1,6 @@
 import React from "react";
-import { IRecommendation } from "@/types/profile.type";
-import { RecommendationCard } from "../recommendation-card";
+import { IRecommendation } from "@/features/recommendations/types";
+import { RecommendationCard } from "@/features/recommendations/components/recommendation-card";
 
 interface RecommendationsProps {
   recommendations: IRecommendation[];

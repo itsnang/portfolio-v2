@@ -2,6 +2,7 @@ import type { ISocial } from "@/features/socials/types";
 import type { ISkill } from "@/features/skills/types";
 import type { IEducation } from "@/features/education/types";
 import type { IExperience } from "@/features/experience/types";
+import type { IRecommendation } from "@/features/recommendations/types";
 
 export interface IProfile {
   id: string;
@@ -28,14 +29,6 @@ export interface IProject {
   links: ProjectLinks[] | null;
   technologies: ProjectTechnology[] | null;
   detailImage: string[] | null;
-}
-
-export interface IRecommendation {
-  id: string;
-  name: string;
-  position: string;
-  profileImageUrl: string;
-  recommendationText: string;
 }
 
 export interface IImages {

@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteRecommendationAction } from "@/app/dashboard/recommendations/action";
-import { RecommendationsForm } from "@/components/form/recommendations-form";
+import { deleteRecommendationAction } from "@/features/recommendations/actions";
+import { RecommendationsForm } from "@/features/recommendations/components/recommendations-form";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Recommendations } from "@/db/schema/recommendations.schema";
+import type { Recommendations } from "@/features/recommendations/schemas";
 import type { IImages } from "@/types/profile.type";
 
 const EMPTY_STATE_MESSAGE =

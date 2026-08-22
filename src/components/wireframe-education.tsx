@@ -1,5 +1,5 @@
 import type { IEducation } from "@/features/education/types";
-import type { IRecommendation } from "@/types/profile.type";
+import type { IRecommendation } from "@/features/recommendations/types";
 import { fmt } from "./wireframe-utils";
 
 interface Props {
