@@ -29,8 +29,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import modernPreview from "../../../public/theme-config/modern.jpg";
-import wireframePreview from "../../../public/theme-config/wireframe.png";
+import modernPreview from "../../../../public/theme-config/modern.jpg";
+import wireframePreview from "../../../../public/theme-config/wireframe.png";
 
 interface AppConfigFormProps {
   config: AppConfig;
