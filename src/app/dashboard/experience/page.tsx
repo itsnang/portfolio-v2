@@ -1,5 +1,5 @@
 import { ExperienceTable } from "@/features/experience/components/experience-table";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 import { getExperiences } from "@/features/experience/actions";
 
 async function ExperiencePage() {

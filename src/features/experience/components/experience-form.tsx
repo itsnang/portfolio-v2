@@ -53,11 +53,11 @@ import {
   experiencesInsertSchema,
 } from "@/features/experience/schemas";
 import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { ImageSelector } from "@/components/image-selector";
+import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 interface ExperienceProps {

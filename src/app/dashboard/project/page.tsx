@@ -1,6 +1,6 @@
 import { ProjectTable } from "@/components/project-table";
 import { getProjects } from "@/server/actions/project";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function ProjectPage() {
   const [images, projects] = await Promise.all([getImages(), getProjects()]);

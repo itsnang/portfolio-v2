@@ -26,9 +26,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
 import { FolderSelector } from "./folder-selector";
-import { getImages, uploadStagedFile } from "@/app/dashboard/images/action";
+import { getImages, uploadStagedFile } from "@/features/media/actions";
 import { toast } from "sonner";
 
 interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {

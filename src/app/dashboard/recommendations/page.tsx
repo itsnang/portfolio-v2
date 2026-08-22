@@ -1,6 +1,6 @@
 import { RecommendationsTable } from "@/features/recommendations/components/recommendations-table";
 import { getRecommendations } from "@/features/recommendations/actions";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function RecommendationsPage() {
   const [images, recommendations] = await Promise.all([

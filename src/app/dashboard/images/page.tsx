@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderSelector } from "@/components/folder-selector";
+import { FolderSelector } from "@/features/media/components/folder-selector";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/get-current-user";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { getImages } from "./action";
+import { getImages } from "@/features/media/actions";
 
 interface Image {
   id: string;

@@ -1,7 +1,7 @@
 "use client";
 
-import { uploadStagedFile } from "@/app/dashboard/images/action";
-import { FolderSelector } from "@/components/folder-selector";
+import { uploadStagedFile } from "@/features/media/actions";
+import { FolderSelector } from "./folder-selector";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LoaderCircle, Upload, X } from "lucide-react";

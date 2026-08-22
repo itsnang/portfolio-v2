@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 import BlogForm from "@/components/form/blog-form";
 
 const EMPTY_STATE_MESSAGE = "No blog posts yet. Write your first post below.";

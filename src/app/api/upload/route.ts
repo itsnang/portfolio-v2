@@ -1,4 +1,4 @@
-import { uploadToCloudinaryFolder } from "@/helper/upload";
+import { uploadToCloudinaryFolder } from "@/features/media/utils/upload";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

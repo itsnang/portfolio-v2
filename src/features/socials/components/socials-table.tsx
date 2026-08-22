@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Socials } from "@/features/socials/schemas";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE = "No socials added yet. Add your first one below.";
 

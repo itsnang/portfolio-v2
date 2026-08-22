@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { ImageSelector } from "@/components/image-selector";
+import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -43,7 +43,7 @@ import {
   type RecommendationsFormValues,
 } from "@/features/recommendations/schemas";
 import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
 
 interface RecommendationsFormProps {
   images: IImages[];

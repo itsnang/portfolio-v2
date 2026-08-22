@@ -1,6 +1,6 @@
 import { BlogTable } from "@/components/blog-table";
 import { getBlogPosts } from "@/server/actions/blog";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function BlogPage() {
   const [images, posts] = await Promise.all([getImages(), getBlogPosts()]);

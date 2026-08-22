@@ -27,15 +27,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ImageSelector } from "@/components/image-selector";
-import { ImageSelectionDialog } from "@/components/ui/image-selection-dialog";
+import { ImageSelector } from "@/features/media/components/image-selector";
+import { ImageSelectionDialog } from "@/features/media/components/image-selection-dialog";
 
 import {
   projecInsertSchema,
   ProjectInsert,
   Project,
 } from "@/db/schema/project.schema";
-import { IImages, ProjectLinks, ProjectTechnology } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
+import { ProjectLinks, ProjectTechnology } from "@/types/profile.type";
 import {
   createProjectAction,
   updateProjectAction,

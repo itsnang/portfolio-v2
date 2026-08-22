@@ -37,7 +37,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { reorderProjectsAction } from "@/server/actions/project";
 import { FormSheet } from "@/components/form-sheet";
 import ProjectForm from "@/components/form/project-form";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 
 const MAX_VISIBLE_TECHNOLOGIES = 2;
 const EMPTY_STATE_MESSAGE =

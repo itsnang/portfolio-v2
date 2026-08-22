@@ -1,11 +1,12 @@
 "use client";
 import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
-import { IImages, IProfile } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
+import { IProfile } from "@/types/profile.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ImageSelector } from "../image-selector";
+import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "../ui/button";
 import {
   Form,

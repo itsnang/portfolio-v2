@@ -31,10 +31,5 @@ export interface IProject {
   detailImage: string[] | null;
 }
 
-export interface IImages {
-  id: string;
-  imageUrl: string;
-}
-
 export type ProjectLinks = { type: string; href: string };
 export type ProjectTechnology = { name: string; logoUrl: string };

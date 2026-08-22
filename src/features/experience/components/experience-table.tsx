@@ -18,7 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 
 interface ExperienceTableProps {
   experiences: Experiences[];

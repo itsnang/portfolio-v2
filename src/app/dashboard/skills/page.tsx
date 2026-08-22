@@ -1,6 +1,6 @@
 import { SkillsTable } from "@/features/skills/components/skills-table";
 import { getSkills } from "@/features/skills/actions";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function SkillPage() {
   const [images, skills] = await Promise.all([getImages(), getSkills()]);

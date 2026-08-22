@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolderPlus, FolderOpen } from "lucide-react";
 import { toast } from "sonner";
-import { createFolder, getFolders } from "@/app/dashboard/images/action";
+import { createFolder, getFolders } from "@/features/media/actions";
 
 interface FolderSelectorProps {
   onFolderSelect: (folderPath: string) => void;

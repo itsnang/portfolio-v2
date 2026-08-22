@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ImageSelector } from "@/components/image-selector";
+import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 import {
@@ -41,7 +41,7 @@ import {
   BlogPost,
 } from "@/db/schema/blog.schema";
 import { blogStatusEnum } from "@/db/table";
-import { IImages } from "@/types/profile.type";
+import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {
   createBlogPostAction,

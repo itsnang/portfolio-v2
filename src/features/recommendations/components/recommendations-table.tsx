@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Recommendations } from "@/features/recommendations/schemas";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE =
   "No recommendations added yet. Add your first one below.";

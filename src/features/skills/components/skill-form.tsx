@@ -14,8 +14,8 @@ import {
 } from "@/features/skills/schemas";
 import { skillCategoryEnum } from "@/db/table";
 import { cn } from "@/lib/utils";
-import { IImages } from "@/types/profile.type";
-import { ImageSelector } from "@/components/image-selector";
+import { IImages } from "@/features/media/types";
+import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

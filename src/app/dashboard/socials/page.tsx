@@ -1,6 +1,6 @@
 import { SocialsTable } from "@/features/socials/components/socials-table";
 import { getSocialsAction } from "@/features/socials/actions";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function SocialsPage() {
   const [images, socials] = await Promise.all([getImages(), getSocialsAction()]);

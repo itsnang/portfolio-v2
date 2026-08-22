@@ -12,7 +12,7 @@ import {
   type Editor,
   type NodeWithPos,
 } from "@tiptap/react";
-import { uploadStagedFile } from "../app/dashboard/images/action";
+import { uploadStagedFile } from "@/features/media/actions";
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 

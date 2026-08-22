@@ -1,6 +1,6 @@
 import { EducationTable } from "@/features/education/components/education-table";
 import { getEducations } from "@/features/education/actions";
-import { getImages } from "../images/action";
+import { getImages } from "@/features/media/actions";
 
 async function EducationPage() {
   const [images, education] = await Promise.all([

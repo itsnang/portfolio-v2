@@ -9,10 +9,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { IImages } from "@/types/profile.type";
-import { ScrollArea } from "./scroll-area";
-import { FolderSelector } from "../folder-selector";
-import { getImages } from "@/app/dashboard/images/action";
+import { IImages } from "@/features/media/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { FolderSelector } from "./folder-selector";
+import { getImages } from "@/features/media/actions";
 import { toast } from "sonner";
 import Image from "next/image";
 import { LoaderCircle } from "lucide-react";

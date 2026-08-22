@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Education } from "@/features/education/schemas";
-import type { IImages } from "@/types/profile.type";
+import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE =
   "No education added yet. Add your first entry below.";
