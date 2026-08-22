@@ -2,7 +2,7 @@ import { DockNavClient } from "@/components/nav-dock-client";
 import { Education } from "@/features/education/components/education-section";
 import { Experience } from "@/features/experience/components/experience-section";
 import { HeroProfile } from "@/features/profile/components/hero-profile";
-import { NavBar } from "@/components/sections/navbar";
+import { NavBar } from "@/components/navbar";
 import { Projects } from "@/features/project/components/project-section";
 import { Recommendations } from "@/features/recommendations/components/recommendations-section";
 import { Skills } from "@/features/skills/components/skills-section";
