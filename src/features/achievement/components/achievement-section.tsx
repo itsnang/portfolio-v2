@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { achievements } from "@/data/achievement";
+import { achievements } from "@/features/achievement/data";
 
 export function AchievementSection() {
   const [filter, setFilter] = useState<string | null>(null);

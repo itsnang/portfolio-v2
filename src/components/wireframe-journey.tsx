@@ -1,4 +1,4 @@
-import { achievements } from "@/data/achievement";
+import { achievements } from "@/features/achievement/data";
 
 const sorted = [...achievements].sort((a, b) => Number(a.year) - Number(b.year));
 

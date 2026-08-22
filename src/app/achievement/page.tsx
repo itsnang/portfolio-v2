@@ -1,4 +1,4 @@
-import { AchievementSection } from "@/components/achievement-section";
+import { AchievementSection } from "@/features/achievement/components/achievement-section";
 import { getQueryClient } from "@/lib/tanstack/get-query-client";
 import React from "react";
 import { getSocials } from "../action";
