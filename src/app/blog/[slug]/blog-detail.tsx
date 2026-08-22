@@ -85,7 +85,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
 
       <motion.div variants={fadeInUp}>
         <Card className="p-6 sm:p-8">
-          <RichText html={post.content} className="prose-base" />
+          <RichText html={post.content} variant="tiptap" />
         </Card>
       </motion.div>
 

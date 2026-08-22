@@ -58,6 +58,12 @@ body,
 .simple-editor-wrapper {
   display: flex;
   flex-direction: column;
+  // Grid/flex items default to min-width: auto, which lets wide content
+  // (a large pasted image, an unbroken long URL) grow this box past its
+  // container instead of shrinking to fit — e.g. inside a FormItem's
+  // `grid` wrapper in a narrow sheet. min-width: 0 lets it actually
+  // respect the container's width so max-width: 100% on children works.
+  min-width: 0;
 }
 
 /* Fullscreen mode - original standalone editor */
