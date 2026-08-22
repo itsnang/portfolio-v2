@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { deleteRecommendationAction } from "@/features/recommendations/actions";
 import { RecommendationsForm } from "@/features/recommendations/components/recommendations-form";
+import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@/components/ui/badge";
@@ -21,21 +22,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Recommendations } from "@/features/recommendations/schemas";
-import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE =
   "No recommendations added yet. Add your first one below.";
 
 interface RecommendationsTableProps {
   items: Recommendations[];
-  images: IImages[];
 }
 
 export function RecommendationsTable({
   items,
-  images,
 }: RecommendationsTableProps) {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Recommendations | null>(
     null

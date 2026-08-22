@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { deleteSkillAction } from "@/features/skills/actions";
 import { SkillForm } from "@/features/skills/components/skill-form";
+import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@/components/ui/badge";
@@ -21,17 +22,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Skills } from "@/features/skills/schemas";
-import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE = "No skills added yet. Add your first one below.";
 
 interface SkillsTableProps {
   items: Skills[];
-  images: IImages[];
 }
 
-export function SkillsTable({ items, images }: SkillsTableProps) {
+export function SkillsTable({ items }: SkillsTableProps) {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Skills | null>(null);
 

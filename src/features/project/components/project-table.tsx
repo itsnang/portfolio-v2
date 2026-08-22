@@ -37,7 +37,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { reorderProjectsAction } from "@/features/project/actions";
 import { FormSheet } from "@/components/form-sheet";
 import ProjectForm from "@/features/project/components/project-form";
-import type { IImages } from "@/features/media/types";
+import { useImages } from "@/features/media/hooks/use-images";
 
 const MAX_VISIBLE_TECHNOLOGIES = 2;
 const EMPTY_STATE_MESSAGE =
@@ -256,12 +256,11 @@ const SortableProjectCard = ({
 
 export const ProjectTable = ({
   projects,
-  images,
 }: {
   projects: Project[];
-  images: IImages[];
 }) => {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [items, setItems] = useState<Project[]>(projects);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Project | null>(null);

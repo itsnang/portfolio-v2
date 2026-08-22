@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { IImages } from "@/features/media/types";
+import { useImages } from "@/features/media/hooks/use-images";
 import BlogForm from "@/features/blog/components/blog-form";
 
 const EMPTY_STATE_MESSAGE = "No blog posts yet. Write your first post below.";
@@ -41,11 +41,11 @@ const StatusBadge = ({ status }: { status: BlogPost["status"] }) => (
 
 interface BlogTableProps {
   posts: BlogPost[];
-  images: IImages[];
 }
 
-export const BlogTable = ({ posts, images }: BlogTableProps) => {
+export const BlogTable = ({ posts }: BlogTableProps) => {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 

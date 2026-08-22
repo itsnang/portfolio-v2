@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { deleteSocialAction } from "@/features/socials/actions";
 import { SocialsForm } from "@/features/socials/components/socials-form";
+import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@/components/ui/badge";
@@ -21,17 +22,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Socials } from "@/features/socials/schemas";
-import type { IImages } from "@/features/media/types";
 
 const EMPTY_STATE_MESSAGE = "No socials added yet. Add your first one below.";
 
 interface SocialsTableProps {
   items: Socials[];
-  images: IImages[];
 }
 
-export function SocialsTable({ items, images }: SocialsTableProps) {
+export function SocialsTable({ items }: SocialsTableProps) {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Socials | null>(null);
 

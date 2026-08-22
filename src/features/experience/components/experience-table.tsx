@@ -18,15 +18,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
-import type { IImages } from "@/features/media/types";
+import { useImages } from "@/features/media/hooks/use-images";
 
 interface ExperienceTableProps {
   experiences: Experiences[];
-  images: IImages[];
 }
 
-export const ExperienceTable = ({ experiences, images }: ExperienceTableProps) => {
+export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
   const router = useRouter();
+  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Experiences | null>(null);
 

@@ -1,12 +1,12 @@
 "use client";
 import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
-import { IImages } from "@/features/media/types";
 import { IProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageSelector } from "@/features/media/components/image-selector";
+import { useImages } from "@/features/media/hooks/use-images";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -33,14 +33,13 @@ import { Separator } from "@/components/ui/separator";
 import { updateProfileAction } from "@/features/profile/actions";
 
 interface ProfileFormProps {
-  images: IImages[];
   profile: IProfile;
 }
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
-  images,
   profile,
 }) => {
+  const { data: images = [] } = useImages();
   const [isPending, setIsPending] = useState(false);
 
   const form = useForm<ProfileInsert>({
