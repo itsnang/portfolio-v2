@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import {
   insertExperiences,
   updateExperience,
-} from "@/app/dashboard/experience/action";
+} from "@/features/experience/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -51,14 +51,14 @@ import {
   Experiences,
   ExperiencesInsert,
   experiencesInsertSchema,
-} from "@/db/schema/experiences.schema";
+} from "@/features/experience/schemas";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/types/profile.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { ImageSelector } from "../image-selector";
-import { SimpleEditor } from "../tiptap-templates/simple/simple-editor";
+import { ImageSelector } from "@/components/image-selector";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 interface ExperienceProps {
   images: IImages[];

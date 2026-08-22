@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Experiences } from "@/db/schema/experiences.schema";
+import { Experiences } from "@/features/experience/schemas";
 import { convertDate } from "@/helper/convert-date";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { PencilIcon } from "lucide-react";
 import {
   Table,
@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
-import { ExperienceForm } from "@/components/form/experienc-form";
+import { ExperienceForm } from "@/features/experience/components/experience-form";
 import type { IImages } from "@/types/profile.type";
 
 interface ExperienceTableProps {

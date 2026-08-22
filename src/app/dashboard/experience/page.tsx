@@ -1,6 +1,6 @@
-import { ExperienceTable } from "@/components/experience-table";
+import { ExperienceTable } from "@/features/experience/components/experience-table";
 import { getImages } from "../images/action";
-import { getExperiences } from "./action";
+import { getExperiences } from "@/features/experience/actions";
 
 async function ExperiencePage() {
   const [images, experiences] = await Promise.all([getImages(), getExperiences()]);

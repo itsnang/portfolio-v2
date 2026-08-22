@@ -1,6 +1,6 @@
 import React from "react";
-import { ExperienceCard } from "../experience-card";
-import { IExperience } from "@/types/profile.type";
+import { ExperienceCard } from "@/features/experience/components/experience-card";
+import { IExperience } from "@/features/experience/types";
 import { convertDate } from "@/helper/convert-date";
 
 interface ExperienceProps {
