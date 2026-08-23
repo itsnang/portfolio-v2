@@ -1,0 +1,61 @@
+"use server";
+
+import { cache } from "react";
+import { revalidatePath } from "next/cache";
+import { db } from "@/db/drizzle";
+import { TbAppConfig } from "@/db/table";
+import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
+import { withAuthAction } from "@/lib/auth/middleware";
+
+const DEFAULT_APP_CONFIG = { id: "config", maintenance: false, theme: "modern" as const };
+
+export const getAppConfig = cache(async () => {
+  const config = await db.query.TbAppConfig.findFirst();
+  return config ?? DEFAULT_APP_CONFIG;
+});
+
+export const getAppConfigAction = withAuthAction(async () => {
+  const config = await db.query.TbAppConfig.findFirst();
+  return {
+    success: true,
+    data: config ?? DEFAULT_APP_CONFIG,
+  };
+});
+
+export const updateAppConfigAction = withAuthAction(
+  async (_auth, data: AppConfigInsert) => {
+    try {
+      const validated = appConfigInsertSchema.safeParse(data);
+      if (!validated.success) {
+        throw new Error("Invalid config data");
+      }
+
+      const result = await db
+        .insert(TbAppConfig)
+        .values({ id: "config", ...data })
+        .onConflictDoUpdate({
+          target: TbAppConfig.id,
+          set: {
+            maintenance: data.maintenance,
+            theme: data.theme,
+            updatedAt: new Date(),
+          },
+        })
+        .returning();
+
+      // Theme + maintenance mode are read on every public page — revalidate all of them.
+      revalidatePath("/dashboard/config");
+      revalidatePath("/");
+      revalidatePath("/blog");
+      revalidatePath("/blog/[slug]", "page");
+      revalidatePath("/projects/[projectId]", "page");
+
+      return { success: true, data: result[0], message: "Config updated" };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { success: false, error: error.message };
+      }
+      return { success: false, error: "Failed to update config" };
+    }
+  }
+);

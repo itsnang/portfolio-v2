@@ -1,15 +1,18 @@
 import { DockNavClient } from "@/components/nav-dock-client";
-import { Education } from "@/components/sections/education";
-import { Experience } from "@/components/sections/experience";
-import { HeroProfile } from "@/components/sections/hero-profile";
-import { NavBar } from "@/components/sections/navbar";
-import { Projects } from "@/components/sections/project";
-import { Recommendations } from "@/components/sections/recommendations";
-import { Skills } from "@/components/sections/skills-component";
+import { Education } from "@/features/education/components/education-section";
+import { Experience } from "@/features/experience/components/experience-section";
+import { HeroProfile } from "@/features/profile/components/hero-profile";
+import { NavBar } from "@/components/navbar";
+import { Projects } from "@/features/project/components/project-section";
+import { Recommendations } from "@/features/recommendations/components/recommendations-section";
+import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
-import { WireframeHome } from "@/components/wireframe-home";
+import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getAppConfig, getProfile } from "../action";
+import { getAppConfig } from "@/features/app-config/actions";
+import { getProfile } from "@/features/profile/actions";
+import { getQueryClient } from "@/lib/tanstack/get-query-client";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 
 export default async function Home() {
@@ -25,8 +28,15 @@ export default async function Home() {
     bio: profile.bio ?? "",
   };
 
+  // profile.socials was already fetched above as part of getProfile()'s single
+  // joined query — seed DockNavClient's ["socials"] query from it instead of
+  // letting DockNavClient's client-side useQuery fire a second, redundant
+  // socials read against the DB.
+  const queryClient = getQueryClient();
+  queryClient.setQueryData(["socials"], profile.socials);
+
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       {appConfig.maintenance && <MaintenanceBanner />}
       <main className="mx-auto w-full max-w-4xl">
         <NavBar isAvailable={profile.isAvailable} />
@@ -65,6 +75,6 @@ export default async function Home() {
 
         <DockNavClient />
       </main>
-    </>
+    </HydrationBoundary>
   );
 }

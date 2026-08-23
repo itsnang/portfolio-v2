@@ -1,5 +1,6 @@
 import { generateMetadata as buildMetadata } from "@/lib/metadata";
-import { getAppConfig, getProfile } from "@/app/action";
+import { getAppConfig } from "@/features/app-config/actions";
+import { getProfile } from "@/features/profile/actions";
 import { toOgImageUrl } from "@/lib/cloudinary";
 import type { Metadata } from "next";
 

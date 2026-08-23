@@ -1,4 +1,4 @@
-import { MultiImageUpload } from "@/components/upload/multi-image-upload";
+import { MultiImageUpload } from "@/features/media/components/multi-image-upload";
 import React from "react";
 
 function UploadPage() {

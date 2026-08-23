@@ -1,5 +1,5 @@
-import { AppConfigForm } from "@/components/form/app-config-form";
-import { getAppConfigAction } from "@/server/actions/app-config";
+import { AppConfigForm } from "@/features/app-config/components/app-config-form";
+import { getAppConfigAction } from "@/features/app-config/actions";
 import { AppConfig } from "@/db/table";
 
 export const revalidate = 0;
