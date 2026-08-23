@@ -66,7 +66,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
             fill
             priority
             sizes="(max-width: 768px) 100vw, 768px"
-            className="object-cover"
+            className="object-contain"
           />
         </motion.div>
       )}

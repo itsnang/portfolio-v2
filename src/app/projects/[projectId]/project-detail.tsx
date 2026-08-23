@@ -89,7 +89,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             fill
             priority
             sizes="100vw"
-            className="object-cover transition-transform duration-700 hover:scale-105"
+            className="object-contain transition-transform duration-700 hover:scale-105"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
