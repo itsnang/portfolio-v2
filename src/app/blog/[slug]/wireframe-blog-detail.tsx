@@ -91,7 +91,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "26px 28px 0" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "26px clamp(16px, 6vw, 28px) 0" }}>
         <Link
           href="/blog"
           className="wf-m"
@@ -108,12 +108,12 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
         </Link>
       </div>
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 28px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 clamp(16px, 6vw, 28px)" }}>
         <div className="wf-reveal" style={{ padding: "28px 0 24px" }}>
           <div className="wf-region">
             post {num} / {total}
           </div>
-          <h1 className="wf-h" style={{ fontSize: 46, lineHeight: 1.02, marginTop: 10 }}>
+          <h1 className="wf-h" style={{ fontSize: "clamp(28px, 8vw, 46px)", lineHeight: 1.02, marginTop: 10 }}>
             {post.title}
           </h1>
           {publishedLabel && (
@@ -135,7 +135,8 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
                 alt={post.title}
                 fill
                 sizes="(max-width: 760px) 100vw, 760px"
-                className="object-cover"
+                className="object-contain"
+                style={{ objectFit: "contain" }}
               />
             </div>
           </div>
@@ -154,6 +155,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
             className="wf-reveal"
             style={{
               display: "flex",
+              flexWrap: "wrap",
               justifyContent: "space-between",
               gap: 16,
               borderTop: "2px solid var(--wf-ink)",
@@ -177,7 +179,15 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
               <Link
                 href={`/blog/${post.prev.slug}`}
                 className="wf-h"
-                style={{ textDecoration: "none", color: "var(--wf-ink)", fontSize: 20, display: "flex", flexDirection: "column" }}
+                style={{
+                  textDecoration: "none",
+                  color: "var(--wf-ink)",
+                  fontSize: 20,
+                  display: "flex",
+                  flexDirection: "column",
+                  minWidth: 0,
+                  flex: "1 1 220px",
+                }}
               >
                 <span className="wf-m" style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--wf-ink-soft)" }}>
                   ← prev
@@ -191,7 +201,17 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
               <Link
                 href={`/blog/${post.next.slug}`}
                 className="wf-h"
-                style={{ textDecoration: "none", color: "var(--wf-ink)", fontSize: 20, display: "flex", flexDirection: "column", textAlign: "right", alignItems: "flex-end" }}
+                style={{
+                  textDecoration: "none",
+                  color: "var(--wf-ink)",
+                  fontSize: 20,
+                  display: "flex",
+                  flexDirection: "column",
+                  textAlign: "right",
+                  alignItems: "flex-end",
+                  minWidth: 0,
+                  flex: "1 1 220px",
+                }}
               >
                 <span className="wf-m" style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--wf-ink-soft)" }}>
                   next →

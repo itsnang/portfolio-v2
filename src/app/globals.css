@@ -721,7 +721,6 @@
   height: auto;
   display: block;
   border-radius: var(--wf-r);
-  border: 2.2px solid var(--wf-line);
 }
 .wf-content hr {
   border: none;

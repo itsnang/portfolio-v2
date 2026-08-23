@@ -91,27 +91,3 @@ export function toOgImageUrl(url: string): string {
   if (!url.includes("res.cloudinary.com")) return url;
   return url.replace(/\/upload\//, "/upload/w_1200,h_630,c_fill,g_face/");
 }
-
-export const uploadToCloudinaryFolder = async (
-  fileUri: string,
-  fileName: string,
-  folderPath: string
-) => {
-  try {
-    const result = await cloudinary.v2.uploader.upload(fileUri, {
-      folder: folderPath,
-      invalidate: true,
-      filename_override: fileName,
-      use_filename: true,
-    });
-
-    return {
-      id: result.public_id,
-      imageUrl: result.secure_url,
-      folder: result.folder,
-    };
-  } catch (error) {
-    console.error("Error uploading to Cloudinary folder:", error);
-    throw error;
-  }
-};

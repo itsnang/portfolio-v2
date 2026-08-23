@@ -258,7 +258,8 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                 alt={project.title}
                 fill
                 sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-cover"
+                className="object-contain"
+                style={{ objectFit: "contain" }}
               />
             </div>
             <div
@@ -415,8 +416,8 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
             <div
               className="wf-reveal"
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
+                display: "flex",
+                flexWrap: "wrap",
                 gap: 18,
               }}
             >
@@ -425,6 +426,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                   key={i}
                   className="wf-sketch wf-photo"
                   style={{
+                    flex: "1 1 280px",
                     aspectRatio: "4/3",
                     overflow: "hidden",
                     cursor: "zoom-in",
