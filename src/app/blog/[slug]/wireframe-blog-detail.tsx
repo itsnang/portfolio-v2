@@ -91,7 +91,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "26px clamp(16px, 6vw, 28px) 0" }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px clamp(16px, 6vw, 28px) 0" }}>
         <Link
           href="/blog"
           className="wf-m"
@@ -108,7 +108,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
         </Link>
       </div>
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 clamp(16px, 6vw, 28px)" }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 clamp(16px, 6vw, 28px)" }}>
         <div className="wf-reveal" style={{ padding: "28px 0 24px" }}>
           <div className="wf-region">
             post {num} / {total}
@@ -134,7 +134,7 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
                 src={post.coverImage}
                 alt={post.title}
                 fill
-                sizes="(max-width: 760px) 100vw, 760px"
+                sizes="(max-width: 1080px) 100vw, 1080px"
                 className="object-contain"
                 style={{ objectFit: "contain" }}
               />
