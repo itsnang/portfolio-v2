@@ -53,6 +53,7 @@ export const createBlogPostAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/blog");
+      revalidatePath("/");
       revalidatePath("/blog");
 
       return {
@@ -121,6 +122,7 @@ export const updateBlogPostAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/blog");
+      revalidatePath("/");
       revalidatePath("/blog");
       revalidatePath(`/blog/${slug}`);
       if (existing.slug !== slug) revalidatePath(`/blog/${existing.slug}`);
@@ -164,6 +166,7 @@ export const deleteBlogPostAction = withAuthAction(async (auth, id: string) => {
       );
 
     revalidatePath("/dashboard/blog");
+    revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath(`/blog/${existing.slug}`);
 

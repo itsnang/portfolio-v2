@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { IEducation } from "@/features/education/types";
 import type { IRecommendation } from "@/features/recommendations/types";
 import { fmt } from "./wireframe-utils";
@@ -107,15 +108,26 @@ export function WireframeEducation({ education, recommendations }: Props) {
                     display: "grid",
                     placeItems: "center",
                     background: "var(--wf-paper-2)",
+                    overflow: "hidden",
                   }}
                 >
-                  <span className="wf-h" style={{ fontSize: 16, fontWeight: 700 }}>
-                    {rec.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .slice(0, 2)}
-                  </span>
+                  {rec.profileImageUrl ? (
+                    <Image
+                      src={rec.profileImageUrl}
+                      alt={rec.name}
+                      fill
+                      sizes="42px"
+                      style={{ objectFit: "cover", borderRadius: "inherit" }}
+                    />
+                  ) : (
+                    <span className="wf-h" style={{ fontSize: 16, fontWeight: 700 }}>
+                      {rec.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <div className="wf-h" style={{ fontSize: 19, fontWeight: 700 }}>

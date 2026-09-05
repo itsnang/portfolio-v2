@@ -40,7 +40,7 @@ import {
   BlogPostInsert,
   BlogPost,
 } from "@/features/blog/schemas";
-import { blogStatusEnum } from "@/db/table";
+import { blogStatusEnum, blogCategoryEnum } from "@/db/table";
 import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {
@@ -63,6 +63,7 @@ const getDefaultValues = (initialData?: BlogPost): BlogPostInsert => {
       coverImage: undefined,
       content: "",
       status: "draft",
+      category: "engineering",
     };
   }
 
@@ -73,6 +74,7 @@ const getDefaultValues = (initialData?: BlogPost): BlogPostInsert => {
     coverImage: initialData.coverImage ? String(initialData.coverImage) : undefined,
     content: String(initialData.content || ""),
     status: initialData.status,
+    category: initialData.category,
   };
 };
 
@@ -235,7 +237,32 @@ const PublishCard = () => {
           publish date is fixed and won&apos;t change on future edits.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
+        <FormField
+          control={control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="h-12 w-full">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {blogCategoryEnum.enumValues.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={control}
           name="status"

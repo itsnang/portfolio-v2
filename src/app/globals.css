@@ -333,6 +333,21 @@
   pointer-events: none;
   z-index: 6;
 }
+/* hand-drawn annotation arrow (points from a note to what it's annotating) */
+.wf-ann-arrow {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 6;
+}
+.wf-ann-arrow path {
+  fill: none;
+  stroke: var(--wf-accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#wobble);
+}
 
 /* photo frame with tape */
 .wf-photo {
@@ -416,6 +431,10 @@
 .wf-chip:hover .wf-logo {
   transform: rotate(-6deg) scale(1.08);
 }
+.wf-chip.wf-chip-active {
+  background: var(--wf-ink);
+  color: var(--wf-paper);
+}
 
 /* sketchy button */
 .wf-btn {
@@ -445,6 +464,9 @@
 }
 .wf-btn.wf-btn-solid > .wf-edge {
   border-color: var(--wf-ink);
+}
+.wf-btn.wf-btn-plain {
+  background: transparent;
 }
 
 /* stack card */
@@ -761,6 +783,31 @@
   transform: scale(1.03);
 }
 
+.wf-blog-title-link:hover {
+  color: var(--wf-accent) !important;
+}
+
+/* card title base size (project cards set this inline too; blog cards rely on it) */
+.wf-proj h3 {
+  font-size: 22px;
+}
+
+/* featured blog post card: spans two grid columns, bigger title */
+.wf-post-featured {
+  grid-column: span 2;
+}
+.wf-post-featured h3 {
+  font-size: 32px;
+}
+@media (max-width: 860px) {
+  .wf-post-featured {
+    grid-column: span 1;
+  }
+  .wf-post-featured h3 {
+    font-size: 22px;
+  }
+}
+
 /* view-cue badge: hidden until hover */
 .wf-view-cue {
   position: absolute;
@@ -839,6 +886,10 @@
   }
   .wf-gallery-grid {
     column-count: 2 !important;
+  }
+  .wf-note,
+  .wf-ann-arrow {
+    display: none !important;
   }
 }
 
@@ -1064,6 +1115,9 @@ a.contact-mini:hover svg {
     grid-template-columns: 1fr !important;
   }
   .sketch-page [style*="grid-template-columns: 1.05fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  .sketch-page [style*="grid-template-columns: repeat(3, 1fr)"] {
     grid-template-columns: 1fr !important;
   }
   .sketch-page [style*="column-count: 4"] {

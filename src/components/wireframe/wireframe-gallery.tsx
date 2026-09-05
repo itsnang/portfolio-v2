@@ -12,7 +12,7 @@ export function WireframeGallery({ images }: Props) {
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
       >
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>
-          06
+          07
         </span>
         <h2 className="wf-h" style={{ fontSize: 40 }}>
           Gallery

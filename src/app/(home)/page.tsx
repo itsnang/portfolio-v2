@@ -11,15 +11,20 @@ import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/actions";
 import { getProfile } from "@/features/profile/actions";
+import { getPublishedBlogPosts } from "@/features/blog/actions";
 import { getQueryClient } from "@/lib/tanstack/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 
 export default async function Home() {
-  const [profile, appConfig] = await Promise.all([getProfile(), getAppConfig()]);
+  const [profile, appConfig, posts] = await Promise.all([
+    getProfile(),
+    getAppConfig(),
+    getPublishedBlogPosts(),
+  ]);
 
   if (appConfig.theme === "wireframe") {
-    return <WireframeHome profile={profile} />;
+    return <WireframeHome profile={profile} posts={posts} />;
   }
 
   const heroProfile = {

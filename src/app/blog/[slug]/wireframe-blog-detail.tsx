@@ -11,6 +11,7 @@ interface Post {
   coverImage: string | null;
   content: string;
   publishedAt: Date | string | null;
+  category: string;
   number: number;
   total: number;
   prev: { slug: string; title: string } | null;
@@ -110,8 +111,13 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 clamp(16px, 6vw, 28px)" }}>
         <div className="wf-reveal" style={{ padding: "28px 0 24px" }}>
-          <div className="wf-region">
-            post {num} / {total}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <div className="wf-region">
+              post {num} / {total}
+            </div>
+            <span className="wf-sketch wf-chip" style={{ fontSize: 11, padding: "3px 10px" }}>
+              {post.category}
+            </span>
           </div>
           <h1 className="wf-h" style={{ fontSize: "clamp(28px, 8vw, 46px)", lineHeight: 1.02, marginTop: 10 }}>
             {post.title}
