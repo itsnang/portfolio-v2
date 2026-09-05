@@ -814,6 +814,9 @@
   bottom: 10px;
   right: 10px;
   z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--wf-marker);
   font-size: 13px;
   color: var(--wf-paper);
