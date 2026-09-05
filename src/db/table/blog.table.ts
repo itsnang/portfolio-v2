@@ -10,6 +10,14 @@ export const blogStatusEnum = column.enum("blog_status", [
 
 export type BlogStatus = (typeof blogStatusEnum.enumValues)[number];
 
+export const blogCategoryEnum = column.enum("blog_category", [
+  "engineering",
+  "design",
+  "notes",
+]);
+
+export type BlogCategory = (typeof blogCategoryEnum.enumValues)[number];
+
 export type TbBlogPost = typeof TbBlogPost;
 
 export const TbBlogPost = table("blog_post", {
@@ -21,6 +29,7 @@ export const TbBlogPost = table("blog_post", {
   coverImage: column.text("cover_image"),
   content: column.text("content").notNull(),
   status: blogStatusEnum("status").notNull().default("draft"),
+  category: blogCategoryEnum("category").notNull().default("engineering"),
   publishedAt: column.timestamp("published_at", {
     mode: "date",
     withTimezone: true,

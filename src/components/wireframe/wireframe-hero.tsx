@@ -117,6 +117,15 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               priority
             />
           </div>
+          <svg
+            className="wf-ann-arrow"
+            style={{ top: -26, left: -70, width: 90, height: 60 }}
+            viewBox="0 0 90 60"
+            aria-hidden="true"
+          >
+            <path d="M84,6 C50,2 18,16 10,50" />
+            <path d="M10,50 l-2,-15 M10,50 l13,-7" />
+          </svg>
           <div
             className="wf-note"
             style={{ top: -44, left: -120, width: 120, transform: "rotate(-6deg)" }}

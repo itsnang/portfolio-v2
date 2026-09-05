@@ -9,6 +9,8 @@ import { WireframeProjects } from "./wireframe-projects";
 import { WireframeJourney } from "./wireframe-journey";
 import { WireframeEducation } from "./wireframe-education";
 import { WireframeGallery } from "./wireframe-gallery";
+import { WireframeBlogHome } from "./wireframe-blog-home";
+import type { WireframeBlogPostSummary } from "./wireframe-blog-card";
 import { WireframeFooter } from "./wireframe-footer";
 
 const WOBBLE = (
@@ -48,7 +50,13 @@ function paintEdges(root: HTMLElement) {
     });
 }
 
-export function WireframeHome({ profile }: { profile: IProfile }) {
+export function WireframeHome({
+  profile,
+  posts = [],
+}: {
+  profile: IProfile;
+  posts?: WireframeBlogPostSummary[];
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const revealedEls = useRef<Set<Element>>(new Set());
 
@@ -97,9 +105,17 @@ export function WireframeHome({ profile }: { profile: IProfile }) {
           education={profile.education}
           recommendations={profile.recommendations}
         />
-        <hr className="wf-divider" />
+        {posts.length > 0 && (
+          <>
+            <hr className="wf-divider" />
+            <WireframeBlogHome posts={posts} />
+          </>
+        )}
         {profile.aboutImages && profile.aboutImages.length > 0 && (
-          <WireframeGallery images={profile.aboutImages} />
+          <>
+            <hr className="wf-divider" />
+            <WireframeGallery images={profile.aboutImages} />
+          </>
         )}
       </div>
       <WireframeFooter socials={profile.socials} />
