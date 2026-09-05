@@ -39,6 +39,10 @@ const StatusBadge = ({ status }: { status: BlogPost["status"] }) => (
   </Badge>
 );
 
+const CategoryBadge = ({ category }: { category: BlogPost["category"] }) => (
+  <Badge variant="outline">{category}</Badge>
+);
+
 interface BlogTableProps {
   posts: BlogPost[];
 }
@@ -94,6 +98,7 @@ export const BlogTable = ({ posts }: BlogTableProps) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Title</TableHead>
+                  <TableHead className="w-[110px]">Category</TableHead>
                   <TableHead className="w-[110px]">Status</TableHead>
                   <TableHead className="w-[130px]">Published</TableHead>
                   <TableHead className="w-[90px]">Actions</TableHead>
@@ -104,6 +109,9 @@ export const BlogTable = ({ posts }: BlogTableProps) => {
                   <TableRow key={post.id}>
                     <TableCell className="font-medium max-w-[260px] truncate">
                       {post.title}
+                    </TableCell>
+                    <TableCell className="w-[110px]">
+                      <CategoryBadge category={post.category} />
                     </TableCell>
                     <TableCell className="w-[110px]">
                       <StatusBadge status={post.status} />
@@ -158,7 +166,10 @@ export const BlogTable = ({ posts }: BlogTableProps) => {
                     />
                   </div>
                 </div>
-                <StatusBadge status={post.status} />
+                <div className="flex items-center gap-2">
+                  <CategoryBadge category={post.category} />
+                  <StatusBadge status={post.status} />
+                </div>
               </div>
             ))}
           </div>

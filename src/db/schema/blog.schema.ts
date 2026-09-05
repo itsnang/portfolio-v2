@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import { TbBlogPost, blogStatusEnum } from "../table";
+import { TbBlogPost, blogStatusEnum, blogCategoryEnum } from "../table";
 
 export const blogPostSchema = createSelectSchema(TbBlogPost);
 
@@ -22,6 +22,7 @@ export const blogPostInsertSchema = createInsertSchema(TbBlogPost, {
     .optional(),
   content: z.string().nonempty("Content is required"),
   status: z.enum(blogStatusEnum.enumValues).default("draft"),
+  category: z.enum(blogCategoryEnum.enumValues).default("engineering"),
   publishedAt: z.date().nullable().optional(),
 });
 
