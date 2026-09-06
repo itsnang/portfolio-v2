@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { AppSidebar } from "@/components/dashboard-shell/app-sidebar";
 import {
   Breadcrumb,
@@ -13,6 +14,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+
+// The dashboard is private — keep it out of search results even though
+// robots.txt already disallows /dashboard/.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function DashboardLayout({
   children,

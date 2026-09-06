@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
+  // Load sharp from node_modules instead of bundling it. Bundled, it resolves
+  // to the @img/sharp-wasm32 build, which has no SVG rasterizer — that makes
+  // next/og's SVG->PNG step fail with "Input buffer contains unsupported
+  // image format" when generating opengraph images.
+  serverExternalPackages: ["sharp"],
   experimental: {
     serverActions: {
       // Next's default is 1MB, which silently rejects most real photos before
