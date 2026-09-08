@@ -12,7 +12,7 @@ export function WireframeJourney() {
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>
           04
         </span>
-        <h2 className="wf-h" style={{ fontSize: 40 }}>
+        <h2 className="wf-h" style={{ fontSize: "clamp(26px, 5vw, 40px)" }}>
           The Journey
         </h2>
         <span
