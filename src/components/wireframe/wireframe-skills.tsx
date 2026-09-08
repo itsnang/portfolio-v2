@@ -36,7 +36,7 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>
           01
         </span>
-        <h2 className="wf-h" style={{ fontSize: 40 }}>
+        <h2 className="wf-h" style={{ fontSize: "clamp(26px, 5vw, 40px)" }}>
           Stack
         </h2>
         <span

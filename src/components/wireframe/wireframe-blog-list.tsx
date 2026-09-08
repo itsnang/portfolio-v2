@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { WireframeBlogCard, type WireframeBlogPostSummary } from "./wireframe-blog-card";
 
 function paintEdges(root: HTMLElement) {
@@ -80,12 +81,29 @@ export function WireframeBlogList({ posts }: { posts: WireframeBlogPostSummary[]
   return (
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "60px 28px" }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px 28px 0" }}>
+        <Link
+          href="/"
+          className="wf-m"
+          style={{
+            fontSize: 15,
+            color: "var(--wf-ink-soft)",
+            textDecoration: "none",
+            display: "inline-flex",
+            gap: 8,
+            alignItems: "center",
+          }}
+        >
+          ← back to home
+        </Link>
+      </div>
+
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "34px 28px 60px" }}>
         <div className="wf-reveal" style={{ marginBottom: 30 }}>
           <div className="wf-eyebrow" style={{ marginBottom: 8 }}>
             // notes from the notebook
           </div>
-          <h1 className="wf-h" style={{ fontSize: 46 }}>
+          <h1 className="wf-h" style={{ fontSize: "clamp(28px, 7vw, 46px)" }}>
             The Blog
           </h1>
           <p
