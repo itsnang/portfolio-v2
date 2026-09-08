@@ -16,8 +16,8 @@ interface Project {
   detailImage: string[] | null;
   number: number;
   total: number;
-  prev: { id: string; title: string };
-  next: { id: string; title: string };
+  prev: { id: string; title: string } | null;
+  next: { id: string; title: string } | null;
 }
 
 /** Split TipTap HTML into overview paragraphs + list items */
@@ -199,7 +199,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
             </div>
             <h1
               className="wf-h"
-              style={{ fontSize: 58, lineHeight: 0.95, marginTop: 10 }}
+              style={{ fontSize: "clamp(30px, 8vw, 58px)", lineHeight: 0.95, marginTop: 10 }}
             >
               {project.title}
             </h1>
@@ -446,81 +446,111 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           </section>
         )}
 
+        <div className="wf-reveal" style={{ marginTop: 60, textAlign: "center" }}>
+          <Link
+            href="/#projects"
+            className="wf-m"
+            style={{
+              fontSize: 15,
+              color: "var(--wf-ink-soft)",
+              textDecoration: "none",
+              display: "inline-flex",
+              gap: 8,
+              alignItems: "center",
+            }}
+          >
+            ← back to projects
+          </Link>
+        </div>
+
         {/* Prev / Next */}
-        <nav
-          className="wf-reveal"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 16,
-            borderTop: "2px solid var(--wf-ink)",
-            marginTop: 60,
-            padding: "34px 0 0",
-            position: "relative",
-          }}
-        >
-          <div
+        {(project.prev || project.next) && (
+          <nav
+            className="wf-reveal"
             style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: -2,
-              height: 3,
-              background: "var(--wf-ink)",
-              filter: "url(#wobble)",
-            }}
-          />
-          <Link
-            href={`/projects/${project.prev.id}`}
-            className="wf-h"
-            style={{
-              textDecoration: "none",
-              color: "var(--wf-ink)",
-              fontSize: 22,
               display: "flex",
-              flexDirection: "column",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              gap: 16,
+              borderTop: "2px solid var(--wf-ink)",
+              marginTop: 34,
+              padding: "34px 0 0",
+              position: "relative",
             }}
           >
-            <span
-              className="wf-m"
+            <div
               style={{
-                fontSize: 11,
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-                color: "var(--wf-ink-soft)",
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: -2,
+                height: 3,
+                background: "var(--wf-ink)",
+                filter: "url(#wobble)",
               }}
-            >
-              ← prev
-            </span>
-            {project.prev.title}
-          </Link>
-          <Link
-            href={`/projects/${project.next.id}`}
-            className="wf-h"
-            style={{
-              textDecoration: "none",
-              color: "var(--wf-ink)",
-              fontSize: 22,
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "right",
-              alignItems: "flex-end",
-            }}
-          >
-            <span
-              className="wf-m"
-              style={{
-                fontSize: 11,
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-                color: "var(--wf-ink-soft)",
-              }}
-            >
-              next →
-            </span>
-            {project.next.title}
-          </Link>
-        </nav>
+            />
+            {project.prev ? (
+              <Link
+                href={`/projects/${project.prev.id}`}
+                className="wf-h"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--wf-ink)",
+                  fontSize: 22,
+                  display: "flex",
+                  flexDirection: "column",
+                  minWidth: 0,
+                  flex: "1 1 220px",
+                }}
+              >
+                <span
+                  className="wf-m"
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "var(--wf-ink-soft)",
+                  }}
+                >
+                  ← prev
+                </span>
+                {project.prev.title}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {project.next && (
+              <Link
+                href={`/projects/${project.next.id}`}
+                className="wf-h"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--wf-ink)",
+                  fontSize: 22,
+                  display: "flex",
+                  flexDirection: "column",
+                  textAlign: "right",
+                  alignItems: "flex-end",
+                  minWidth: 0,
+                  flex: "1 1 220px",
+                }}
+              >
+                <span
+                  className="wf-m"
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "var(--wf-ink-soft)",
+                  }}
+                >
+                  next →
+                </span>
+                {project.next.title}
+              </Link>
+            )}
+          </nav>
+        )}
       </div>
 
       {/* Lightbox */}
@@ -653,7 +683,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           <div className="wf-eyebrow" style={{ marginBottom: 8 }}>
             // like what you see?
           </div>
-          <h2 className="wf-h" style={{ fontSize: 38 }}>
+          <h2 className="wf-h" style={{ fontSize: "clamp(24px, 5vw, 38px)" }}>
             Let&apos;s build something →
           </h2>
           <div

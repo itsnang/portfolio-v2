@@ -14,7 +14,7 @@ export function WireframeGallery({ images }: Props) {
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>
           07
         </span>
-        <h2 className="wf-h" style={{ fontSize: 40 }}>
+        <h2 className="wf-h" style={{ fontSize: "clamp(26px, 5vw, 40px)" }}>
           Gallery
         </h2>
         <span

@@ -174,8 +174,10 @@ export const getProjectDetail = async (projectId: string) => {
 
   const idx = allProjects.findIndex((p) => p.id === projectId);
   const total = allProjects.length;
-  const prev = allProjects[(idx - 1 + total) % total];
-  const next = allProjects[(idx + 1) % total];
+  // Linear (non-circular) pagination — wrapping around with modulo made prev
+  // and next collide on the same project whenever there were exactly 2.
+  const prev = idx > 0 ? allProjects[idx - 1] : null;
+  const next = idx >= 0 && idx < total - 1 ? allProjects[idx + 1] : null;
 
   return {
     ...project.value,
