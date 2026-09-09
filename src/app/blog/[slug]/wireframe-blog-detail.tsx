@@ -87,6 +87,10 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
     : null;
   const num = String(post.number).padStart(2, "0");
   const total = String(post.total).padStart(2, "0");
+  // prev/next wrap around, so with only two posts both point at the same one —
+  // showing it twice reads as a bug. Keep it on the "prev" side only.
+  const next =
+    post.next && post.next.slug !== post.prev?.slug ? post.next : null;
 
   return (
     <div className="sketch-page" ref={rootRef}>
@@ -156,20 +160,8 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
-        {(post.prev || post.next) && (
-          <nav
-            className="wf-reveal"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              gap: 16,
-              borderTop: "2px solid var(--wf-ink)",
-              marginTop: 34,
-              padding: "34px 0 60px",
-              position: "relative",
-            }}
-          >
+        {(post.prev || next) && (
+          <nav className="wf-reveal wf-postnav">
             <div
               style={{
                 position: "absolute",
@@ -182,47 +174,20 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
               }}
             />
             {post.prev ? (
-              <Link
-                href={`/blog/${post.prev.slug}`}
-                className="wf-h"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--wf-ink)",
-                  fontSize: 20,
-                  display: "flex",
-                  flexDirection: "column",
-                  minWidth: 0,
-                  flex: "1 1 220px",
-                }}
-              >
-                <span className="wf-m" style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--wf-ink-soft)" }}>
-                  ← prev
-                </span>
+              <Link href={`/blog/${post.prev.slug}`} className="wf-h wf-postnav-link">
+                <span className="wf-m wf-postnav-label">← prev</span>
                 {post.prev.title}
               </Link>
             ) : (
               <span />
             )}
-            {post.next && (
+            {next && (
               <Link
-                href={`/blog/${post.next.slug}`}
-                className="wf-h"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--wf-ink)",
-                  fontSize: 20,
-                  display: "flex",
-                  flexDirection: "column",
-                  textAlign: "right",
-                  alignItems: "flex-end",
-                  minWidth: 0,
-                  flex: "1 1 220px",
-                }}
+                href={`/blog/${next.slug}`}
+                className="wf-h wf-postnav-link wf-postnav-next"
               >
-                <span className="wf-m" style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--wf-ink-soft)" }}>
-                  next →
-                </span>
-                {post.next.title}
+                <span className="wf-m wf-postnav-label">next →</span>
+                {next.title}
               </Link>
             )}
           </nav>
