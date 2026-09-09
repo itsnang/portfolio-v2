@@ -255,8 +255,10 @@ export const getBlogDetail = async (slug: string) => {
 
   const idx = allPosts.findIndex((p) => p.slug === slug);
   const total = allPosts.length;
-  const prev = total > 1 ? allPosts[(idx - 1 + total) % total] : null;
-  const next = total > 1 ? allPosts[(idx + 1) % total] : null;
+  // Linear (non-circular) pagination — wrapping around with modulo made prev
+  // and next collide on the same post whenever there were exactly 2 posts.
+  const prev = idx > 0 ? allPosts[idx - 1] : null;
+  const next = idx >= 0 && idx < total - 1 ? allPosts[idx + 1] : null;
 
   return {
     ...post.value,

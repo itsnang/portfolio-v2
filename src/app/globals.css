@@ -860,6 +860,17 @@
   }
 }
 
+/* tablet: 3-column grids get cramped between the mobile (640px) and
+   desktop breakpoints, so step down to 2 columns first */
+@media (max-width: 1024px) and (min-width: 641px) {
+  .wf-proj-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .wf-post-featured {
+    grid-column: span 2;
+  }
+}
+
 /* view-cue badge: hidden until hover */
 .wf-view-cue {
   position: absolute;
