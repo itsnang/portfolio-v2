@@ -156,23 +156,6 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
-        <div className="wf-reveal" style={{ marginTop: 60, textAlign: "center" }}>
-          <Link
-            href="/blog"
-            className="wf-m"
-            style={{
-              fontSize: 15,
-              color: "var(--wf-ink-soft)",
-              textDecoration: "none",
-              display: "inline-flex",
-              gap: 8,
-              alignItems: "center",
-            }}
-          >
-            ← back to blog
-          </Link>
-        </div>
-
         {(post.prev || post.next) && (
           <nav
             className="wf-reveal"
