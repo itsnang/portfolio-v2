@@ -751,6 +751,58 @@
   margin: 40px 0;
 }
 
+/* blog detail prev/next nav */
+.wf-postnav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 2px solid var(--wf-ink);
+  margin-top: 60px;
+  padding: 34px 0 60px;
+  position: relative;
+}
+.wf-postnav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: 20px;
+  line-height: 1.15;
+  color: var(--wf-ink);
+  text-decoration: none;
+}
+.wf-postnav-link:hover {
+  color: var(--wf-accent);
+}
+.wf-postnav-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wf-ink-soft);
+}
+.wf-postnav-next {
+  text-align: right;
+  align-items: flex-end;
+}
+@media (max-width: 640px) {
+  .wf-postnav {
+    gap: 28px;
+    padding-bottom: 48px;
+  }
+  .wf-postnav-link {
+    /* stacked, so give each its own row and drop a size */
+    flex-basis: 100%;
+    font-size: 18px;
+  }
+  /* right-aligning a stacked block just looks ragged against the one above it */
+  .wf-postnav-next {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
 /* badge — rounded square, not circle */
 .wf-badge {
   background: var(--wf-paper-2);
