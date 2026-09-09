@@ -446,23 +446,6 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           </section>
         )}
 
-        <div className="wf-reveal" style={{ marginTop: 60, textAlign: "center" }}>
-          <Link
-            href="/#projects"
-            className="wf-m"
-            style={{
-              fontSize: 15,
-              color: "var(--wf-ink-soft)",
-              textDecoration: "none",
-              display: "inline-flex",
-              gap: 8,
-              alignItems: "center",
-            }}
-          >
-            ← back to projects
-          </Link>
-        </div>
-
         {/* Prev / Next */}
         {(project.prev || project.next) && (
           <nav
