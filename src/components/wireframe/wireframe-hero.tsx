@@ -11,9 +11,9 @@ interface Props {
 export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
   return (
     <header
+      className="wf-hero"
       style={{
         position: "relative",
-        padding: "70px 0 40px",
         overflow: "visible",
       }}
     >
