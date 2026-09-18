@@ -10,9 +10,9 @@ interface Props {
 
 export function WireframeEducation({ education, recommendations }: Props) {
   return (
-    <section style={{ padding: "84px 0" }} id="edu">
+    <section className="wf-section" id="edu">
       <div
-        className="wf-reveal"
+        className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
       >
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>

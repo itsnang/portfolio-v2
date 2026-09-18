@@ -8,9 +8,9 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
   const [openXp, setOpenXp] = useState<string | null>(experience[0]?.id ?? null);
 
   return (
-    <section style={{ padding: "84px 0" }} id="work">
+    <section className="wf-section" id="work">
       <div
-        className="wf-reveal"
+        className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
       >
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>
@@ -20,8 +20,8 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
           Work Experience
         </h2>
         <span
-          className="wf-m"
-          style={{ fontSize: 14, color: "var(--wf-ink-soft)", marginLeft: "auto" }}
+          className="wf-m wf-section-hint"
+          style={{ fontSize: 14, color: "var(--wf-ink-soft)" }}
         >
           // click a card to expand ↓
         </span>
