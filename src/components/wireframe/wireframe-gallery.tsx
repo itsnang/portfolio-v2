@@ -6,9 +6,9 @@ export function WireframeGallery({ images }: Props) {
   if (images.length === 0) return null;
 
   return (
-    <section style={{ padding: "84px 0" }} id="gallery">
+    <section className="wf-section" style={{ padding: "84px 0" }} id="gallery">
       <div
-        className="wf-reveal"
+        className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
       >
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>

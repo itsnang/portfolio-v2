@@ -8,9 +8,9 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
   const [openXp, setOpenXp] = useState<string | null>(experience[0]?.id ?? null);
 
   return (
-    <section style={{ padding: "84px 0" }} id="work">
+    <section className="wf-section" style={{ padding: "84px 0" }} id="work">
       <div
-        className="wf-reveal"
+        className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
       >
         <span className="wf-m" style={{ fontSize: 14, color: "var(--wf-accent)" }}>

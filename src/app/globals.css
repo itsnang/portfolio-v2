@@ -957,6 +957,17 @@
   .wf-ann-arrow {
     display: none !important;
   }
+  /* the desktop rhythm (84px section padding, tall hero) reads as
+     empty space once everything stacks into one column on mobile */
+  .wf-section {
+    padding: 40px 0 !important;
+  }
+  .wf-hero {
+    padding: 32px 0 16px !important;
+  }
+  .contact-strip {
+    margin-bottom: 22px;
+  }
 }
 
 @media (max-width: 540px) {
@@ -974,6 +985,23 @@
   }
   .wf-xp-date {
     white-space: normal !important;
+  }
+}
+
+/* section header row: "01  Title  // hint" — let the hint drop to its
+   own line instead of squeezing the title into a wrap on narrow screens */
+.wf-section-head {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+@media (max-width: 540px) {
+  .wf-section-head h2 {
+    white-space: nowrap;
+  }
+  .wf-section-head > span:last-child {
+    margin-left: 0 !important;
+    flex-basis: 100%;
+    white-space: normal;
   }
 }
 
