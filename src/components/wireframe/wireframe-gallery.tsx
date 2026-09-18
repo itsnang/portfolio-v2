@@ -6,7 +6,7 @@ export function WireframeGallery({ images }: Props) {
   if (images.length === 0) return null;
 
   return (
-    <section className="wf-section" style={{ padding: "84px 0" }} id="gallery">
+    <section className="wf-section" id="gallery">
       <div
         className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
@@ -18,8 +18,8 @@ export function WireframeGallery({ images }: Props) {
           Gallery
         </h2>
         <span
-          className="wf-m"
-          style={{ fontSize: 14, color: "var(--wf-ink-soft)", marginLeft: "auto" }}
+          className="wf-m wf-section-hint"
+          style={{ fontSize: 14, color: "var(--wf-ink-soft)" }}
         >
           // moments
         </span>

@@ -4,7 +4,7 @@ const sorted = [...achievements].sort((a, b) => Number(a.year) - Number(b.year))
 
 export function WireframeJourney() {
   return (
-    <section className="wf-section" style={{ padding: "84px 0" }}>
+    <section className="wf-section">
       <div
         className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 48 }}
@@ -16,8 +16,8 @@ export function WireframeJourney() {
           The Journey
         </h2>
         <span
-          className="wf-m"
-          style={{ fontSize: 14, color: "var(--wf-ink-soft)", marginLeft: "auto" }}
+          className="wf-m wf-section-hint"
+          style={{ fontSize: 14, color: "var(--wf-ink-soft)" }}
         >
           // every milestone counts
         </span>

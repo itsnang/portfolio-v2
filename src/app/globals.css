@@ -939,6 +939,13 @@
   display: none;
 }
 
+.wf-section {
+  padding: 84px 0;
+}
+.wf-hero {
+  padding: 70px 0 40px;
+}
+
 @media (max-width: 640px) {
   .wf-hero-grid {
     grid-template-columns: 1fr !important;
@@ -960,10 +967,10 @@
   /* the desktop rhythm (84px section padding, tall hero) reads as
      empty space once everything stacks into one column on mobile */
   .wf-section {
-    padding: 40px 0 !important;
+    padding: 40px 0;
   }
   .wf-hero {
-    padding: 32px 0 16px !important;
+    padding: 32px 0 16px;
   }
   .contact-strip {
     margin-bottom: 22px;
@@ -994,12 +1001,15 @@
   flex-wrap: wrap;
   row-gap: 6px;
 }
+.wf-section-hint {
+  margin-left: auto;
+}
 @media (max-width: 540px) {
   .wf-section-head h2 {
     white-space: nowrap;
   }
-  .wf-section-head > span:last-child {
-    margin-left: 0 !important;
+  .wf-section-hint {
+    margin-left: 0;
     flex-basis: 100%;
     white-space: normal;
   }

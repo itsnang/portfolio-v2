@@ -5,7 +5,7 @@ import { stripHtml } from "./wireframe-utils";
 
 export function WireframeProjects({ projects }: { projects: IProject[] }) {
   return (
-    <section className="wf-section" style={{ padding: "84px 0" }} id="projects">
+    <section className="wf-section" id="projects">
       <div
         className="wf-reveal wf-section-head"
         style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 38 }}
@@ -17,8 +17,8 @@ export function WireframeProjects({ projects }: { projects: IProject[] }) {
           Projects
         </h2>
         <span
-          className="wf-m"
-          style={{ fontSize: 14, color: "var(--wf-ink-soft)", marginLeft: "auto" }}
+          className="wf-m wf-section-hint"
+          style={{ fontSize: 14, color: "var(--wf-ink-soft)" }}
         >
           // stuff i actually built
         </span>

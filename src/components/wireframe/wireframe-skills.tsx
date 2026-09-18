@@ -4,7 +4,7 @@ import { Icons } from "@/components/icons";
 
 export function WireframeSkills({ skills }: { skills: ISkill[] }) {
   return (
-    <section className="wf-section" style={{ padding: "84px 0" }} id="skills">
+    <section className="wf-section" id="skills">
       <div className="contact-strip wf-reveal">
         <span className="contact-mini">
           <Icons.mapPin />
@@ -40,8 +40,8 @@ export function WireframeSkills({ skills }: { skills: ISkill[] }) {
           Stack
         </h2>
         <span
-          className="wf-m"
-          style={{ fontSize: 14, color: "var(--wf-ink-soft)", marginLeft: "auto" }}
+          className="wf-m wf-section-hint"
+          style={{ fontSize: 14, color: "var(--wf-ink-soft)" }}
         >
           // the toolbox
         </span>
