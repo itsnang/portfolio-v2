@@ -416,8 +416,8 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
             <div
               className="wf-reveal"
               style={{
-                display: "flex",
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
                 gap: 18,
               }}
             >
@@ -426,7 +426,6 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                   key={i}
                   className="wf-sketch wf-photo"
                   style={{
-                    flex: "1 1 280px",
                     aspectRatio: "4/3",
                     overflow: "hidden",
                     cursor: "zoom-in",
