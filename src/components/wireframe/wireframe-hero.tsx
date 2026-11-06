@@ -59,9 +59,6 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
               </span>
             </div>
           )}
-          <div className="wf-eyebrow" style={{ marginBottom: 10 }}>
-            // hello world, this is
-          </div>
           <h1 className="wf-h" style={{ fontSize: "clamp(38px, 9vw, 84px)", lineHeight: 0.92 }}>
             {name}
           </h1>
