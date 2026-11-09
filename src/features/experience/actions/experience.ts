@@ -1,30 +1,52 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { ExperiencesInsert } from "@/db/schema/experiences.schema";
+import {
+  ExperiencesInsert,
+  experiencesInsertSchema,
+} from "@/db/schema/experiences.schema";
 import { TbExperiences } from "@/db/table";
-import { InsertError } from "@/lib/errors";
-import { err, ok } from "@justmiracle/result";
+import { withAuthAction } from "@/lib/auth/middleware";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const insertExperiences = async (experience: ExperiencesInsert) => {
-  console.log("insert skill body:", experience);
+export const insertExperiences = withAuthAction(
+  async (auth, experience: ExperiencesInsert) => {
+    if (!auth.profile) {
+      return {
+        success: false as const,
+        error: "Profile not found. Please create a profile first.",
+      };
+    }
 
-  const insertExperience = await db
-    .insert(TbExperiences)
-    .values(experience)
-    .returning()
-    .then(ok)
-    .catch(err);
-  if (insertExperience.error) {
-    console.log(insertExperience.error.message);
-    throw new InsertError();
+    const validated = experiencesInsertSchema.safeParse({
+      ...experience,
+      userId: auth.profile.id,
+    });
+    if (!validated.success) {
+      return { success: false as const, error: "Invalid experience data" };
+    }
+
+    try {
+      const [created] = await db
+        .insert(TbExperiences)
+        .values(validated.data)
+        .returning({ id: TbExperiences.id });
+
+      revalidatePath("/dashboard/experience");
+      revalidatePath("/");
+
+      return {
+        success: true as const,
+        data: created,
+        message: "Experience added successfully",
+      };
+    } catch (error) {
+      console.error("Error inserting experience:", error);
+      return { success: false as const, error: "Failed to add experience" };
+    }
   }
-
-  revalidatePath("/dashboard/experience");
-  revalidatePath("/");
-};
+);
 
 export const getExperiences = async () => {
   try {
@@ -50,33 +72,45 @@ export const getExperienceById = async (id: string) => {
   }
 };
 
-export const updateExperience = async (
-  id: string,
-  experience: ExperiencesInsert
-) => {
-  try {
-    const updatedExperience = await db
-      .update(TbExperiences)
-      .set({
-        ...experience,
-        updatedAt: new Date(),
-      })
-      .where(eq(TbExperiences.id, id))
-      .returning()
-      .then(ok)
-      .catch(err);
-
-    if (updatedExperience.error) {
-      console.log(updatedExperience.error.message);
-      throw new Error("Failed to update experience");
+export const updateExperience = withAuthAction(
+  async (auth, id: string, experience: ExperiencesInsert) => {
+    if (!auth.profile) {
+      return { success: false as const, error: "Profile not found." };
     }
 
-    revalidatePath("/dashboard/experience");
-    revalidatePath("/");
+    const validated = experiencesInsertSchema.safeParse({
+      ...experience,
+      userId: auth.profile.id,
+    });
+    if (!validated.success) {
+      return { success: false as const, error: "Invalid experience data" };
+    }
 
-    return updatedExperience.value[0];
-  } catch (error) {
-    console.error("Error updating experience:", error);
-    throw new Error("Failed to update experience");
+    try {
+      const [updated] = await db
+        .update(TbExperiences)
+        .set({
+          ...validated.data,
+          updatedAt: new Date(),
+        })
+        .where(eq(TbExperiences.id, id))
+        .returning({ id: TbExperiences.id });
+
+      if (!updated) {
+        return { success: false as const, error: "Experience not found" };
+      }
+
+      revalidatePath("/dashboard/experience");
+      revalidatePath("/");
+
+      return {
+        success: true as const,
+        data: updated,
+        message: "Experience updated successfully",
+      };
+    } catch (error) {
+      console.error("Error updating experience:", error);
+      return { success: false as const, error: "Failed to update experience" };
+    }
   }
-};
+);

@@ -18,6 +18,9 @@ export const auth = betterAuth({
   url: env.BETTER_AUTH_URL,
   emailAndPassword: {
     enabled: true,
+    // Single-owner CMS: every account gets the admin role, so accounts must
+    // never be self-service.
+    disableSignUp: true,
   },
   user: {
     additionalFields: {

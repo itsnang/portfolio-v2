@@ -22,7 +22,13 @@ export function useImages(folderPath?: string) {
   const folderKey = folderPath || "all";
   return useQuery({
     queryKey: ["images", folderKey],
-    queryFn: () => getImages(folderPath),
+    queryFn: async () => {
+      const result = await getImages(folderPath);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.data;
+    },
     staleTime: 5 * 60 * 1000,
   });
 }

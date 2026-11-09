@@ -44,8 +44,11 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
 
   const loadFolders = async () => {
     try {
-      const folderList = await getFolders();
-      setFolders(folderList);
+      const result = await getFolders();
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      setFolders(result.data);
     } catch (error) {
       console.error("Error loading folders:", error);
       toast.error("Failed to load folders");
@@ -60,8 +63,11 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
 
     setIsLoading(true);
     try {
-      await createFolder(newFolderName.trim());
-      toast.success("Folder created successfully");
+      const result = await createFolder(newFolderName.trim());
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      toast.success(result.message);
       setNewFolderName("");
       setIsCreateDialogOpen(false);
       await loadFolders();

@@ -112,22 +112,28 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
           : undefined,
       };
 
-      if (initialData && initialData.id) {
-        await updateExperience(initialData.id as string, normalizedValues);
-        toast.success("Experience updated successfully");
-      } else {
-        await insertExperiences(normalizedValues);
-        toast.success("Experience added successfully");
+      const result =
+        initialData && initialData.id
+          ? await updateExperience(initialData.id as string, normalizedValues)
+          : await insertExperiences(normalizedValues);
+
+      if (!result.success) {
+        toast.error(result.error);
+        return;
       }
+
+      toast.success(result.message);
       form.reset();
       onSuccess?.();
     } catch (error) {
-      console.log(error);
+      // withAuthAction throws when there is no valid session.
+      console.error(error);
       toast.error(
         initialData ? "Failed to update experience" : "Failed to add experience"
       );
+    } finally {
+      setIsPending(false);
     }
-    setIsPending(false);
   }
 
   const isFormValid = form.formState.isValid;
