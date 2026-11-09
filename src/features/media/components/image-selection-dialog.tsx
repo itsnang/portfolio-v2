@@ -38,8 +38,11 @@ export function ImageSelectionDialog({
   const loadFolderImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const folderImages = await getImages(selectedFolder);
-      setImages(folderImages);
+      const result = await getImages(selectedFolder);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      setImages(result.data);
     } catch (error) {
       console.error("Error loading folder images:", error);
       toast.error("Failed to load folder images");

@@ -83,7 +83,10 @@ export const MultiImageUpload = () => {
     try {
       for (const image of data.images) {
         try {
-          await uploadStagedFile(image, selectedFolder);
+          const result = await uploadStagedFile(image, selectedFolder);
+          if (!result.success) {
+            throw new Error(result.error);
+          }
           succeeded += 1;
         } catch (error) {
           console.error(`Failed to upload ${image.name}:`, error);

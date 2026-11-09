@@ -2,8 +2,9 @@
 import { db } from "@/db/drizzle";
 import { TbUser } from "@/db/table/user.table";
 import { TbAccount } from "@/db/table/account.table";
+import { TbProfile } from "@/db/table/profile.table";
 import { genId } from "@/utils/id";
-import { hash } from "bcryptjs";
+import { hashPassword } from "better-auth/crypto";
 import { eq } from "drizzle-orm";
 
 // Get admin data from environment variables or use defaults
@@ -15,6 +16,42 @@ const getAdminData = () => {
     role: "admin" as const,
   };
 };
+
+// Admin server actions refuse any account without a profile.
+async function ensureProfile(userId: string, name: string) {
+  // getProfile() renders the first profile row on the public site, so a second
+  // row could replace the real one. Only ever create the first.
+  const [existing] = await db
+    .select({ userId: TbProfile.userId })
+    .from(TbProfile)
+    .limit(1);
+
+  if (existing) {
+    if (existing.userId !== userId) {
+      console.warn(
+        "⚠️  A profile already exists for another user, so none was created."
+      );
+      console.warn(
+        "   This account will be refused by admin actions until profile.user_id points to it."
+      );
+    }
+    return;
+  }
+
+  await db.insert(TbProfile).values({
+    id: genId("profile")(),
+    userId,
+    name,
+    isAvailable: false,
+    bio: "",
+    imageUrl:
+      process.env.ADMIN_PROFILE_IMAGE_URL ||
+      "https://placehold.co/400x400.png",
+    abouts: "",
+    aboutImages: [],
+  });
+  console.log("✅ Placeholder profile created. Edit it in the dashboard.");
+}
 
 async function createInitialAdmin() {
   try {
@@ -33,6 +70,7 @@ async function createInitialAdmin() {
       console.log("✅ Admin user already exists!");
       console.log(`Email: ${existingAdmin[0].email}`);
       console.log(`Role: ${existingAdmin[0].role}`);
+      await ensureProfile(existingAdmin[0].id, existingAdmin[0].name);
       return;
     }
 
@@ -40,8 +78,8 @@ async function createInitialAdmin() {
     console.log(`Name: ${adminData.name}`);
     console.log(`Email: ${adminData.email}`);
 
-    // Hash the password
-    const hashedPassword = await hash(adminData.password, 12);
+    // Must be Better Auth's own format, or sign-in fails with "Invalid password hash"
+    const hashedPassword = await hashPassword(adminData.password);
 
     // Generate user ID
     const userId = genId("user")();
@@ -66,6 +104,8 @@ async function createInitialAdmin() {
       providerId: "credential", // Provider ID for email/password authentication
       password: hashedPassword,
     });
+
+    await ensureProfile(userId, adminData.name);
 
     console.log("✅ Initial admin user created successfully!");
     console.log("=".repeat(50));
