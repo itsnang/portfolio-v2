@@ -1,7 +1,7 @@
 import { generateMetadata as buildMetadata } from "@/lib/metadata";
 import { getAppConfig } from "@/features/app-config/actions";
 import { getProfile } from "@/features/profile/actions";
-import { toOgImageUrl } from "@/lib/cloudinary";
+import { toOgImageUrl } from "@/lib/og-image-url";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
