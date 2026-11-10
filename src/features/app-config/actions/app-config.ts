@@ -1,24 +1,16 @@
 "use server";
 
-import { cache } from "react";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/drizzle";
 import { TbAppConfig } from "@/db/table";
 import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
 import { withAuthAction } from "@/lib/auth/middleware";
-
-const DEFAULT_APP_CONFIG = { id: "config", maintenance: false, theme: "modern" as const };
-
-export const getAppConfig = cache(async () => {
-  const config = await db.query.TbAppConfig.findFirst();
-  return config ?? DEFAULT_APP_CONFIG;
-});
+import { getAppConfig } from "@/features/app-config/queries";
 
 export const getAppConfigAction = withAuthAction(async () => {
-  const config = await db.query.TbAppConfig.findFirst();
   return {
     success: true,
-    data: config ?? DEFAULT_APP_CONFIG,
+    data: await getAppConfig(),
   };
 });
 

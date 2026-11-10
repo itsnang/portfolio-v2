@@ -9,9 +9,9 @@ import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getAppConfig } from "@/features/app-config/actions";
+import { getAppConfig } from "@/features/app-config/queries";
 import { getProfile } from "@/features/profile/actions";
-import { getPublishedBlogPosts } from "@/features/blog/actions";
+import { getPublishedBlogPosts } from "@/features/blog/queries";
 import { achievements } from "@/features/achievement/data";
 
 
