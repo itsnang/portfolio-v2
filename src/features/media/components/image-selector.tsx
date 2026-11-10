@@ -87,8 +87,11 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
   const loadFolderImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const folderImages = await getImages(selectedFolder);
-      setImages(folderImages);
+      const result = await getImages(selectedFolder);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      setImages(result.data);
     } catch (error) {
       console.error("Error loading folder images:", error);
       toast.error("Failed to load folder images");
@@ -133,7 +136,11 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
       }
       setIsUploading(true);
       try {
-        const [uploaded] = await uploadStagedFile(files[0], selectedFolder);
+        const result = await uploadStagedFile(files[0], selectedFolder);
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        const uploaded = result.data;
         setImages((prev) => [
           { id: uploaded.id, imageUrl: uploaded.imageUrl },
           ...prev,

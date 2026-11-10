@@ -391,12 +391,12 @@ export const handleImageUpload = async (
 
     onProgress?.({ progress: 90 });
 
-    if (!result || result.length === 0) {
-      throw new Error("Upload failed - no result returned");
+    if (!result.success) {
+      throw new Error(result.error);
     }
 
     // Get the image URL from the database result
-    const imageUrl = result[0].imageUrl;
+    const imageUrl = result.data.imageUrl;
 
     onProgress?.({ progress: 100 });
 
