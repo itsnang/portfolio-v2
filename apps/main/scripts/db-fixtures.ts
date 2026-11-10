@@ -5,7 +5,7 @@ const ICON = "https://placehold.co/64x64.png";
 
 async function main() {
   if (process.env.DATABASE_URL !== LOCAL_DATABASE_URL) {
-    throw new Error("Fixtures only run against the local database. Use `npm run db:reset`.");
+    throw new Error("Fixtures only run against the local database. Use `pnpm db:reset`.");
   }
 
   // Imported here so the check above runs before a client connects.
