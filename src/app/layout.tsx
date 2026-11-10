@@ -5,8 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk, Architects_Daughter, Caveat } from "next/font/google";
-import { ReactQueryProvider } from "@/providers/react-query-provider";
-import { getAppConfig } from "@/features/app-config/actions";
+import { getAppConfig } from "@/features/app-config/queries";
 
 const architectsDaughter = Architects_Daughter({
   subsets: ["latin"],
@@ -76,7 +75,7 @@ export default async function RootLayout({
         className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}
         suppressHydrationWarning
       >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        {children}
         <Toaster richColors theme="light" position="top-center" />
         <Analytics />
         <SpeedInsights />

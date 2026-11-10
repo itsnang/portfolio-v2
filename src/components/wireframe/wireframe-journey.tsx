@@ -1,8 +1,15 @@
-import { achievements } from "@/features/achievement/data";
+export interface WireframeAchievement {
+  id: number;
+  title: string;
+  description: string;
+  year: string;
+  category: string;
+  links?: { title: string; href: string }[];
+}
 
-const sorted = [...achievements].sort((a, b) => Number(a.year) - Number(b.year));
+export function WireframeJourney({ achievements }: { achievements: WireframeAchievement[] }) {
+  const sorted = [...achievements].sort((a, b) => Number(a.year) - Number(b.year));
 
-export function WireframeJourney() {
   return (
     <section className="wf-section">
       <div

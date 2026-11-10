@@ -9,11 +9,10 @@ import { Skills } from "@/features/skills/components/skills-section";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
-import { getAppConfig } from "@/features/app-config/actions";
-import { getProfile } from "@/features/profile/actions";
-import { getPublishedBlogPosts } from "@/features/blog/actions";
-import { getQueryClient } from "@/lib/tanstack/get-query-client";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getAppConfig } from "@/features/app-config/queries";
+import { getProfile } from "@/features/profile/queries";
+import { getPublishedBlogPosts } from "@/features/blog/queries";
+import { achievements } from "@/features/achievement/data";
 
 
 export default async function Home() {
@@ -24,7 +23,26 @@ export default async function Home() {
   ]);
 
   if (appConfig.theme === "wireframe") {
-    return <WireframeHome profile={profile} posts={posts} />;
+    // The achievement data carries JSX icons, which the wireframe theme doesn't
+    // render, so only plain fields cross into the client component.
+    const wireframeAchievements = achievements.map(
+      ({ id, title, description, year, category, links }) => ({
+        id,
+        title,
+        description,
+        year,
+        category,
+        links: links?.map(({ title, href }) => ({ title, href })),
+      })
+    );
+
+    return (
+      <WireframeHome
+        profile={profile}
+        achievements={wireframeAchievements}
+        posts={posts}
+      />
+    );
   }
 
   const heroProfile = {
@@ -33,15 +51,8 @@ export default async function Home() {
     bio: profile.bio ?? "",
   };
 
-  // profile.socials was already fetched above as part of getProfile()'s single
-  // joined query — seed DockNavClient's ["socials"] query from it instead of
-  // letting DockNavClient's client-side useQuery fire a second, redundant
-  // socials read against the DB.
-  const queryClient = getQueryClient();
-  queryClient.setQueryData(["socials"], profile.socials);
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <>
       {appConfig.maintenance && <MaintenanceBanner />}
       <main className="mx-auto w-full max-w-4xl">
         <NavBar isAvailable={profile.isAvailable} />
@@ -78,8 +89,8 @@ export default async function Home() {
           </>
         )}
 
-        <DockNavClient />
+        <DockNavClient socials={profile.socials} />
       </main>
-    </HydrationBoundary>
+    </>
   );
 }

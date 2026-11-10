@@ -1,5 +1,5 @@
 import { ProjectTable } from "@/features/project/components/project-table";
-import { getProjects } from "@/features/project/actions";
+import { getProjects } from "@/features/project/admin-queries";
 
 async function ProjectPage() {
   const projects = await getProjects();

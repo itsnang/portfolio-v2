@@ -48,30 +48,6 @@ export const insertExperiences = withAuthAction(
   }
 );
 
-export const getExperiences = async () => {
-  try {
-    const experiences = await db.query.TbExperiences.findMany({
-      where: (experience, { eq }) => eq(experience.isActive, true),
-    });
-    return experiences;
-  } catch (error) {
-    console.error("Error fetching experiences:", error);
-    throw new Error("Failed to fetch experiences");
-  }
-};
-
-export const getExperienceById = async (id: string) => {
-  try {
-    const experience = await db.query.TbExperiences.findFirst({
-      where: (experience, { eq }) => eq(experience.id, id),
-    });
-    return experience;
-  } catch (error) {
-    console.error("Error fetching experience:", error);
-    throw new Error("Failed to fetch experience");
-  }
-};
-
 export const updateExperience = withAuthAction(
   async (auth, id: string, experience: ExperiencesInsert) => {
     if (!auth.profile) {

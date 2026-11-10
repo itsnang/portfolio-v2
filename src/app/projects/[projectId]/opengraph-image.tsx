@@ -1,4 +1,4 @@
-import { getProjectDetail } from "@/features/project/actions";
+import { getProjectDetail } from "@/features/project/queries";
 import { stripHtml } from "@/components/wireframe/wireframe-utils";
 import { renderWireframeOgImage } from "@/lib/og";
 

@@ -1,11 +1,11 @@
 import { ProfileForm } from "@/features/profile/components/profile-form";
 import React from "react";
-import { getProfile } from "@/features/profile/actions";
+import { getEditableProfile } from "@/features/profile/admin-queries";
 
 export const revalidate = 0;
 
 async function page() {
-  const profile = await getProfile();
+  const profile = await getEditableProfile();
 
   return (
     <section className="antialiased max-w-4xl space-y-16 border-gray-700 my-10 md:border-2 md:rounded-xl py-5 px-7 mx-auto">

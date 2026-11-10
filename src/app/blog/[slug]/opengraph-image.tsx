@@ -1,4 +1,4 @@
-import { getBlogPostBySlug } from "@/features/blog/actions";
+import { getBlogPostBySlug } from "@/features/blog/queries";
 import { renderWireframeOgImage } from "@/lib/og";
 
 // These three must stay inline literals — Next statically analyses them to

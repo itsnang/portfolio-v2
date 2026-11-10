@@ -23,6 +23,14 @@ npm run dev
 
 Open `http://localhost:3000` to develop locally. Update content in `src/app/(home)` and components under `src/components/**`.
 
+## Local Database
+
+Local development uses a throwaway Postgres with made-up content, and `npm run dev` refuses to connect to anything but `localhost`.
+
+1. Start Docker, then run `npm run db:reset`. It recreates the database, so anything saved locally is lost.
+2. Copy `.env.example` to `.env.local` and fill in the blanks.
+3. Run `npm run dev` and sign in at `/sign-in` with `admin@lornsamnang.com` / `admin123`.
+
 ## Portfolio CMS
 
 A password-protected dashboard (`/dashboard`, gated by Better Auth) lets the site owner manage every piece of content shown on the public portfolio, no redeploy required.

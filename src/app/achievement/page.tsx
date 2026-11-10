@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { AchievementSection } from "@/features/achievement/components/achievement-section";
-import { getQueryClient } from "@/lib/tanstack/get-query-client";
 import React from "react";
-import { getSocials } from "@/features/socials/actions";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getSocials } from "@/features/socials/queries";
 import { DockNavClient } from "@/components/nav-dock-client";
 
 const DESCRIPTION =
@@ -27,16 +25,12 @@ export const metadata: Metadata = {
 };
 
 export default async function AchievementPage() {
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["socials"],
-    queryFn: getSocials,
-  });
+  const socials = await getSocials();
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <>
       <AchievementSection />
-      <DockNavClient />
-    </HydrationBoundary>
+      <DockNavClient socials={socials} />
+    </>
   );
 }
