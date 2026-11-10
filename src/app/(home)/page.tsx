@@ -10,7 +10,7 @@ import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { WireframeHome } from "@/components/wireframe/wireframe-home";
 import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/queries";
-import { getProfile } from "@/features/profile/actions";
+import { getProfile } from "@/features/profile/queries";
 import { getPublishedBlogPosts } from "@/features/blog/queries";
 import { achievements } from "@/features/achievement/data";
 

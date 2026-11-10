@@ -1,48 +1,10 @@
 "use server";
-import { db, takeFirstOrThrow } from "@/db/drizzle";
+import { db } from "@/db/drizzle";
 import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
 import { TbProfile } from "@/db/table";
 import { eq } from "drizzle-orm";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { revalidatePath } from "next/cache";
-
-/** Public, unauthenticated read used by the public site — the whole profile aggregate. */
-export const getProfile = async () => {
-  try {
-    const data = await db.query.TbProfile.findMany({
-      with: {
-        skills: {
-          where: (skill, { eq, and, isNull }) => and(eq(skill.isActive, true), isNull(skill.deletedAt)),
-        },
-        experience: {
-          where: (experience, { eq }) => eq(experience.isActive, true),
-          orderBy: (experience, { asc }) => [asc(experience.sortOrder)],
-        },
-        education: {
-          where: (education, { eq, and, isNull }) =>
-            and(eq(education.isActive, true), isNull(education.deletedAt)),
-          orderBy: (education, { asc }) => [asc(education.startDate)],
-        },
-        projects: {
-          where: (project, { eq }) => eq(project.isActive, true),
-          orderBy: (project, { desc }) => [desc(project.createdAt)],
-        },
-        socials: {
-          where: (social, { eq, and, isNull }) => and(eq(social.isActive, true), isNull(social.deletedAt)),
-        },
-        recommendations: {
-          where: (recommendation, { eq, and, isNull }) =>
-            and(eq(recommendation.isActive, true), isNull(recommendation.deletedAt)),
-          orderBy: (recommendation, { asc }) => [asc(recommendation.createdAt)],
-        },
-      },
-    }).then(takeFirstOrThrow);
-    return data;
-  } catch (error) {
-    console.error("Error fetching profile data:", error);
-    throw new Error("Failed to fetch profile data");
-  }
-};
 
 export const updateProfileAction = withAuthAction(
   async (auth, profile: ProfileInsert) => {
