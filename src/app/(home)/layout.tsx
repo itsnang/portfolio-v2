@@ -1,6 +1,6 @@
 import { generateMetadata as buildMetadata } from "@/lib/metadata";
 import { getAppConfig } from "@/features/app-config/queries";
-import { getProfile } from "@/features/profile/actions";
+import { getProfile } from "@/features/profile/queries";
 import { toOgImageUrl } from "@/lib/og-image-url";
 import type { Metadata } from "next";
 

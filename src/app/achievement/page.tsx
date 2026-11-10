@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AchievementSection } from "@/features/achievement/components/achievement-section";
 import React from "react";
-import { getSocials } from "@/features/socials/actions";
+import { getSocials } from "@/features/socials/queries";
 import { DockNavClient } from "@/components/nav-dock-client";
 
 const DESCRIPTION =

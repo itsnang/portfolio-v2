@@ -1,6 +1,6 @@
 "use client";
 import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
-import { IProfile } from "@/features/profile/types";
+import type { EditableProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -33,7 +33,7 @@ import { Separator } from "@/components/ui/separator";
 import { updateProfileAction } from "@/features/profile/actions";
 
 interface ProfileFormProps {
-  profile: IProfile;
+  profile: EditableProfile;
 }
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
