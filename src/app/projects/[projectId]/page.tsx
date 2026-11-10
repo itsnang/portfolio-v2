@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAppConfig } from "@/features/app-config/actions";
+import { getAppConfig } from "@/features/app-config/queries";
 import { getProjectDetail } from "@/features/project/actions";
 import { stripHtml } from "@/components/wireframe/wireframe-utils";
 import { ProjectDetail } from "./project-detail";

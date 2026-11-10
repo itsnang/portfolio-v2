@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Space_Grotesk, Architects_Daughter, Caveat } from "next/font/google";
-import { getAppConfig } from "@/features/app-config/actions";
+import { getAppConfig } from "@/features/app-config/queries";
 
 const architectsDaughter = Architects_Daughter({
   subsets: ["latin"],
