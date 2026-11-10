@@ -11,7 +11,7 @@ if (
   !["localhost", "127.0.0.1", "[::1]"].includes(new URL(databaseUrl).hostname)
 ) {
   throw new Error(
-    "DATABASE_URL must point at localhost in development. Run `npm run db:reset` and copy DATABASE_URL from .env.example into .env.local."
+    "DATABASE_URL must point at localhost in development. Run `pnpm db:reset` and copy DATABASE_URL from apps/main/.env.example into apps/main/.env.local."
   );
 }
 

@@ -1,4 +1,6 @@
 # Throwaway Postgres for local development. `npm run db:reset` recreates it.
+name: portfolio-v2
+
 services:
   db:
     image: postgres:16.15-alpine

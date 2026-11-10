@@ -12,8 +12,8 @@ run("docker compose down --volumes --remove-orphans");
 run("docker compose up --detach --wait");
 // The migration history has drifted from the schema until the baseline exists,
 // so the throwaway database is built straight from the table definitions.
-run("npx drizzle-kit push --config drizzle.local.config.ts --force");
-run("npx tsx scripts/seed-admin.ts");
-run("npx tsx scripts/db-fixtures.ts");
+run("pnpm exec drizzle-kit push --config drizzle.local.config.ts --force");
+run("pnpm exec tsx scripts/seed-admin.ts");
+run("pnpm exec tsx scripts/db-fixtures.ts");
 
 console.log("\nLocal database is ready.");
