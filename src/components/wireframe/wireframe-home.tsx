@@ -6,7 +6,7 @@ import { WireframeHero } from "./wireframe-hero";
 import { WireframeSkills } from "./wireframe-skills";
 import { WireframeExperience } from "./wireframe-experience";
 import { WireframeProjects } from "./wireframe-projects";
-import { WireframeJourney } from "./wireframe-journey";
+import { WireframeJourney, type WireframeAchievement } from "./wireframe-journey";
 import { WireframeEducation } from "./wireframe-education";
 import { WireframeGallery } from "./wireframe-gallery";
 import { WireframeBlogHome } from "./wireframe-blog-home";
@@ -52,9 +52,11 @@ function paintEdges(root: HTMLElement) {
 
 export function WireframeHome({
   profile,
+  achievements,
   posts = [],
 }: {
   profile: IProfile;
+  achievements: WireframeAchievement[];
   posts?: WireframeBlogPostSummary[];
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -99,7 +101,7 @@ export function WireframeHome({
         <hr className="wf-divider" />
         <WireframeProjects projects={profile.projects} />
         <hr className="wf-divider" />
-        <WireframeJourney />
+        <WireframeJourney achievements={achievements} />
         <hr className="wf-divider" />
         <WireframeEducation
           education={profile.education}
