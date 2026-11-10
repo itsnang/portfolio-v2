@@ -12,6 +12,7 @@ import { MasonryGallery } from "@/components/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/actions";
 import { getProfile } from "@/features/profile/actions";
 import { getPublishedBlogPosts } from "@/features/blog/actions";
+import { achievements } from "@/features/achievement/data";
 import { getQueryClient } from "@/lib/tanstack/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
@@ -24,7 +25,26 @@ export default async function Home() {
   ]);
 
   if (appConfig.theme === "wireframe") {
-    return <WireframeHome profile={profile} posts={posts} />;
+    // The achievement data carries JSX icons, which the wireframe theme doesn't
+    // render, so only plain fields cross into the client component.
+    const wireframeAchievements = achievements.map(
+      ({ id, title, description, year, category, links }) => ({
+        id,
+        title,
+        description,
+        year,
+        category,
+        links: links?.map(({ title, href }) => ({ title, href })),
+      })
+    );
+
+    return (
+      <WireframeHome
+        profile={profile}
+        achievements={wireframeAchievements}
+        posts={posts}
+      />
+    );
   }
 
   const heroProfile = {
