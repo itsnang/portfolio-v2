@@ -2,8 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/db/drizzle";
-import { TbAppConfig } from "@/db/table";
-import { appConfigInsertSchema, AppConfigInsert } from "@/db/schema/app-config.schema";
+import { TbAppConfig, appConfigInsertSchema, AppConfigInsert } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { getAppConfig } from "@/features/app-config/queries";
 

@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 
 #migration
-/apps/main/migrations
+/packages/db/migrations
 
 # env files (can opt-in for commiting if needed)
 .env*

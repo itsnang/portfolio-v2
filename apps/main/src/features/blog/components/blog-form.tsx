@@ -40,7 +40,7 @@ import {
   BlogPostInsert,
   BlogPost,
 } from "@/features/blog/schemas";
-import { blogStatusEnum, blogCategoryEnum } from "@/db/table";
+import { blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
 import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {

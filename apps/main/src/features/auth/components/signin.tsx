@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { LoaderCircle, Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth/auth-client";
-import { LoginInput, loginSchema } from "@/db/schema/auth.schema";
+import { LoginInput, loginSchema } from "@portfolio/db/schema";
 
 export default function SignIn() {
   return (

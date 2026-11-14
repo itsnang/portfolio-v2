@@ -12,7 +12,7 @@ import {
   type Skills,
   type SkillsFormValues,
 } from "@/features/skills/schemas";
-import { skillCategoryEnum } from "@/db/table";
+import { skillCategoryEnum } from "@portfolio/db/schema";
 import { cn } from "@/lib/utils";
 import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";

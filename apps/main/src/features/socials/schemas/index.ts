@@ -1,1 +1,1 @@
-export * from "@/db/schema/socials.schema";
+export * from "@portfolio/db/schema";

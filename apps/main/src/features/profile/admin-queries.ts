@@ -3,7 +3,7 @@ import "server-only";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db/drizzle";
-import { TbProfile } from "@/db/table";
+import { TbProfile } from "@portfolio/db/schema";
 import { requireAuth } from "@/lib/auth/get-current-user";
 import { NotFoundError } from "@/lib/errors";
 

@@ -1,7 +1,1 @@
-export interface IRecommendation {
-  id: string;
-  name: string;
-  position: string;
-  profileImageUrl: string;
-  recommendationText: string;
-}
+export type { IRecommendation } from "@portfolio/db/schema";

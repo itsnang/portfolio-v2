@@ -4,11 +4,7 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
-import {
-  recommendationsInsertSchema,
-  type RecommendationsFormValues,
-} from "@/db/schema/recommendations.schema";
-import { TbRecommendations } from "@/db/table";
+import { recommendationsInsertSchema, type RecommendationsFormValues, TbRecommendations } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
 export const getRecommendations = withAuthAction(async (auth) => {

@@ -1,4 +1,4 @@
-import { TbAccount, TbSession, TbUser, TbVerificationToken } from "@/db/table";
+import { TbAccount, TbSession, TbUser, TbVerificationToken } from "@portfolio/db/schema";
 import { env } from "@/utils/env";
 import { db } from "@/db/drizzle";
 import { betterAuth } from "better-auth";

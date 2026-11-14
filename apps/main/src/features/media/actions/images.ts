@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { TbImages } from "@/db/table";
+import { TbImages } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 import {
   getCloudinaryImages,

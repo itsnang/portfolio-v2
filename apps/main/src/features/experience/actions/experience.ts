@@ -1,11 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import {
-  ExperiencesInsert,
-  experiencesInsertSchema,
-} from "@/db/schema/experiences.schema";
-import { TbExperiences } from "@/db/table";
+import { ExperiencesInsert, experiencesInsertSchema, TbExperiences } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

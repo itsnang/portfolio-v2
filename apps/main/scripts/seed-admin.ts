@@ -1,9 +1,6 @@
 // scripts/seed-admin.ts
 import { db } from "@/db/drizzle";
-import { TbUser } from "@/db/table/user.table";
-import { TbAccount } from "@/db/table/account.table";
-import { TbProfile } from "@/db/table/profile.table";
-import { genId } from "@/utils/id";
+import { TbUser, TbAccount, TbProfile, genId } from "@portfolio/db/schema";
 import { hashPassword } from "better-auth/crypto";
 import { eq } from "drizzle-orm";
 

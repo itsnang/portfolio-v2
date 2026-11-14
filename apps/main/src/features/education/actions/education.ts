@@ -4,11 +4,7 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
-import {
-  educationInsertSchema,
-  type EducationFormValues,
-} from "@/db/schema/education.schema";
-import { TbEducation } from "@/db/table";
+import { educationInsertSchema, type EducationFormValues, TbEducation } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
 export const getEducations = withAuthAction(async (auth) => {

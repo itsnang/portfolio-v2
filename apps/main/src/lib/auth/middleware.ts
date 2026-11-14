@@ -1,8 +1,8 @@
 import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth/better-auth";
 import { headers } from "next/headers";
-import * as schema from "@/db/table";
-import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import * as schema from "@portfolio/db/schema";
+import type { DB } from "@portfolio/db/client";
 
 export function withAuthAction<
   ParamsType extends unknown[] = unknown[],
@@ -13,7 +13,7 @@ export function withAuthAction<
       profile?: typeof schema.TbProfile.$inferSelect;
       session: typeof schema.TbSession.$inferSelect;
       user: typeof schema.TbUser.$inferSelect;
-      db: PostgresJsDatabase<typeof schema>;
+      db: DB;
     },
     ...args: ParamsType
   ) => Promise<ReturnType>
@@ -45,7 +45,7 @@ export function withOptionalAuthAction<
       profile?: typeof schema.TbProfile.$inferSelect;
       session?: typeof schema.TbSession.$inferSelect;
       user?: typeof schema.TbUser.$inferSelect;
-      db: PostgresJsDatabase<typeof schema>;
+      db: DB;
     },
     ...args: ParamsType
   ) => Promise<ReturnType>
