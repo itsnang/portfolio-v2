@@ -14,7 +14,8 @@
     "db:fixtures": "tsx --conditions=react-server scripts/db-fixtures.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:mark-baseline": "tsx scripts/mark-baseline-applied.ts"
   },
   "dependencies": {
     "drizzle-orm": "0.36.0",

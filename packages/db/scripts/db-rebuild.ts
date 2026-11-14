@@ -7,6 +7,4 @@ function run(command: string) {
 
 run("docker compose down --volumes --remove-orphans");
 run("docker compose up --detach --wait");
-// The migration history has drifted from the schema until the baseline exists,
-// so the throwaway database is built straight from the table definitions.
-run("pnpm exec drizzle-kit push --config drizzle.local.config.ts --force");
+run("pnpm exec drizzle-kit migrate --config drizzle.local.config.ts");
