@@ -1,0 +1,35 @@
+{
+  "name": "@portfolio/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schema": "./src/schema.ts",
+    "./client": "./src/client.ts",
+    "./queries": "./src/queries.ts",
+    "./local": "./src/local.ts"
+  },
+  "scripts": {
+    "db:rebuild": "tsx scripts/db-rebuild.ts",
+    "db:fixtures": "tsx --conditions=react-server scripts/db-fixtures.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "typecheck": "tsc --noEmit",
+    "db:mark-baseline": "tsx scripts/mark-baseline-applied.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.36.0",
+    "drizzle-zod": "0.5.1",
+    "nanoid": "5.1.5",
+    "postgres": "3.4.5",
+    "server-only": "^0.0.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "dotenv": "16.4.5",
+    "drizzle-kit": "^0.27.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5"
+  }
+}
