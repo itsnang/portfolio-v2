@@ -35,6 +35,7 @@ Three Sites will share one database, so every change must work with the code alr
 - **Rename:** add the new column, backfill, switch the code, drop the old one in a later migration.
 - **Drop:** a separate later migration, once every Site has stopped using the column.
 - **Enum value:** add it, deploy the readers, then start writing it.
+- A new table public pages read also needs a grant in `packages/db/roles.sql` in the same PR.
 - Rehearse locally, run it by hand with the owner credential, then merge the PR that uses it. Nothing runs migrations during a build.
 - The migration history starts at a baseline verified against the live schema. Commands and the one-time production step are in `packages/db/README.md`.
 

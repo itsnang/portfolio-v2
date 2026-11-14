@@ -38,3 +38,14 @@ Production already has every table, so `migrate` must skip the baseline there in
    ```
 
 The script refuses a database without the existing schema, refuses if a recorded migration is newer than the baseline, and does nothing if the baseline is already recorded.
+
+## Roles
+
+`roles.sql` defines the roles the Sites connect as. It's idempotent and run with the owner credential; `db:reset` applies it locally with local-only passwords (`portfolio_public` / `portfolio_admin`).
+
+| Role | Used by | Access |
+| --- | --- | --- |
+| `portfolio_public` | Main and Blog Sites | `SELECT` on `app_config`, `blog_post`, `education`, `experiences`, `profile`, `project`, `recommendations`, `skills`, `socials` |
+| `portfolio_admin` | Admin Site | `SELECT`, `INSERT`, `UPDATE`, `DELETE` on every table, including new ones; no schema changes |
+
+A new table is readable by `portfolio_public` only after it's added to the list in `roles.sql` in the same PR and the file is re-run. Production is not changed until the lockdown step in the spec; passwords are set there with `ALTER ROLE`, never in this file.
