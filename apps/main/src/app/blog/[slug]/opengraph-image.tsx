@@ -1,5 +1,5 @@
 import { getBlogPostBySlug } from "@/features/blog/queries";
-import { renderWireframeOgImage } from "@/lib/og";
+import { renderWireframeOgImage } from "@portfolio/wireframe/og";
 
 // These three must stay inline literals — Next statically analyses them to
 // build the route, so they can't be re-exported bindings from another module.

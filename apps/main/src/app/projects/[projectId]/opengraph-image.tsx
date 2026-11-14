@@ -1,6 +1,6 @@
 import { getProjectDetail } from "@/features/project/queries";
-import { stripHtml } from "@/components/wireframe/wireframe-utils";
-import { renderWireframeOgImage } from "@/lib/og";
+import { stripHtml } from "@portfolio/wireframe/wireframe-utils";
+import { renderWireframeOgImage } from "@portfolio/wireframe/og";
 
 // Inline literals: Next statically analyses these to build the route.
 export const alt = "Project — Lorn Samnang";

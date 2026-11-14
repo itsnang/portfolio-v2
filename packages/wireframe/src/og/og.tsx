@@ -1,5 +1,4 @@
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 /**
@@ -18,8 +17,14 @@ const INK = "#25252a";
 const INK_SOFT = "#5b5b62";
 const ACCENT = "#e2402c";
 
-const loadFont = (file: string) =>
-  readFile(join(process.cwd(), "src/app/fonts", file));
+// Read relative to this file, so the fonts travel with the package rather
+// than depending on the consuming Site's working directory. Each path stays a
+// literal so the build can trace exactly these two files.
+const loadFonts = () =>
+  Promise.all([
+    readFile(new URL("./fonts/Caveat-Bold.ttf", import.meta.url)),
+    readFile(new URL("./fonts/ArchitectsDaughter-Regular.ttf", import.meta.url)),
+  ]);
 
 const truncate = (text: string, max: number) =>
   text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
@@ -40,10 +45,7 @@ export async function renderWireframeOgImage({
   description,
   tag,
 }: WireframeOgOptions) {
-  const [caveat, architectsDaughter] = await Promise.all([
-    loadFont("Caveat-Bold.ttf"),
-    loadFont("ArchitectsDaughter-Regular.ttf"),
-  ]);
+  const [caveat, architectsDaughter] = await loadFonts();
 
   const safeTitle = truncate(title, 110);
   const safeDescription = description ? truncate(description, 150) : null;
