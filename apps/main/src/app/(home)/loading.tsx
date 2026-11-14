@@ -1,5 +1,5 @@
 import { getAppConfig } from "@/features/app-config/queries";
-import { WireframeHomeSkeleton } from "@/components/wireframe/wireframe-home-skeleton";
+import { WireframeHomeSkeleton } from "@portfolio/wireframe/wireframe-home-skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@portfolio/ui/card";
 import { Skeleton } from "@portfolio/ui/skeleton";
 

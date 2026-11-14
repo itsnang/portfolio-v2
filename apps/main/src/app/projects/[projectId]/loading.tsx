@@ -1,5 +1,5 @@
 import { getAppConfig } from "@/features/app-config/queries";
-import { Skel } from "@/components/wireframe/wireframe-home-skeleton";
+import { Skel } from "@portfolio/wireframe/wireframe-home-skeleton";
 
 function WireframeProjectDetailSkeleton() {
   return (

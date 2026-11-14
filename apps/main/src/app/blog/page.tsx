@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getAppConfig } from "@/features/app-config/queries";
 import { getPublishedBlogPosts } from "@/features/blog/queries";
 import { BlogList } from "@/features/blog/components/blog-list";
-import { WireframeBlogList } from "@/components/wireframe/wireframe-blog-list";
+import { WireframeBlogList } from "@portfolio/wireframe/wireframe-blog-list";
 
 export const revalidate = 3600;
 

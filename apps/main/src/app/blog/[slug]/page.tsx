@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAppConfig } from "@/features/app-config/queries";
 import { getBlogDetail } from "@/features/blog/queries";
-import { stripHtml } from "@/components/wireframe/wireframe-utils";
+import { stripHtml } from "@portfolio/wireframe/wireframe-utils";
 import { BlogDetail } from "./blog-detail";
 import { WireframeBlogDetail } from "./wireframe-blog-detail";
 

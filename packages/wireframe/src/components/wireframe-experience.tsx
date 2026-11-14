@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { IExperience } from "@/features/experience/types";
+import type { IExperience } from "@portfolio/db/schema";
 import { fmt } from "./wireframe-utils";
 
 export function WireframeExperience({ experience }: { experience: IExperience[] }) {

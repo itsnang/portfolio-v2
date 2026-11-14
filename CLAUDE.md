@@ -96,11 +96,13 @@ Return shape convention: `{ success: true, data, message }` or `{ success: false
 ### UI package (`packages/ui`, `@portfolio/ui`)
 UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.
 
+### Wireframe package (`packages/wireframe`, `@portfolio/wireframe`)
+The alternate site theme for the Main and Blog Sites: its components (`@portfolio/wireframe/<component>`), its stylesheet (`/styles.css`, imported by `src/app/globals.css`), and the OG image renderer (`/og`). The OG fonts live beside the renderer and are read with literal `new URL(..., import.meta.url)` paths, so the build traces exactly those files. Data types come from `@portfolio/db/schema`, never from a feature slice.
+
 ### Shared components (`src/components/`)
 Everything here is cross-cutting infra used by 2+ features — not feature-owned:
 - `ui/` — dashboard-only shadcn/ui primitives; public ones live in `@portfolio/ui`
 - `tiptap-{extension,icons,node,templates,ui,ui-primitive}/` — vendored rich-text-editor toolkit (blog's editor is its only consumer today, but it's structured as a design-system package, not business logic)
-- `wireframe/` — the alternate site theme; composes profile+skills+experience+education+project+blog simultaneously, so it can't be a single feature slice
 - `dashboard-shell/` — sidebar/nav chrome used only by `app/dashboard/layout.tsx`
 - `dock.tsx` / `nav-dock-client.tsx` — public-site nav dock (achievement + home pages)
 - flat files (`form-sheet.tsx`, `delete-confirm-button.tsx`, `maintenance-banner.tsx`, `navbar.tsx`, `resume-card.tsx`) — generic reusable primitives

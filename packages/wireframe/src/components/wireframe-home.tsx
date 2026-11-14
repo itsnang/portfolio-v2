@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import type { IProfile } from "@/features/profile/types";
+import type { IProfile } from "@portfolio/db/schema";
 import { WireframeHero } from "./wireframe-hero";
 import { WireframeSkills } from "./wireframe-skills";
 import { WireframeExperience } from "./wireframe-experience";

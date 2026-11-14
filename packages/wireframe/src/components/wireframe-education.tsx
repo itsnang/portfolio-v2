@@ -1,6 +1,6 @@
 import Image from "next/image";
-import type { IEducation } from "@/features/education/types";
-import type { IRecommendation } from "@/features/recommendations/types";
+import type { IEducation } from "@portfolio/db/schema";
+import type { IRecommendation } from "@portfolio/db/schema";
 import { fmt } from "./wireframe-utils";
 
 interface Props {
