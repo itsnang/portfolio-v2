@@ -1,9 +1,9 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { RichText } from "@/components/ui/rich-text";
+import { Badge } from "@portfolio/ui/badge";
+import { Button } from "@portfolio/ui/button";
+import { Card } from "@portfolio/ui/card";
+import { RichText } from "@portfolio/ui/rich-text";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";

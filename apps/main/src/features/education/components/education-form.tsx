@@ -16,7 +16,7 @@ import {
   type Education,
   type EducationFormValues,
 } from "@/features/education/schemas";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -34,7 +34,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 

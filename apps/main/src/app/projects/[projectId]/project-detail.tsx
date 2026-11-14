@@ -1,10 +1,10 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import SparklesText from "@/components/ui/sparkles-text";
+import { Badge } from "@portfolio/ui/badge";
+import { Button } from "@portfolio/ui/button";
+import { Card } from "@portfolio/ui/card";
+import { Separator } from "@portfolio/ui/separator";
+import SparklesText from "@portfolio/ui/sparkles-text";
 import { motion } from "framer-motion";
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";

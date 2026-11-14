@@ -22,11 +22,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@portfolio/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { ImageSelectionDialog } from "@/features/media/components/image-selection-dialog";
 

@@ -9,7 +9,7 @@ import { Check, LoaderCircle, Save } from "lucide-react";
 import { appConfigInsertSchema, AppConfigInsert } from "@/features/app-config/schemas";
 import { updateAppConfigAction } from "@/features/app-config/actions";
 import { AppConfig } from "@portfolio/db/schema";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import {
   Form,
   FormControl,
@@ -26,9 +26,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+} from "@portfolio/ui/card";
+import { Separator } from "@portfolio/ui/separator";
+import { cn } from "@portfolio/ui/cn";
 import modernPreview from "../../../../public/theme-config/modern.jpg";
 import wireframePreview from "../../../../public/theme-config/wireframe.png";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { ResumeCard } from "@/components/resume-card";
 import { IEducation } from "@/features/education/types";
-import { convertDate } from "@/helper/convert-date";
+import { convertDate } from "@portfolio/ui/convert-date";
 
 interface EducationProps {
   education: IEducation[];

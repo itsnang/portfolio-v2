@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { useImages } from "@/features/media/hooks/use-images";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import {
   Form,
   FormControl,
@@ -28,8 +28,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+} from "@portfolio/ui/card";
+import { Separator } from "@portfolio/ui/separator";
 import { updateProfileAction } from "@/features/profile/actions";
 
 interface ProfileFormProps {

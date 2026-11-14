@@ -13,14 +13,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { ImageSelector } from "@/features/media/components/image-selector";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@portfolio/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -42,7 +42,7 @@ import {
   type Recommendations,
   type RecommendationsFormValues,
 } from "@/features/recommendations/schemas";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 
 interface RecommendationsFormProps {

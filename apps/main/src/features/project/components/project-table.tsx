@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Project } from "@/features/project/schemas";
 import { ProjectTechnology } from "@/features/project/types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
 import {
   Table,
@@ -15,8 +15,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Badge } from "@portfolio/ui/badge";
+import { cn } from "@portfolio/ui/cn";
 import {
   DndContext,
   closestCenter,

@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { IImages } from "@/features/media/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FolderSelector } from "./folder-selector";

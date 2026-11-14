@@ -4,7 +4,7 @@ import { useState } from "react";
 import { LoaderCircle, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 
 interface DeleteConfirmButtonProps {
   itemLabel: string;

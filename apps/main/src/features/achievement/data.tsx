@@ -1,5 +1,5 @@
 import { Briefcase, GraduationCap, Trophy, ExternalLink } from "lucide-react";
-import { Icons } from "@/components/icons";
+import { Icons } from "@portfolio/ui/icons";
 
 export const achievements = [
   {

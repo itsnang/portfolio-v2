@@ -10,12 +10,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { LoaderCircle, Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { authClient } from "@/lib/auth/auth-client";
 import { LoginInput, loginSchema } from "@portfolio/db/schema";
 

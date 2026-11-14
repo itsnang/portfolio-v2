@@ -12,8 +12,8 @@ import { EducationForm } from "@/features/education/components/education-form";
 import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@portfolio/ui/badge";
+import { Button } from "@portfolio/ui/button";
 import {
   Table,
   TableBody,
