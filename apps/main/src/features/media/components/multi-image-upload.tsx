@@ -3,8 +3,8 @@
 import { uploadStagedFile } from "@/features/media/actions";
 import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { FolderSelector } from "./folder-selector";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@portfolio/ui/button";
+import { cn } from "@portfolio/ui/cn";
 import { LoaderCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

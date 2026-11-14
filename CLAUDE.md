@@ -93,14 +93,17 @@ All auth-required actions wrap with `withAuthAction` from `src/lib/auth/middlewa
 
 Return shape convention: `{ success: true, data, message }` or `{ success: false, error: string }`.
 
+### UI package (`packages/ui`, `@portfolio/ui`)
+UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.
+
 ### Shared components (`src/components/`)
 Everything here is cross-cutting infra used by 2+ features — not feature-owned:
-- `ui/` — shadcn/ui primitives + custom animated components (`blur-fade.tsx`, `gradual-spacing.tsx`)
+- `ui/` — dashboard-only shadcn/ui primitives; public ones live in `@portfolio/ui`
 - `tiptap-{extension,icons,node,templates,ui,ui-primitive}/` — vendored rich-text-editor toolkit (blog's editor is its only consumer today, but it's structured as a design-system package, not business logic)
 - `wireframe/` — the alternate site theme; composes profile+skills+experience+education+project+blog simultaneously, so it can't be a single feature slice
 - `dashboard-shell/` — sidebar/nav chrome used only by `app/dashboard/layout.tsx`
 - `dock.tsx` / `nav-dock-client.tsx` — public-site nav dock (achievement + home pages)
-- flat files (`form-sheet.tsx`, `delete-confirm-button.tsx`, `icons.tsx`, `maintenance-banner.tsx`, `navbar.tsx`, `resume-card.tsx`) — generic reusable primitives
+- flat files (`form-sheet.tsx`, `delete-confirm-button.tsx`, `maintenance-banner.tsx`, `navbar.tsx`, `resume-card.tsx`) — generic reusable primitives
 
 ### Auth
 Better Auth with email/password only. Single admin user seeded via `scripts/seed-admin.ts`. Auth config at `src/lib/auth/better-auth.ts`.

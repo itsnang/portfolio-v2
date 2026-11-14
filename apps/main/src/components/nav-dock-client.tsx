@@ -1,14 +1,14 @@
 "use client";
 import { Dock, DockIcon } from "@/components/dock";
-import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { buttonVariants } from "@portfolio/ui/button";
+import { Separator } from "@portfolio/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+} from "@portfolio/ui/tooltip";
+import { cn } from "@portfolio/ui/cn";
 import { HomeIcon, NotebookIcon, Award } from "lucide-react";
 import Link from "next/link";
 import React from "react";

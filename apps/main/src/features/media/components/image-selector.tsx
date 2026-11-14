@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@portfolio/ui/badge";
 import { useController, Control, Path, PathValue } from "react-hook-form";
 import {
   ImagePlus,
@@ -25,7 +25,7 @@ import {
   UploadCloud,
 } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { FolderSelector } from "./folder-selector";
 import { getImages, uploadStagedFile } from "@/features/media/actions";

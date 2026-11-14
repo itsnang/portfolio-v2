@@ -7,8 +7,8 @@ import { PencilIcon } from "lucide-react";
 
 import { BlogPost } from "@/features/blog/schemas";
 import { deleteBlogPostAction } from "@/features/blog/actions";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@portfolio/ui/button";
+import { Badge } from "@portfolio/ui/badge";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import {

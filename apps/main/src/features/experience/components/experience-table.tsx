@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Experiences } from "@/features/experience/schemas";
-import { convertDate } from "@/helper/convert-date";
-import { Button } from "@/components/ui/button";
+import { convertDate } from "@portfolio/ui/convert-date";
+import { Button } from "@portfolio/ui/button";
 import { PencilIcon } from "lucide-react";
 import {
   Table,
@@ -14,8 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
+import { Badge } from "@portfolio/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
 import { useImages } from "@/features/media/hooks/use-images";

@@ -3,8 +3,8 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "@portfolio/ui/card";
+import { Skeleton } from "@portfolio/ui/skeleton";
 import React from "react";
 
 export default function Loading() {

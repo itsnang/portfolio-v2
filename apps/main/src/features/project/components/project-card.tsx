@@ -1,12 +1,12 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@portfolio/ui/badge";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+} from "@portfolio/ui/card";
+import { cn } from "@portfolio/ui/cn";
 import { ProjectTechnology } from "@/features/project/types";
 import Image from "next/image";
 import Link from "next/link";

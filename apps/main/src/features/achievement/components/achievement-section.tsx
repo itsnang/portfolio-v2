@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { achievements } from "@/features/achievement/data";
 
 export function AchievementSection() {

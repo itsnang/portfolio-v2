@@ -12,10 +12,10 @@ import {
   type Socials,
   type SocialsFormValues,
 } from "@/features/socials/schemas";
-import { cn } from "@/lib/utils";
+import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
-import { Button } from "@/components/ui/button";
+import { Button } from "@portfolio/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,

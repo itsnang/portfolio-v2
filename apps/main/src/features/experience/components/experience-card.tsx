@@ -1,9 +1,9 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader } from "@/components/ui/card";
-import { RichText } from "@/components/ui/rich-text";
+import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
+import { Badge } from "@portfolio/ui/badge";
+import { Card, CardHeader } from "@portfolio/ui/card";
+import { RichText } from "@portfolio/ui/rich-text";
 
 interface ExperienceCardProps {
   logoUrl: string;

@@ -22,6 +22,7 @@
     "@justmiracle/result": "1.2.0",
     "@neondatabase/serverless": "0.10.1",
     "@portfolio/db": "workspace:*",
+    "@portfolio/ui": "workspace:*",
     "@radix-ui/react-alert-dialog": "^1.1.23",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.2",
