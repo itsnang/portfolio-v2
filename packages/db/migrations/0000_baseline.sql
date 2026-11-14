@@ -1,3 +1,6 @@
+CREATE TYPE "public"."blog_category" AS ENUM('engineering', 'design', 'notes');--> statement-breakpoint
+CREATE TYPE "public"."blog_status" AS ENUM('draft', 'published');--> statement-breakpoint
+CREATE TYPE "public"."skill_category" AS ENUM('Frontend', 'Backend', 'Mobile', 'Database', 'Tools');--> statement-breakpoint
 CREATE TYPE "public"."theme" AS ENUM('modern', 'wireframe');--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "account" (
 	"id" text PRIMARY KEY NOT NULL,
@@ -45,6 +48,23 @@ CREATE TABLE IF NOT EXISTS "verification" (
 	"expiresAt" timestamp with time zone NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "blog_post" (
+	"id" text PRIMARY KEY NOT NULL,
+	"profile_id" text,
+	"title" text NOT NULL,
+	"slug" text NOT NULL,
+	"excerpt" text NOT NULL,
+	"cover_image" text,
+	"content" text NOT NULL,
+	"status" "blog_status" DEFAULT 'draft' NOT NULL,
+	"category" "blog_category" DEFAULT 'engineering' NOT NULL,
+	"published_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"deleted_at" timestamp with time zone,
+	CONSTRAINT "blog_post_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "education" (
@@ -112,6 +132,7 @@ CREATE TABLE IF NOT EXISTS "project" (
 	"links" json,
 	"thumbnail" text NOT NULL,
 	"detail_image" json,
+	"sort_order" integer,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"deleted_at" timestamp with time zone
@@ -136,6 +157,7 @@ CREATE TABLE IF NOT EXISTS "skills" (
 	"user_id" text,
 	"name" text NOT NULL,
 	"logo_url" text NOT NULL,
+	"category" "skill_category" DEFAULT 'Tools' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"deleted_at" timestamp with time zone
@@ -163,6 +185,12 @@ CREATE TABLE IF NOT EXISTS "app_config" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "blog_post" ADD CONSTRAINT "blog_post_profile_id_profile_id_fk" FOREIGN KEY ("profile_id") REFERENCES "public"."profile"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

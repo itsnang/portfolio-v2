@@ -36,7 +36,7 @@ Three Sites will share one database, so every change must work with the code alr
 - **Drop:** a separate later migration, once every Site has stopped using the column.
 - **Enum value:** add it, deploy the readers, then start writing it.
 - Rehearse locally, run it by hand with the owner credential, then merge the PR that uses it. Nothing runs migrations during a build.
-- The migration history has drifted from the live schema (`blog_post.category` has no migration). Don't trust `packages/db/migrations/` until the baseline in the spec exists.
+- The migration history starts at a baseline verified against the live schema. Commands and the one-time production step are in `packages/db/README.md`.
 
 ## Environment Variables
 
