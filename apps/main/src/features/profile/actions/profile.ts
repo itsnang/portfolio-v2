@@ -1,7 +1,6 @@
 "use server";
 import { db } from "@/db/drizzle";
-import { ProfileInsert, profileInsertSchema } from "@/db/schema/profile.schema";
-import { TbProfile } from "@/db/table";
+import { ProfileInsert, profileInsertSchema, TbProfile } from "@portfolio/db/schema";
 import { eq } from "drizzle-orm";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { revalidatePath } from "next/cache";

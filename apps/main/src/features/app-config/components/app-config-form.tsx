@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Check, LoaderCircle, Save } from "lucide-react";
 import { appConfigInsertSchema, AppConfigInsert } from "@/features/app-config/schemas";
 import { updateAppConfigAction } from "@/features/app-config/actions";
-import { AppConfig } from "@/db/table/app-config.table";
+import { AppConfig } from "@portfolio/db/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,

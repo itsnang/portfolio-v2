@@ -1,25 +1,6 @@
-import type { ISkill } from "@/features/skills/types";
-import type { IExperience } from "@/features/experience/types";
-import type { IEducation } from "@/features/education/types";
-import type { IProject } from "@/features/project/types";
-import type { IRecommendation } from "@/features/recommendations/types";
-import type { ISocial } from "@/features/socials/types";
+import type { IProfile } from "@portfolio/db/schema";
 
-export interface IProfile {
-  id: string;
-  name: string;
-  isAvailable: boolean;
-  bio: string | null;
-  imageUrl: string;
-  abouts: string;
-  aboutImages: string[] | null;
-  skills: ISkill[];
-  experience: IExperience[];
-  education: IEducation[];
-  projects: IProject[];
-  recommendations: IRecommendation[];
-  socials: ISocial[];
-}
+export type { IProfile };
 
 export type EditableProfile = Pick<
   IProfile,

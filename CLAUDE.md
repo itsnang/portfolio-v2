@@ -16,14 +16,14 @@ pnpm db:reset   # Recreate the local database with made-up content and the admin
 
 ## Repo layout
 
-A pnpm 10 workspace. The whole app lives in `apps/main`, and every `src/...` path below is relative to it. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
+A pnpm 10 workspace. The app lives in `apps/main`, and every `src/...` path below is relative to it unless it names a package. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
 
 ## Local database
 
-Local development runs against a throwaway Postgres in Docker (`apps/main/compose.yaml`), never production.
+Local development runs against a throwaway Postgres in Docker (`packages/db/compose.yaml`), never production.
 
 - `src/db/drizzle.ts` throws in development unless `DATABASE_URL` points at `localhost`.
-- `pnpm db:reset` wipes and rebuilds it, using the hardcoded URL in `scripts/local-database-url.ts`.
+- `pnpm db:reset` wipes and rebuilds it, using the hardcoded URL in `packages/db/src/local.ts`.
 - There is no staging environment, so production is the only shared database.
 
 ## Schema changes
@@ -36,7 +36,7 @@ Three Sites will share one database, so every change must work with the code alr
 - **Drop:** a separate later migration, once every Site has stopped using the column.
 - **Enum value:** add it, deploy the readers, then start writing it.
 - Rehearse locally, run it by hand with the owner credential, then merge the PR that uses it. Nothing runs migrations during a build.
-- The migration history has drifted from the live schema (`blog_post.category` has no migration). Don't trust `migrations/` until the baseline in the spec exists.
+- The migration history has drifted from the live schema (`blog_post.category` has no migration). Don't trust `packages/db/migrations/` until the baseline in the spec exists.
 
 ## Environment Variables
 
@@ -64,7 +64,7 @@ src/features/<domain>/
   admin-queries.ts  # dashboard reads for Server Components, 'server-only', checks the session
   components/
   hooks/            # only if the domain needs its own hook (rare today)
-  schemas/          # index.ts re-exports the domain's drizzle-zod schema from src/db/schema/
+  schemas/          # index.ts re-exports the domain's drizzle-zod schema from `@portfolio/db/schema`
   types.ts          # the domain's public TS types
   utils/
 ```
@@ -80,11 +80,13 @@ Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call
 - `src/app/api/` — Better Auth (`/api/auth/[...all]`)
 - Route-local composition glue that spans 2+ features (e.g. `app/projects/[projectId]/project-detail.tsx`, `app/blog/[slug]/blog-detail.tsx`) stays colocated in the route folder rather than forced into a single feature.
 
-### Database Layer (`src/db/`)
+### Database Layer (`packages/db`, `@portfolio/db`)
 Stays fully centralized — not split per feature, same as pipfolio's `src/lib/db/`.
-- `table/` — Drizzle table definitions (`TbProfile`, `TbProject`, etc.), imported everywhere as `@/db/table`
-- `schema/` — Zod schemas derived from tables via `drizzle-zod`; each feature's `schemas/index.ts` re-exports the relevant one rather than duplicating it
-- `drizzle.ts` — DB client export + `takeFirst`/`takeFirstOrThrow` helpers
+- `@portfolio/db/schema` — Drizzle tables (`TbProfile`, `TbProject`, etc.), drizzle-zod schemas, shared domain types (`IProfile`, `IProject`, ...) and `genId`. Opens no connection.
+- `@portfolio/db/client` — `createDBClient` (requires `max`), `createDB`, and the `DB` type. Server-only.
+- `@portfolio/db/queries` — reads both public Sites need (`getAppConfig`, `getPublishedBlogPosts`). Each takes a `DB` argument; the Site wraps it in one line that passes its own client and applies `cache()`.
+- The package also holds `migrations/`, the drizzle-kit configs, the Compose file and the local fixtures.
+- `apps/main/src/db/drizzle.ts` — the Main Site's own client, the development-only `localhost` guard, and `takeFirst`/`takeFirstOrThrow` helpers.
 
 ### Auth middleware (`src/lib/auth/middleware.ts`)
 All auth-required actions wrap with `withAuthAction` from `src/lib/auth/middleware.ts` (cross-cutting infra, not feature-owned). The middleware resolves the Better Auth session and injects `{ user, session, profile, db }` as the first argument. Use `withOptionalAuthAction` for unauthenticated variants.

@@ -1,4 +1,4 @@
-import { createDB, createDBClient } from "@/utils/init";
+import { createDB, createDBClient } from "@portfolio/db/client";
 import { config } from "dotenv";
 // import { drizzle } from "drizzle-orm/neon-http";
 

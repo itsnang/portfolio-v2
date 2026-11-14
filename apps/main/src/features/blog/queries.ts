@@ -1,26 +1,15 @@
 import "server-only";
 
+import { cache } from "react";
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { err, ok } from "@justmiracle/result";
 
+import * as queries from "@portfolio/db/queries";
 import { db } from "@/db/drizzle";
-import { TbBlogPost } from "@/db/table";
+import { TbBlogPost } from "@portfolio/db/schema";
 import { NotFoundError } from "@/lib/errors";
 
-export const getPublishedBlogPosts = async () => {
-  try {
-    return await db.query.TbBlogPost.findMany({
-      where: and(
-        eq(TbBlogPost.status, "published"),
-        isNull(TbBlogPost.deletedAt)
-      ),
-      orderBy: [desc(TbBlogPost.publishedAt)],
-    });
-  } catch (error) {
-    console.error("Error fetching published blog posts:", error);
-    throw new Error("Failed to fetch blog posts");
-  }
-};
+export const getPublishedBlogPosts = cache(() => queries.getPublishedBlogPosts(db));
 
 export const getBlogPostBySlug = async (slug: string) => {
   try {

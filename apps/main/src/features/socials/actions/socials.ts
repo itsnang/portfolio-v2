@@ -4,11 +4,7 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
-import {
-  socialsInsertSchema,
-  type SocialsFormValues,
-} from "@/db/schema/socials.schema";
-import { TbSocials } from "@/db/table";
+import { socialsInsertSchema, type SocialsFormValues, TbSocials } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
 /** Authenticated read for the dashboard CMS table (scoped to the current profile). */

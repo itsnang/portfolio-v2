@@ -1,4 +1,4 @@
-import { skillCategoryEnum } from "@/db/table";
+import { skillCategoryEnum } from "@portfolio/db/schema";
 import type { ISkill } from "@/features/skills/types";
 import { Icons } from "@/components/icons";
 

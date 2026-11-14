@@ -1,4 +1,4 @@
-import { skillCategoryEnum } from "@/db/table";
+import { skillCategoryEnum } from "@portfolio/db/schema";
 import { ISkill } from "@/features/skills/types";
 import Image from "next/image";
 import React from "react";

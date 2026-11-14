@@ -1,8 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { projecInsertSchema, ProjectInsert } from "@/db/schema/project.schema";
-import { TbProject } from "@/db/table";
+import { projecInsertSchema, ProjectInsert, TbProject } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

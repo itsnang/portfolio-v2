@@ -4,8 +4,7 @@ import { and, desc, eq, isNull, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db/drizzle";
-import { blogPostInsertSchema, type BlogPostInsert } from "@/db/schema/blog.schema";
-import { TbBlogPost } from "@/db/table";
+import { blogPostInsertSchema, type BlogPostInsert, TbBlogPost } from "@portfolio/db/schema";
 import { slugify } from "@/utils/slugify";
 import { withAuthAction } from "@/lib/auth/middleware";
 
