@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { format } from "date-fns";
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
@@ -65,6 +67,7 @@ export function EducationTable({ items }: EducationTableProps) {
       return;
     }
     toast.success("Education deleted");
+    toastRefreshWarning(result);
     router.refresh();
   }
 

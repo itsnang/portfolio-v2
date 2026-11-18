@@ -2,6 +2,7 @@
 
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 import { db } from "@/db/drizzle";
 import { educationInsertSchema, type EducationFormValues, TbEducation } from "@portfolio/db/schema";
@@ -39,9 +40,10 @@ export const createEducationAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/education");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Education added successfully",
@@ -89,9 +91,10 @@ export const updateEducationAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/education");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Education updated successfully",
@@ -128,9 +131,9 @@ export const deleteEducationAction = withAuthAction(
         .where(and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id)));
 
       revalidatePath("/dashboard/education");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
-      return { success: true as const, message: "Education deleted" };
+      return { warning, success: true as const, message: "Education deleted" };
     } catch (error) {
       if (error instanceof Error) {
         return { success: false as const, error: error.message };

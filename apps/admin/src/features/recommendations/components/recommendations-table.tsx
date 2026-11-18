@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -62,6 +64,7 @@ export function RecommendationsTable({
       return;
     }
     toast.success("Recommendation deleted");
+    toastRefreshWarning(result);
     router.refresh();
   }
 

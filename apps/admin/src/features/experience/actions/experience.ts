@@ -5,6 +5,7 @@ import { ExperiencesInsert, experiencesInsertSchema, TbExperiences } from "@port
 import { withAuthAction } from "@/lib/auth/middleware";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 export const insertExperiences = withAuthAction(
   async (auth, experience: ExperiencesInsert) => {
@@ -30,9 +31,10 @@ export const insertExperiences = withAuthAction(
         .returning({ id: TbExperiences.id });
 
       revalidatePath("/dashboard/experience");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Experience added successfully",
@@ -73,9 +75,10 @@ export const updateExperience = withAuthAction(
       }
 
       revalidatePath("/dashboard/experience");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Experience updated successfully",

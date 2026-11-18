@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import Image, { type StaticImageData } from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,6 +62,7 @@ export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
       const result = await updateAppConfigAction(data);
       if (result.success) {
         toast.success(result.message ?? "Config updated");
+        toastRefreshWarning(result);
         form.reset(data);
       } else {
         toast.error(result.error ?? "Failed to update config");

@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -75,6 +77,7 @@ export const BlogTable = ({ posts }: BlogTableProps) => {
       return;
     }
     toast.success(result.message);
+    toastRefreshWarning(result);
     router.refresh();
   }
 

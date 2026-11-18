@@ -2,6 +2,7 @@
 
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 import { db } from "@/db/drizzle";
 import { socialsInsertSchema, type SocialsFormValues, TbSocials } from "@portfolio/db/schema";
@@ -40,9 +41,10 @@ export const createSocialAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/socials");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "socials" });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Social added successfully",
@@ -90,9 +92,10 @@ export const updateSocialAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/socials");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "socials" });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Social updated successfully",
@@ -125,9 +128,9 @@ export const deleteSocialAction = withAuthAction(async (auth, id: string) => {
       .where(and(eq(TbSocials.id, id), eq(TbSocials.userId, auth.profile.id)));
 
     revalidatePath("/dashboard/socials");
-    revalidatePath("/");
+    const warning = await refreshPublicSites({ resource: "socials" });
 
-    return { success: true as const, message: "Social deleted" };
+    return { warning, success: true as const, message: "Social deleted" };
   } catch (error) {
     if (error instanceof Error) {
       return { success: false as const, error: error.message };

@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
@@ -86,6 +88,8 @@ export const EducationForm: React.FC<EducationFormProps> = ({
       }
 
       toast.success(isEditing ? "Education updated" : "Education added");
+
+      toastRefreshWarning(result);
       if (!isEditing) form.reset();
       onSuccess?.();
     } catch (error) {

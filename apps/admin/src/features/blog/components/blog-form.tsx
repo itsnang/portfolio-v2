@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import React, { useRef, useTransition } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -317,6 +319,8 @@ const BlogForm: React.FC<BlogFormProps> = ({
         }
 
         toast.success(result.message);
+
+        toastRefreshWarning(result);
         form.reset();
         onSuccess?.();
       } catch (error) {

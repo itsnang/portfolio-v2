@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 import { db } from "@/db/drizzle";
 import { TbAppConfig, appConfigInsertSchema, AppConfigInsert } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
@@ -36,12 +37,9 @@ export const updateAppConfigAction = withAuthAction(
 
       // Theme + maintenance mode are read on every public page — revalidate all of them.
       revalidatePath("/dashboard/config");
-      revalidatePath("/");
-      revalidatePath("/blog");
-      revalidatePath("/blog/[slug]", "page");
-      revalidatePath("/projects/[projectId]", "page");
+      const warning = await refreshPublicSites({ resource: "app-config" });
 
-      return { success: true, data: result[0], message: "Config updated" };
+      return { warning, success: true, data: result[0], message: "Config updated" };
     } catch (error) {
       if (error instanceof Error) {
         return { success: false, error: error.message };

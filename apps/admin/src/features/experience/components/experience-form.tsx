@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import {
   formatCambodiaDate,
   normalizeToCambodiaStartOfDay,
@@ -123,6 +125,8 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
       }
 
       toast.success(result.message);
+
+      toastRefreshWarning(result);
       form.reset();
       onSuccess?.();
     } catch (error) {

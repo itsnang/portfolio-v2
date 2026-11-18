@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Building2,
@@ -93,6 +95,8 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
       toast.success(
         isEditing ? "Recommendation updated" : "Recommendation added successfully"
       );
+
+      toastRefreshWarning(result);
       if (!isEditing) form.reset();
       onSuccess?.();
     } catch (error) {

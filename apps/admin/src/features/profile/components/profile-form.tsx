@@ -1,4 +1,6 @@
 "use client";
+
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
 import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
 import type { EditableProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,6 +75,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         return;
       }
       toast.success(result.message);
+      toastRefreshWarning(result);
       form.reset(data);
     } catch (error) {
       console.error("Profile update error:", error);
