@@ -50,6 +50,7 @@ CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET
 IMAGE_FOLDER         # optional
 BETTER_AUTH_SECRET   # min 32 chars
 BETTER_AUTH_URL
+REVALIDATE_SECRET    # shared with the Admin Site for /api/revalidate; optional so the Site can deploy first, and every refresh call is rejected until it's set
 ```
 
 ## Architecture
@@ -79,11 +80,12 @@ Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call
 - `src/app/(home)/` — public portfolio, single profile page (`revalidate = 60`)
 - `src/app/dashboard/` — admin CMS. `src/proxy.ts` only checks that a session cookie exists, so every dashboard read and write must check the session itself
 - `src/app/api/` — Better Auth (`/api/auth/[...all]`)
+- `src/app/api/revalidate` — refreshes public pages when the Admin Site sends `{ resource, slugs }` (type in `@portfolio/db/schema`) with the shared bearer secret
 - Route-local composition glue that spans 2+ features (e.g. `app/projects/[projectId]/project-detail.tsx`, `app/blog/[slug]/blog-detail.tsx`) stays colocated in the route folder rather than forced into a single feature.
 
 ### Database Layer (`packages/db`, `@portfolio/db`)
 Stays fully centralized — not split per feature, same as pipfolio's `src/lib/db/`.
-- `@portfolio/db/schema` — Drizzle tables (`TbProfile`, `TbProject`, etc.), drizzle-zod schemas, shared domain types (`IProfile`, `IProject`, ...) and `genId`. Opens no connection.
+- `@portfolio/db/schema` — Drizzle tables (`TbProfile`, `TbProject`, etc.), drizzle-zod schemas, shared domain types (`IProfile`, `IProject`, ...), `genId`, and the refresh message type (`RevalidateMessage`). Opens no connection.
 - `@portfolio/db/client` — `createDBClient` (requires `max`), `createDB`, and the `DB` type. Server-only.
 - `@portfolio/db/queries` — reads both public Sites need (`getAppConfig`, `getPublishedBlogPosts`). Each takes a `DB` argument; the Site wraps it in one line that passes its own client and applies `cache()`.
 - The package also holds `migrations/`, the drizzle-kit configs, the Compose file and the local fixtures.

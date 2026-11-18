@@ -11,4 +11,5 @@ export * from "./zod/recommendations.schema";
 export * from "./zod/skills.schema";
 export * from "./zod/socials.schema";
 export * from "./types";
+export * from "./revalidate";
 export { genId } from "./id";
