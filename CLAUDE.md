@@ -7,16 +7,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Run from the repo root:
 
 ```bash
-pnpm dev        # Start the Main Site (Next.js 16 + Turbopack)
-pnpm build      # Production build
-pnpm db:reset   # Recreate the local database with made-up content and the admin account
+pnpm dev         # Start the Main Site (port 3000) and the Admin Site (port 3002)
+pnpm dev:main    # Main Site only
+pnpm dev:admin   # Admin Site only
+pnpm build       # Production build of the Main Site
+pnpm --filter @portfolio/admin build
+pnpm db:reset    # Recreate the local database with made-up content and the admin account
 ```
 
 `pnpm --filter @portfolio/main lint` is currently broken: its `next lint` command no longer exists in Next 16.
 
 ## Repo layout
 
-A pnpm 10 workspace. The app lives in `apps/main`, and every `src/...` path below is relative to it unless it names a package. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
+A pnpm 10 workspace. The Main Site lives in `apps/main` and every `src/...` path below is relative to it unless it names another Site or a package. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
+
+### Admin Site (`apps/admin`)
+The dashboard, sign-in, auth API and every write, on port 3002 locally. It was copied from the Main Site and must stay that way until step 5 of the spec: the Main Site keeps its old dashboard as the rollback, so a dashboard fix currently goes in both places. It has its own env schema (`REVALIDATE_SECRET`, `MAIN_SITE_URL` required; `BLOG_SITE_URL` optional; no `ENCRYPTION_KEY`), connects locally as `portfolio_admin`, trusts only its own origin, redirects `/` to `/dashboard` and signed-out visitors to `/sign-in`, and is `noindex` with `robots.txt` disallowing everything. Its local env is `apps/admin/.env.local` (see `apps/admin/.env.example`).
 
 ## Local database
 
@@ -111,7 +117,7 @@ Everything here is cross-cutting infra used by 2+ features — not feature-owned
 - flat files (`form-sheet.tsx`, `delete-confirm-button.tsx`, `maintenance-banner.tsx`, `navbar.tsx`, `resume-card.tsx`) — generic reusable primitives
 
 ### Auth
-Better Auth with email/password only. Single admin user seeded via `scripts/seed-admin.ts`. Auth config at `src/lib/auth/better-auth.ts`.
+Better Auth with email/password only. Single admin user seeded via `scripts/seed-admin.ts` (`pnpm db:reset` runs the Admin Site's copy). Auth config at `src/lib/auth/better-auth.ts`.
 
 ### Data Flow (Public Portfolio)
 `src/features/profile/queries.ts` → `getProfile()` fetches the entire profile with all related records in one query → passes to each feature's section component as props.
