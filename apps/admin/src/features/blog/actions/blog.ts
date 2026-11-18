@@ -2,6 +2,7 @@
 
 import { and, desc, eq, isNull, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 import { db } from "@/db/drizzle";
 import { blogPostInsertSchema, type BlogPostInsert, TbBlogPost } from "@portfolio/db/schema";
@@ -50,10 +51,10 @@ export const createBlogPostAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/blog");
-      revalidatePath("/");
-      revalidatePath("/blog");
+      const warning = await refreshPublicSites({ resource: "post", slugs: [slug] });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Blog post created successfully",
@@ -119,12 +120,14 @@ export const updateBlogPostAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/blog");
-      revalidatePath("/");
-      revalidatePath("/blog");
-      revalidatePath(`/blog/${slug}`);
-      if (existing.slug !== slug) revalidatePath(`/blog/${existing.slug}`);
+      // A changed slug refreshes both the old and the new Post page.
+      const warning = await refreshPublicSites({
+        resource: "post",
+        slugs: existing.slug === slug ? [slug] : [slug, existing.slug],
+      });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Blog post updated successfully",
@@ -163,11 +166,9 @@ export const deleteBlogPostAction = withAuthAction(async (auth, id: string) => {
       );
 
     revalidatePath("/dashboard/blog");
-    revalidatePath("/");
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${existing.slug}`);
+    const warning = await refreshPublicSites({ resource: "post", slugs: [existing.slug] });
 
-    return { success: true as const, message: "Blog post deleted" };
+    return { warning, success: true as const, message: "Blog post deleted" };
   } catch (error) {
     if (error instanceof Error) {
       return { success: false as const, error: error.message };

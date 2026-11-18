@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -57,6 +59,7 @@ export function SkillsTable({ items }: SkillsTableProps) {
       return;
     }
     toast.success("Skill deleted");
+    toastRefreshWarning(result);
     router.refresh();
   }
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import React, { useState } from "react";
@@ -79,6 +81,8 @@ export const SkillForm: React.FC<SkillFormProps> = ({
       }
 
       toast.success(isEditing ? "Skill updated" : "Skill added");
+
+      toastRefreshWarning(result);
       if (!isEditing) form.reset();
       onSuccess?.();
     } catch (error) {

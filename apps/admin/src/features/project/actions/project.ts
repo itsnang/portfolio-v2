@@ -5,6 +5,7 @@ import { projecInsertSchema, ProjectInsert, TbProject } from "@portfolio/db/sche
 import { withAuthAction } from "@/lib/auth/middleware";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 export const createProjectAction = withAuthAction(
   async (auth, project: ProjectInsert) => {
@@ -24,9 +25,10 @@ export const createProjectAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/project");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "project" });
 
       return {
+        warning,
         success: true,
         data: projectData,
         message: "Project created successfully",
@@ -73,10 +75,10 @@ export const updateProjectAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/project");
-      revalidatePath("/");
-      revalidatePath("/projects/[projectId]", "page");
+      const warning = await refreshPublicSites({ resource: "project", slugs: [id] });
 
       return {
+        warning,
         success: true,
         data: updatedProject,
         message: "Project updated successfully",
@@ -108,9 +110,9 @@ export const reorderProjectsAction = withAuthAction(
       );
 
       revalidatePath("/dashboard/project");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "project" });
 
-      return { success: true, message: "Projects reordered" };
+      return { warning, success: true, message: "Projects reordered" };
     } catch (error) {
       if (error instanceof Error) {
         return { success: false, error: error.message };

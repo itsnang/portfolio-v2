@@ -24,6 +24,8 @@ A pnpm 10 workspace. The Main Site lives in `apps/main` and every `src/...` path
 ### Admin Site (`apps/admin`)
 The dashboard, sign-in, auth API and every write, on port 3002 locally. It was copied from the Main Site and must stay that way until step 5 of the spec: the Main Site keeps its old dashboard as the rollback, so a dashboard fix currently goes in both places. It has its own env schema (`REVALIDATE_SECRET`, `MAIN_SITE_URL` required; `BLOG_SITE_URL` optional; no `ENCRYPTION_KEY`), connects locally as `portfolio_admin`, trusts only its own origin, redirects `/` to `/dashboard` and signed-out visitors to `/sign-in`, and is `noindex` with `robots.txt` disallowing everything. Its local env is `apps/admin/.env.local` (see `apps/admin/.env.example`).
 
+After a write that changes public content, an Admin Site action calls `refreshPublicSites` (`apps/admin/src/lib/refresh-public-sites.ts`) instead of `revalidatePath` for public pages. It posts to each public Site's `/api/revalidate` in parallel with a 3-second timeout, skips a Site whose URL is unset, and returns a warning instead of failing; the action passes it back as `warning` and the form shows it with `toastRefreshWarning`. `revalidatePath` stays only for the Admin Site's own `/dashboard` pages.
+
 ## Local database
 
 Local development runs against a throwaway Postgres in Docker (`packages/db/compose.yaml`), never production.
@@ -100,7 +102,7 @@ Stays fully centralized — not split per feature, same as pipfolio's `src/lib/d
 ### Auth middleware (`src/lib/auth/middleware.ts`)
 All auth-required actions wrap with `withAuthAction` from `src/lib/auth/middleware.ts` (cross-cutting infra, not feature-owned). The middleware resolves the Better Auth session and injects `{ user, session, profile, db }` as the first argument. Use `withOptionalAuthAction` for unauthenticated variants.
 
-Return shape convention: `{ success: true, data, message }` or `{ success: false, error: string }`.
+Return shape convention: `{ success: true, data, message }` or `{ success: false, error: string }`. Admin Site writes that refresh public pages add `warning?: string`, which forms show with `toastRefreshWarning(result)`.
 
 ### UI package (`packages/ui`, `@portfolio/ui`)
 UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.

@@ -2,6 +2,7 @@
 
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 import { db } from "@/db/drizzle";
 import { recommendationsInsertSchema, type RecommendationsFormValues, TbRecommendations } from "@portfolio/db/schema";
@@ -39,9 +40,10 @@ export const createRecommendationAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/recommendations");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Recommendation added successfully",
@@ -92,9 +94,10 @@ export const updateRecommendationAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/recommendations");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Recommendation updated successfully",
@@ -134,9 +137,9 @@ export const deleteRecommendationAction = withAuthAction(
         .where(and(eq(TbRecommendations.id, id), eq(TbRecommendations.profileId, auth.profile.id)));
 
       revalidatePath("/dashboard/recommendations");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
-      return { success: true as const, message: "Recommendation deleted" };
+      return { warning, success: true as const, message: "Recommendation deleted" };
     } catch (error) {
       if (error instanceof Error) {
         return { success: false as const, error: error.message };

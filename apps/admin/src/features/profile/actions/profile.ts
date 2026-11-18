@@ -4,6 +4,7 @@ import { ProfileInsert, profileInsertSchema, TbProfile } from "@portfolio/db/sch
 import { eq } from "drizzle-orm";
 import { withAuthAction } from "@/lib/auth/middleware";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 export const updateProfileAction = withAuthAction(
   async (auth, profile: ProfileInsert) => {
@@ -22,9 +23,10 @@ export const updateProfileAction = withAuthAction(
       });
 
       revalidatePath("/dashboard/profile");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true,
         data: profileData,
         message: "Profile updated successfully",

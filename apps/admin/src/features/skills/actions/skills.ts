@@ -2,6 +2,7 @@
 
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { refreshPublicSites } from "@/lib/refresh-public-sites";
 
 import { db } from "@/db/drizzle";
 import { skillsInsertSchema, type SkillsFormValues, TbSkills } from "@portfolio/db/schema";
@@ -39,9 +40,10 @@ export const createSkillAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/skills");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: created,
         message: "Skill added successfully",
@@ -86,9 +88,10 @@ export const updateSkillAction = withAuthAction(
         .returning();
 
       revalidatePath("/dashboard/skills");
-      revalidatePath("/");
+      const warning = await refreshPublicSites({ resource: "profile" });
 
       return {
+        warning,
         success: true as const,
         data: updated,
         message: "Skill updated successfully",
@@ -121,9 +124,9 @@ export const deleteSkillAction = withAuthAction(async (auth, id: string) => {
       .where(and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id)));
 
     revalidatePath("/dashboard/skills");
-    revalidatePath("/");
+    const warning = await refreshPublicSites({ resource: "profile" });
 
-    return { success: true as const, message: "Skill deleted" };
+    return { warning, success: true as const, message: "Skill deleted" };
   } catch (error) {
     if (error instanceof Error) {
       return { success: false as const, error: error.message };

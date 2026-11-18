@@ -1,5 +1,8 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
+
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Project } from "@/features/project/schemas";
@@ -302,9 +305,10 @@ export const ProjectTable = ({
 
       setItems(reordered);
 
-      await reorderProjectsAction(
+      const result = await reorderProjectsAction(
         reordered.map((p, i) => ({ id: p.id, sortOrder: i }))
       );
+      if (result.success) toastRefreshWarning(result);
     },
     [items]
   );

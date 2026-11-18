@@ -1,5 +1,7 @@
 "use client";
 
+import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+
 import React, { useTransition } from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -408,6 +410,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         }
 
         toast.success(result.message);
+
+        toastRefreshWarning(result);
         form.reset();
         onSuccess?.();
       } catch (error) {
