@@ -7,6 +7,8 @@ import { DockNavClient } from "@/components/nav-dock-client";
 const DESCRIPTION =
   "Awards, certifications, and career highlights from Lorn Samnang's journey as a software developer.";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Achievements",
   description: DESCRIPTION,
