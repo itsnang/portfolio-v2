@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { getAppConfig } from "@/features/app-config/queries";
 import { getProjectDetail } from "@/features/project/queries";
 import { stripHtml } from "@portfolio/wireframe/wireframe-utils";
+import { mainUrl } from "@/lib/site-urls";
 import { ProjectDetail } from "./project-detail";
 import { WireframeProjectDetail } from "./wireframe-project-detail";
 
 export const revalidate = 3600;
 
-const SITE_URL = "https://lornsamnang.com";
 const AUTHOR = "Lorn Samnang";
 
 interface ProjectDetailPageProps {
@@ -22,7 +22,7 @@ export async function generateMetadata({
   try {
     const project = await getProjectDetail(projectId);
     const description = stripHtml(project.description).slice(0, 200);
-    const url = `${SITE_URL}/projects/${projectId}`;
+    const url = `${mainUrl}/projects/${projectId}`;
 
     return {
       title: project.title,
@@ -33,7 +33,7 @@ export async function generateMetadata({
         "project",
         AUTHOR,
       ],
-      authors: [{ name: AUTHOR, url: SITE_URL }],
+      authors: [{ name: AUTHOR, url: mainUrl }],
       alternates: { canonical: url },
       openGraph: {
         type: "website",
@@ -66,7 +66,7 @@ export default async function ProjectDetailPage({
 
   if (!project) notFound();
 
-  const url = `${SITE_URL}/projects/${projectId}`;
+  const url = `${mainUrl}/projects/${projectId}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -74,7 +74,7 @@ export default async function ProjectDetailPage({
     description: stripHtml(project.description).slice(0, 500),
     image: project.thumbnail ? [project.thumbnail] : [`${url}/opengraph-image`],
     keywords: project.technologies?.map((t) => t.name).join(", "),
-    author: { "@type": "Person", name: AUTHOR, url: SITE_URL },
+    author: { "@type": "Person", name: AUTHOR, url: mainUrl },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     ...(project.href ? { sameAs: [project.href] } : {}),
     url,

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { mainUrl } from './site-urls';
 
 interface SeoProps {
   title?: string;
@@ -25,14 +26,12 @@ export const generateMetadata = ({
   ],
   imageUrl = '/cover.jpg',
 }: SeoProps): Metadata => {
-  const siteUrl = 'https://lornsamnang.com';
-
   return {
-    metadataBase: new URL(siteUrl),
+    metadataBase: new URL(mainUrl),
     title: { default: title, template: `%s | Lorn Samnang` },
     description,
     keywords,
-    authors: [{ name: 'Lorn Samnang', url: siteUrl }],
+    authors: [{ name: 'Lorn Samnang', url: mainUrl }],
     creator: 'Lorn Samnang',
     publisher: 'Lorn Samnang',
     robots: {
@@ -48,7 +47,7 @@ export const generateMetadata = ({
     },
     openGraph: {
       type: 'website',
-      url: siteUrl,
+      url: mainUrl,
       siteName: "Lorn Samnang's Portfolio",
       title,
       description,
@@ -63,7 +62,7 @@ export const generateMetadata = ({
       images: [imageUrl],
     },
     alternates: {
-      canonical: siteUrl,
+      canonical: mainUrl,
     },
     category: 'technology',
     manifest: '/manifest.json',

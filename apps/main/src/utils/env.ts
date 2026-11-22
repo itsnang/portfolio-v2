@@ -8,15 +8,10 @@ export const envSchema = z.object({
     z.literal("stage"),
   ]),
   DATABASE_URL: z.string(),
-  ENCRYPTION_KEY: z.string(),
-  CLOUDINARY_CLOUD_NAME: z.string(),
-  CLOUDINARY_API_KEY: z.string(),
-  CLOUDINARY_API_SECRET: z.string(),
-  IMAGE_FOLDER: z.string().optional(),
-  BETTER_AUTH_SECRET: z.string().min(32),
-  BETTER_AUTH_URL: z.string().url(),
   // Shared with the Admin Site. Unset means the refresh endpoint rejects every call.
   REVALIDATE_SECRET: z.string().min(32).optional(),
+  NEXT_PUBLIC_MAIN_URL: z.string().url(),
+  NEXT_PUBLIC_BLOG_URL: z.string().url(),
 });
 
 export type Env = z.infer<typeof envSchema>;

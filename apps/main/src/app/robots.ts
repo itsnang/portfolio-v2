@@ -1,21 +1,14 @@
 import { MetadataRoute } from "next";
+import { mainPageUrl, mainUrl } from "@/lib/site-urls";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/dashboard/",
-        "/sign-in/",
-        "/sign-out/",
-        "/api/",
-        "/_next/",
-        "/_vercel/",
-        "/admin/",
-      ],
+      disallow: ["/api/"],
     },
-    sitemap: "https://lornsamnang.com/sitemap.xml",
-    host: "https://lornsamnang.com",
+    sitemap: mainPageUrl("/sitemap.xml"),
+    host: mainUrl,
   };
 }

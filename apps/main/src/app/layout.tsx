@@ -1,11 +1,11 @@
 import { generateMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "@portfolio/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { getAppConfig } from "@/features/app-config/queries";
+import { mainUrl } from "@/lib/site-urls";
 
 export const metadata: Metadata = generateMetadata({});
 
@@ -21,7 +21,7 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Lorn Samnang",
-    url: "https://lornsamnang.com",
+    url: mainUrl,
     sameAs: [
       "https://www.linkedin.com/in/lorn-samnang/",
       "https://github.com/lorn-samnang",
@@ -47,7 +47,6 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         {children}
-        <Toaster richColors theme="light" position="top-center" />
         <Analytics />
         <SpeedInsights />
       </body>

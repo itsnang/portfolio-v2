@@ -17,8 +17,7 @@ export const envSchema = z.object({
   // Shared with the public Sites, which reject refresh calls without it.
   REVALIDATE_SECRET: z.string().min(32),
   MAIN_SITE_URL: z.string().url(),
-  // Optional until the Blog Site exists; an unset Site is skipped.
-  BLOG_SITE_URL: z.string().url().optional(),
+  BLOG_SITE_URL: z.string().url(),
 });
 
 export type Env = z.infer<typeof envSchema>;

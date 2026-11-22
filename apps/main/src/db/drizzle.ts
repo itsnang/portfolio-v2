@@ -1,8 +1,5 @@
 import { createDB, createDBClient } from "@portfolio/db/client";
-import { config } from "dotenv";
-// import { drizzle } from "drizzle-orm/neon-http";
 
-config({ path: ".env" }); // or .env.local
 const databaseUrl = process.env.DATABASE_URL!;
 
 // Local development must never reach the production database.

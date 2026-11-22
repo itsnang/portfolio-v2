@@ -3,6 +3,7 @@ import { AchievementSection } from "@/features/achievement/components/achievemen
 import React from "react";
 import { getSocials } from "@/features/socials/queries";
 import { DockNavClient } from "@/components/nav-dock-client";
+import { blogUrl, mainPageUrl } from "@/lib/site-urls";
 
 const DESCRIPTION =
   "Awards, certifications, and career highlights from Lorn Samnang's journey as a software developer.";
@@ -12,10 +13,10 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Achievements",
   description: DESCRIPTION,
-  alternates: { canonical: "https://lornsamnang.com/achievement" },
+  alternates: { canonical: mainPageUrl("/achievement") },
   openGraph: {
     type: "website",
-    url: "https://lornsamnang.com/achievement",
+    url: mainPageUrl("/achievement"),
     title: "Achievements | Lorn Samnang",
     description: DESCRIPTION,
   },
@@ -32,7 +33,7 @@ export default async function AchievementPage() {
   return (
     <>
       <AchievementSection />
-      <DockNavClient socials={socials} />
+      <DockNavClient socials={socials} blogUrl={blogUrl} />
     </>
   );
 }

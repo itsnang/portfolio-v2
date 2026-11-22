@@ -47,9 +47,11 @@ const CategoryBadge = ({ category }: { category: BlogPost["category"] }) => (
 
 interface BlogTableProps {
   posts: BlogPost[];
+  /** The Blog Site's address, shown in the form's slug hint. */
+  blogUrl: string;
 }
 
-export const BlogTable = ({ posts }: BlogTableProps) => {
+export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
   const router = useRouter();
   const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -192,6 +194,7 @@ export const BlogTable = ({ posts }: BlogTableProps) => {
         <BlogForm
           key={editingPost?.id ?? "create"}
           images={images}
+          blogUrl={blogUrl}
           initialData={editingPost ?? undefined}
           onSuccess={handleFormSuccess}
         />

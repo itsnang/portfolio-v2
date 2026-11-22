@@ -8,8 +8,8 @@ type Page = { path: string; type?: "layout" };
 
 // The Main Site's pages for each resource the Admin Site can change.
 const pagesFor: Record<RevalidateResource, (slugs: string[]) => Page[]> = {
-  // Remove "/blog" and the Post pages in the PR that removes /blog from the Main Site.
-  post: (slugs) => [{ path: "/" }, { path: "/blog" }, ...slugs.map((slug) => ({ path: `/blog/${slug}` }))],
+  // Only the home page's "From the Blog" teaser; Posts live on the Blog Site.
+  post: () => [{ path: "/" }],
   project: (ids) => [{ path: "/" }, ...ids.map((id) => ({ path: `/projects/${id}` }))],
   // Theme and maintenance mode affect every page.
   "app-config": () => [{ path: "/", type: "layout" }],
