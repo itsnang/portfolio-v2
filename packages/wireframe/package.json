@@ -1,0 +1,33 @@
+{
+  "name": "@portfolio/wireframe",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./og": "./src/og/og.tsx",
+    "./styles.css": "./src/styles/wireframe.css",
+    "./wireframe-utils": "./src/components/wireframe-utils.ts",
+    "./*": "./src/components/*.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@portfolio/db": "workspace:*",
+    "@portfolio/ui": "workspace:*",
+    "date-fns": "^3.6.0"
+  },
+  "peerDependencies": {
+    "next": "^16.3.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "next": "^16.3.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "@types/node": "^20",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5"
+  }
+}

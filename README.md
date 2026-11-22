@@ -17,19 +17,19 @@ See the [`LICENSE`](./LICENSE) file for the full legal terms (All Rights Reserve
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-Open `http://localhost:3000` to develop locally. Update content in `src/app/(home)` and components under `src/components/**`.
+Open `http://localhost:3000` to develop locally. Update content in `apps/main/src/app/(home)` and components under `apps/main/src/components/**`.
 
 ## Local Database
 
-Local development uses a throwaway Postgres with made-up content, and `npm run dev` refuses to connect to anything but `localhost`.
+Local development uses a throwaway Postgres with made-up content, and `pnpm dev` refuses to connect to anything but `localhost`.
 
-1. Start Docker, then run `npm run db:reset`. It recreates the database, so anything saved locally is lost.
-2. Copy `.env.example` to `.env.local` and fill in the blanks.
-3. Run `npm run dev` and sign in at `/sign-in` with `admin@lornsamnang.com` / `admin123`.
+1. Start Docker, then run `pnpm db:reset`. It recreates the database, so anything saved locally is lost.
+2. Copy `apps/main/.env.example` to `apps/main/.env.local` and fill in the blanks.
+3. Run `pnpm dev` and sign in at `/sign-in` with `admin@lornsamnang.com` / `admin123`.
 
 ## Portfolio CMS
 
@@ -67,8 +67,8 @@ Content types managed from the CMS:
 Deploy to Vercel or any Next.js-compatible platform:
 
 ```bash
-npm run build
-npm start
+pnpm build
+pnpm --filter @portfolio/main start
 ```
 
-Ensure environment variables (`.env`) match your deployment target (database, auth, analytics).
+On Vercel, set Root Directory to `apps/main`. Ensure environment variables match your deployment target (database, auth, analytics).
