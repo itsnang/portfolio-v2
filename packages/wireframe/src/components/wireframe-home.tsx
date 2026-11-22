@@ -54,10 +54,16 @@ export function WireframeHome({
   profile,
   achievements,
   posts = [],
+  postBaseUrl,
+  allPostsUrl,
 }: {
   profile: IProfile;
   achievements: WireframeAchievement[];
   posts?: WireframeBlogPostSummary[];
+  /** The address Posts live under; see WireframeBlogHome. */
+  postBaseUrl: string;
+  /** The Post list. */
+  allPostsUrl: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const revealedEls = useRef<Set<Element>>(new Set());
@@ -110,7 +116,7 @@ export function WireframeHome({
         {posts.length > 0 && (
           <>
             <hr className="wf-divider" />
-            <WireframeBlogHome posts={posts} />
+            <WireframeBlogHome posts={posts} postBaseUrl={postBaseUrl} allPostsUrl={allPostsUrl} />
           </>
         )}
         {profile.aboutImages && profile.aboutImages.length > 0 && (

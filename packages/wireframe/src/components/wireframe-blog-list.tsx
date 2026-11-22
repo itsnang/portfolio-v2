@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { WireframeBlogCard, type WireframeBlogPostSummary } from "./wireframe-blog-card";
+import { WireframeLink } from "./wireframe-link";
+import { WireframeBlogCard, postHref, type WireframeBlogPostSummary } from "./wireframe-blog-card";
 
 function paintEdges(root: HTMLElement) {
   root
@@ -54,7 +54,15 @@ const WOBBLE = (
   </svg>
 );
 
-export function WireframeBlogList({ posts }: { posts: WireframeBlogPostSummary[] }) {
+export interface WireframeBlogListProps {
+  posts: WireframeBlogPostSummary[];
+  /** The address Posts live under; each card links to `${postBaseUrl}/${slug}`. */
+  postBaseUrl: string;
+  /** The Main Site's home page, for the "back to home" link. */
+  homeUrl: string;
+}
+
+export function WireframeBlogList({ posts, postBaseUrl, homeUrl }: WireframeBlogListProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const isFirstRun = useRef(true);
   const [filter, setFilter] = useState<string | null>(null);
@@ -82,8 +90,8 @@ export function WireframeBlogList({ posts }: { posts: WireframeBlogPostSummary[]
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px 28px 0" }}>
-        <Link
-          href="/"
+        <WireframeLink
+          href={homeUrl}
           className="wf-m"
           style={{
             fontSize: 15,
@@ -95,7 +103,7 @@ export function WireframeBlogList({ posts }: { posts: WireframeBlogPostSummary[]
           }}
         >
           ← back to home
-        </Link>
+        </WireframeLink>
       </div>
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "34px 28px 60px" }}>
@@ -148,6 +156,7 @@ export function WireframeBlogList({ posts }: { posts: WireframeBlogPostSummary[]
               <WireframeBlogCard
                 key={post.id}
                 post={post}
+                href={postHref(postBaseUrl, post.slug)}
                 featured={i === 0 && filteredPosts.length > 1}
                 revealClassName={i % 2 === 1 ? " d1" : ""}
               />

@@ -1,7 +1,15 @@
-import Link from "next/link";
-import { WireframeBlogCard, type WireframeBlogPostSummary } from "./wireframe-blog-card";
+import { WireframeLink } from "./wireframe-link";
+import { WireframeBlogCard, postHref, type WireframeBlogPostSummary } from "./wireframe-blog-card";
 
-export function WireframeBlogHome({ posts }: { posts: WireframeBlogPostSummary[] }) {
+export interface WireframeBlogHomeProps {
+  posts: WireframeBlogPostSummary[];
+  /** The address Posts live under; each card links to `${postBaseUrl}/${slug}`. */
+  postBaseUrl: string;
+  /** The Post list. */
+  allPostsUrl: string;
+}
+
+export function WireframeBlogHome({ posts, postBaseUrl, allPostsUrl }: WireframeBlogHomeProps) {
   if (posts.length === 0) return null;
 
   return (
@@ -32,15 +40,16 @@ export function WireframeBlogHome({ posts }: { posts: WireframeBlogPostSummary[]
           <WireframeBlogCard
             key={post.id}
             post={post}
+            href={postHref(postBaseUrl, post.slug)}
             revealClassName={i % 2 === 1 ? " d1" : ""}
           />
         ))}
       </div>
 
       <div className="wf-reveal" style={{ textAlign: "center", marginTop: 34 }}>
-        <Link href="/blog" className="wf-sketch wf-btn">
+        <WireframeLink href={allPostsUrl} className="wf-sketch wf-btn">
           see all posts →
-        </Link>
+        </WireframeLink>
       </div>
     </section>
   );
