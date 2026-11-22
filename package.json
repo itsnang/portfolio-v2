@@ -3,10 +3,11 @@
   "private": true,
   "packageManager": "pnpm@10.34.9",
   "scripts": {
-    "dev": "pnpm --parallel --filter @portfolio/main --filter @portfolio/admin dev",
+    "dev": "pnpm --parallel --filter @portfolio/main --filter @portfolio/blog --filter @portfolio/admin dev",
     "build": "pnpm --filter @portfolio/main build",
     "db:reset": "pnpm --filter @portfolio/db db:rebuild && pnpm --filter @portfolio/admin seed:local && pnpm --filter @portfolio/db db:fixtures",
     "dev:main": "pnpm --filter @portfolio/main dev",
+    "dev:blog": "pnpm --filter @portfolio/blog dev",
     "dev:admin": "pnpm --filter @portfolio/admin dev"
   }
 }
