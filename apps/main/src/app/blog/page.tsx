@@ -33,7 +33,7 @@ export default async function BlogIndexPage() {
   ]);
 
   if (config.theme === "wireframe") {
-    return <WireframeBlogList posts={posts} />;
+    return <WireframeBlogList posts={posts} postBaseUrl="/blog" homeUrl="/" />;
   }
 
   return <BlogList posts={posts} />;

@@ -41,6 +41,8 @@ export default async function Home() {
         profile={profile}
         achievements={wireframeAchievements}
         posts={posts}
+        postBaseUrl="/blog"
+        allPostsUrl="/blog"
       />
     );
   }

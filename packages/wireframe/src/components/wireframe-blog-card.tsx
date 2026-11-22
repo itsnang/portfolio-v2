@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { WireframeLink } from "./wireframe-link";
 import { fmt } from "./wireframe-utils";
 
 export interface WireframeBlogPostSummary {
@@ -12,15 +12,23 @@ export interface WireframeBlogPostSummary {
   category: string;
 }
 
+/** Joins the address Posts live under (`/blog` or another Site's origin) with a slug. */
+export function postHref(postBaseUrl: string, slug: string) {
+  return `${postBaseUrl.replace(/\/$/, "")}/${slug}`;
+}
+
 interface WireframeBlogCardProps {
   post: WireframeBlogPostSummary;
+  /** Where the card links: the Post's page, on this Site or another. */
+  href: string;
   featured?: boolean;
   revealClassName?: string;
 }
 
-/** Shared blog post card — used by both the homepage teaser and the /blog grid. */
+/** Shared blog post card — used by both the homepage teaser and the Post list. */
 export function WireframeBlogCard({
   post,
+  href,
   featured = false,
   revealClassName = "",
 }: WireframeBlogCardProps) {
@@ -31,8 +39,8 @@ export function WireframeBlogCard({
       className={`wf-sketch wf-proj wf-reveal${featured ? " wf-post-featured" : ""}${revealClassName}`}
       style={{ background: "var(--wf-paper-2)", display: "flex", flexDirection: "column" }}
     >
-      <Link
-        href={`/blog/${post.slug}`}
+      <WireframeLink
+        href={href}
         style={{
           display: "block",
           aspectRatio: "16 / 9",
@@ -69,7 +77,7 @@ export function WireframeBlogCard({
             <path d="M7 7h10v10" />
           </svg>
         </span>
-      </Link>
+      </WireframeLink>
       <div style={{ padding: "18px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
         {date && (
           <span
@@ -86,13 +94,13 @@ export function WireframeBlogCard({
           </span>
         )}
         <h3 className="wf-h">
-          <Link
-            href={`/blog/${post.slug}`}
+          <WireframeLink
+            href={href}
             className="wf-blog-title-link"
             style={{ color: "inherit", textDecoration: "none" }}
           >
             {post.title}
-          </Link>
+          </WireframeLink>
         </h3>
         <p
           className="wf-m"
