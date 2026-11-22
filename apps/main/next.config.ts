@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
-import withPWA from "@ducanh2912/next-pwa";
+
+// Next loads .env files before this config, so the Blog Site's address is
+// available here. Validated in src/utils/env.ts too, but redirects run first.
+const blogUrl = process.env.NEXT_PUBLIC_BLOG_URL;
+if (!blogUrl) throw new Error("NEXT_PUBLIC_BLOG_URL must be set: /blog redirects to it.");
+const blogOrigin = blogUrl.replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -17,9 +21,6 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
   },
-  // withPWA adds a webpack config; without a turbopack key the build fails.
-  // Remove both together (step 8 of the site split).
-  turbopack: {},
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
@@ -28,11 +29,14 @@ const nextConfig: NextConfig = {
   // next/og's SVG->PNG step fail with "Input buffer contains unsupported
   // image format" when generating opengraph images.
   serverExternalPackages: ["sharp"],
+  // The blog moved to the Blog Site. Temporary for now; step 9 of the site
+  // split makes them permanent once the Blog Site has proven itself.
+  async redirects() {
+    return [
+      { source: "/blog", destination: `${blogOrigin}/`, permanent: false },
+      { source: "/blog/:path*", destination: `${blogOrigin}/:path*`, permanent: false },
+    ];
+  },
 };
 
-const pwaConfig = withPWA({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
-})(nextConfig);
-
-export default pwaConfig;
+export default nextConfig;

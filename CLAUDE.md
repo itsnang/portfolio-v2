@@ -19,15 +19,15 @@ pnpm db:reset    # Recreate the local database with made-up content and the admi
 
 ## Repo layout
 
-A pnpm 10 workspace. The Main Site lives in `apps/main` and every `src/...` path below is relative to it unless it names another Site or a package. The Main Site is public pages only; the dashboard, auth and every write live in the Admin Site, which keeps the same `src/` layout, so Admin-only paths below are under `apps/admin`. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
+A pnpm 10 workspace. The Main Site lives in `apps/main` and every `src/...` path below is relative to it unless it names another Site or a package. The Main Site is public pages only; the dashboard, auth and every write live in the Admin Site, which keeps the same `src/` layout, so Admin-only paths below are under `apps/admin`. The Main Site is no longer a PWA: `apps/main/public/sw.js` is a committed no-op that unregisters the old service worker, and must stay for at least 12 months after it ships. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
 
 ### Blog Site (`apps/blog`)
-The Post list at `/` and each Post at `/:slug`, in both themes, on port 3001 locally. It's read-only: it connects as `portfolio_public`, reads through `src/lib/queries.ts` (thin wrappers over `@portfolio/db/queries`), and lists no Better Auth, Cloudinary or Tiptap editor packages. Its env schema (`src/utils/env.ts`) is `DATABASE_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_MAIN_URL` and `NEXT_PUBLIC_BLOG_URL`; links to the Main Site are plain `<a>` tags built from `NEXT_PUBLIC_MAIN_URL`. Its own `/api/revalidate` uses the same message and token check as the Main Site's: `post` refreshes the Post list and those Posts, `app-config` every page, and anything else nothing. SEO URLs come from `src/lib/metadata.ts`: Post canonical, Open Graph and JSON-LD URLs use the Blog Site, author and publisher URLs the Main Site, and every page is `noindex` until step 8. Not a PWA. Its local env is `apps/blog/.env.local` (see `apps/blog/.env.example`). The Main Site's `/blog` keeps running unchanged until step 8 of the spec, so a blog page fix currently goes in both places.
+The Post list at `/` and each Post at `/:slug`, in both themes, on port 3001 locally. It's read-only: it connects as `portfolio_public`, reads through `src/lib/queries.ts` (thin wrappers over `@portfolio/db/queries`), and lists no Better Auth, Cloudinary or Tiptap editor packages. Its env schema (`src/utils/env.ts`) is `DATABASE_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_MAIN_URL` and `NEXT_PUBLIC_BLOG_URL`; links to the Main Site are plain `<a>` tags built from `NEXT_PUBLIC_MAIN_URL`. Its own `/api/revalidate` uses the same message and token check as the Main Site's: `post` refreshes the Post list, those Posts and the sitemap, `app-config` every page, and anything else nothing. SEO URLs come from `src/lib/metadata.ts`: Post canonical, Open Graph and JSON-LD URLs use the Blog Site, and author and publisher URLs the Main Site. Not a PWA. Its local env is `apps/blog/.env.local` (see `apps/blog/.env.example`). The Main Site has no blog pages: `next.config.ts` redirects `/blog` and `/blog/:path*` to the Blog Site (temporary until step 9 of the spec), and its home page teaser and nav dock link to the Blog Site.
 
 ### Admin Site (`apps/admin`)
-The dashboard, sign-in, auth API and every write, on port 3002 locally. It has its own env schema (`REVALIDATE_SECRET`, `MAIN_SITE_URL` required; `BLOG_SITE_URL` optional; no `ENCRYPTION_KEY`), connects locally as `portfolio_admin`, trusts only its own origin, redirects `/` to `/dashboard` and signed-out visitors to `/sign-in`, and is `noindex` with `robots.txt` disallowing everything. Its local env is `apps/admin/.env.local` (see `apps/admin/.env.example`).
+The dashboard, sign-in, auth API and every write, on port 3002 locally. It has its own env schema (`REVALIDATE_SECRET`, `MAIN_SITE_URL` and `BLOG_SITE_URL` required; no `ENCRYPTION_KEY`), connects locally as `portfolio_admin`, trusts only its own origin, redirects `/` to `/dashboard` and signed-out visitors to `/sign-in`, and is `noindex` with `robots.txt` disallowing everything. Its local env is `apps/admin/.env.local` (see `apps/admin/.env.example`).
 
-After a write that changes public content, an Admin Site action calls `refreshPublicSites` (`apps/admin/src/lib/refresh-public-sites.ts`) instead of `revalidatePath` for public pages. It posts to each public Site's `/api/revalidate` in parallel with a 3-second timeout, skips a Site whose URL is unset, and returns a warning instead of failing; the action passes it back as `warning` and the form shows it with `toastRefreshWarning`. `revalidatePath` stays only for the Admin Site's own `/dashboard` pages.
+After a write that changes public content, an Admin Site action calls `refreshPublicSites` (`apps/admin/src/lib/refresh-public-sites.ts`) instead of `revalidatePath` for public pages. It posts to each public Site's `/api/revalidate` in parallel with a 3-second timeout and returns a warning instead of failing; the action passes it back as `warning` and the form shows it with `toastRefreshWarning`. `revalidatePath` stays only for the Admin Site's own `/dashboard` pages.
 
 ## Local database
 
@@ -56,6 +56,8 @@ Local values go in `apps/main/.env.local` (see `apps/main/.env.example`). Valida
 
 ```
 DATABASE_URL
+NEXT_PUBLIC_MAIN_URL # this Site's address: canonical, sitemap and metadata URLs
+NEXT_PUBLIC_BLOG_URL # the Blog Site: blog links and the /blog redirects (read by next.config.ts too)
 REVALIDATE_SECRET    # shared with the Admin Site for /api/revalidate; optional so the Site can deploy first, and every refresh call is rejected until it's set
 ```
 
@@ -86,7 +88,7 @@ Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call
 - `src/app/(home)/` — public portfolio, single profile page (`revalidate = 60`)
 - Admin Site: `apps/admin/src/app/dashboard/` is the CMS and `/api/auth/[...all]` is Better Auth. Its `src/proxy.ts` only checks that a session cookie exists, so every dashboard read and write must check the session itself. On the Main Site, `/dashboard/*` and `/sign-in` are 404s.
 - `src/app/api/revalidate` — refreshes public pages when the Admin Site sends `{ resource, slugs }` (type in `@portfolio/db/schema`) with the shared bearer secret
-- Route-local composition glue that spans 2+ features (e.g. `app/projects/[projectId]/project-detail.tsx`, `app/blog/[slug]/blog-detail.tsx`) stays colocated in the route folder rather than forced into a single feature.
+- Route-local composition glue that spans 2+ features (e.g. `app/projects/[projectId]/project-detail.tsx`) stays colocated in the route folder rather than forced into a single feature.
 
 ### Database Layer (`packages/db`, `@portfolio/db`)
 Stays fully centralized — not split per feature, same as pipfolio's `src/lib/db/`.

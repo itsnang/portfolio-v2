@@ -25,10 +25,11 @@ export const siteMetadata: Metadata = {
   authors: [{ name: AUTHOR, url: authorUrl }],
   creator: AUTHOR,
   publisher: AUTHOR,
-  // Kept out of search results until step 8 of the cutover, when the Blog
-  // Site replaces the Main Site's /blog. robots.txt still allows crawling,
-  // so crawlers can see this.
-  robots: { index: false, follow: false },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,

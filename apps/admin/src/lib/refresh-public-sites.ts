@@ -12,14 +12,12 @@ const REFRESH_WARNING =
 /**
  * Tells each public Site what changed so it refreshes its own pages. A save
  * always stands: failures come back as a warning, with no retries, and the
- * public pages' timers catch up. A Site whose URL isn't set is skipped.
+ * public pages' timers catch up.
  */
 export async function refreshPublicSites(
   message: RevalidateMessage
 ): Promise<string | undefined> {
-  const sites = [env.MAIN_SITE_URL, env.BLOG_SITE_URL].filter(
-    (url): url is string => Boolean(url)
-  );
+  const sites = [env.MAIN_SITE_URL, env.BLOG_SITE_URL];
 
   const results = await Promise.allSettled(
     sites.map(async (site) => {

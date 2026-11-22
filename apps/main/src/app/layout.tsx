@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { getAppConfig } from "@/features/app-config/queries";
+import { mainUrl } from "@/lib/site-urls";
 
 export const metadata: Metadata = generateMetadata({});
 
@@ -20,7 +21,7 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Lorn Samnang",
-    url: "https://lornsamnang.com",
+    url: mainUrl,
     sameAs: [
       "https://www.linkedin.com/in/lorn-samnang/",
       "https://github.com/lorn-samnang",

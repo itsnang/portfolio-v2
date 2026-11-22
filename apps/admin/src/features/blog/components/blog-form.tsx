@@ -52,6 +52,8 @@ import {
 
 interface BlogFormProps {
   images: IImages[];
+  /** The Blog Site's address, where Posts live at `/:slug`. */
+  blogUrl: string;
   initialData?: BlogPost;
   onSuccess?: () => void;
 }
@@ -106,7 +108,7 @@ const CoverImageCard = ({ images }: { images: IImages[] }) => {
   );
 };
 
-const BasicInfoCard = ({ isEditing }: { isEditing: boolean }) => {
+const BasicInfoCard = ({ isEditing, blogUrl }: { isEditing: boolean; blogUrl: string }) => {
   const { control, setValue, getValues } = useFormContext<BlogPostInsert>();
   const slugEditedRef = useRef(isEditing);
 
@@ -164,7 +166,7 @@ const BasicInfoCard = ({ isEditing }: { isEditing: boolean }) => {
                 />
               </FormControl>
               <FormDescription>
-                The post will live at /blog/{getValues("slug") || "your-slug"}
+                The post will live at {blogUrl.replace(/\/$/, "")}/{getValues("slug") || "your-slug"}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -296,6 +298,7 @@ const PublishCard = () => {
 
 const BlogForm: React.FC<BlogFormProps> = ({
   images,
+  blogUrl,
   initialData,
   onSuccess,
 }) => {
@@ -340,7 +343,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
     <div className="max-w-4xl mx-auto space-y-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <BasicInfoCard isEditing={Boolean(initialData)} />
+          <BasicInfoCard isEditing={Boolean(initialData)} blogUrl={blogUrl} />
           <CoverImageCard images={images} />
           <ContentCard />
           <PublishCard />

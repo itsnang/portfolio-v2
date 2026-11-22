@@ -13,6 +13,7 @@ import { getAppConfig } from "@/features/app-config/queries";
 import { getProfile } from "@/features/profile/queries";
 import { getPublishedBlogPosts } from "@/features/blog/queries";
 import { achievements } from "@/features/achievement/data";
+import { blogUrl } from "@/lib/site-urls";
 
 
 export default async function Home() {
@@ -41,8 +42,8 @@ export default async function Home() {
         profile={profile}
         achievements={wireframeAchievements}
         posts={posts}
-        postBaseUrl="/blog"
-        allPostsUrl="/blog"
+        postBaseUrl={blogUrl}
+        allPostsUrl={blogUrl}
       />
     );
   }
@@ -91,7 +92,7 @@ export default async function Home() {
           </>
         )}
 
-        <DockNavClient socials={profile.socials} />
+        <DockNavClient socials={profile.socials} blogUrl={blogUrl} />
       </main>
     </>
   );
