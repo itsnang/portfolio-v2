@@ -68,7 +68,8 @@ const WOBBLE = (
   </svg>
 );
 
-export function WireframeBlogDetail({ post }: { post: Post }) {
+/** `homeUrl` is the Main Site's home page: another Site, so a plain link. */
+export function WireframeBlogDetail({ post, homeUrl }: { post: Post; homeUrl: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -96,7 +97,16 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
     <div className="sketch-page" ref={rootRef}>
       {WOBBLE}
 
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px clamp(16px, 6vw, 28px) 0" }}>
+      <div
+        style={{
+          maxWidth: 1080,
+          margin: "0 auto",
+          padding: "26px clamp(16px, 6vw, 28px) 0",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Link
           href="/"
           className="wf-m"
@@ -111,6 +121,9 @@ export function WireframeBlogDetail({ post }: { post: Post }) {
         >
           ← back to blog
         </Link>
+        <a href={homeUrl} className="wf-m" style={{ fontSize: 15, color: "var(--wf-ink-soft)", textDecoration: "none" }}>
+          home
+        </a>
       </div>
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 clamp(16px, 6vw, 28px)" }}>

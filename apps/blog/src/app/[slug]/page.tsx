@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { stripHtml } from "@portfolio/wireframe/wireframe-utils";
 import { getAppConfig, getBlogDetail } from "@/lib/queries";
 import { AUTHOR, SITE_NAME, authorUrl, postUrl } from "@/lib/metadata";
+import { mainUrl } from "@/lib/site-urls";
 import { BlogDetail } from "./blog-detail";
 import { WireframeBlogDetail } from "./wireframe-blog-detail";
 
@@ -83,9 +84,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {config.theme === "wireframe" ? (
-        <WireframeBlogDetail post={post} />
+        <WireframeBlogDetail post={post} homeUrl={mainUrl} />
       ) : (
-        <BlogDetail post={post} />
+        <BlogDetail post={post} homeUrl={mainUrl} />
       )}
     </>
   );

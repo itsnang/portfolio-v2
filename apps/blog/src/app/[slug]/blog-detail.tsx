@@ -17,6 +17,8 @@ const fadeInUp = {
 };
 
 interface BlogDetailProps {
+  /** The Main Site's home page: another Site, so a plain link. */
+  homeUrl: string;
   post: {
     title: string;
     excerpt: string;
@@ -28,7 +30,7 @@ interface BlogDetailProps {
   };
 }
 
-export function BlogDetail({ post }: BlogDetailProps) {
+export function BlogDetail({ post, homeUrl }: BlogDetailProps) {
   const publishedLabel = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
         year: "numeric",
@@ -43,7 +45,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
       animate="animate"
       className="max-w-3xl mx-auto px-4 lg:px-8 py-8 space-y-8"
     >
-      <motion.div variants={fadeInUp} className="flex items-center">
+      <motion.div variants={fadeInUp} className="flex items-center justify-between">
         <Link href="/" className="group">
           <Button
             variant="ghost"
@@ -53,6 +55,12 @@ export function BlogDetail({ post }: BlogDetailProps) {
             Back to blog
           </Button>
         </Link>
+        <a
+          href={homeUrl}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Home
+        </a>
       </motion.div>
 
       {post.coverImage && (
