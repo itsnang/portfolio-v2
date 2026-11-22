@@ -5,15 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/dashboard/",
-        "/sign-in/",
-        "/sign-out/",
-        "/api/",
-        "/_next/",
-        "/_vercel/",
-        "/admin/",
-      ],
+      disallow: ["/api/"],
     },
     sitemap: "https://lornsamnang.com/sitemap.xml",
     host: "https://lornsamnang.com",
