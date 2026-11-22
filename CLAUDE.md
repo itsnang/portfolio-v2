@@ -7,10 +7,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Run from the repo root:
 
 ```bash
-pnpm dev         # Start the Main Site (port 3000) and the Admin Site (port 3002)
+pnpm dev         # Start the Main Site (3000), the Blog Site (3001) and the Admin Site (3002)
 pnpm dev:main    # Main Site only
+pnpm dev:blog    # Blog Site only
 pnpm dev:admin   # Admin Site only
 pnpm build       # Production build of the Main Site
+pnpm --filter @portfolio/blog build
 pnpm --filter @portfolio/admin build
 pnpm db:reset    # Recreate the local database with made-up content and the admin account
 ```
@@ -20,6 +22,9 @@ pnpm db:reset    # Recreate the local database with made-up content and the admi
 ## Repo layout
 
 A pnpm 10 workspace. The Main Site lives in `apps/main` and every `src/...` path below is relative to it unless it names another Site or a package. Shared Packages live in `packages/` and export TypeScript source: they never import from a Site, and use relative or package imports instead of `@/`. `docs/site-split-spec.md` is the plan for splitting this into three Sites (Main, Blog, Admin) on separate subdomains, and `GLOSSARY.md` defines those terms.
+
+### Blog Site (`apps/blog`)
+The Post list at `/` and each Post at `/:slug`, in both themes, on port 3001 locally. It's read-only: it connects as `portfolio_public`, reads through `src/lib/queries.ts` (thin wrappers over `@portfolio/db/queries`), and lists no Better Auth, Cloudinary or Tiptap editor packages. Its env schema (`src/utils/env.ts`) is `DATABASE_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_MAIN_URL` and `NEXT_PUBLIC_BLOG_URL`; links to the Main Site are plain `<a>` tags built from `NEXT_PUBLIC_MAIN_URL`. Its own `/api/revalidate` uses the same message and token check as the Main Site's: `post` refreshes the Post list and those Posts, `app-config` every page, and anything else nothing. SEO URLs come from `src/lib/metadata.ts`: Post canonical, Open Graph and JSON-LD URLs use the Blog Site, author and publisher URLs the Main Site, and every page is `noindex` until step 8. Not a PWA. Its local env is `apps/blog/.env.local` (see `apps/blog/.env.example`). The Main Site's `/blog` keeps running unchanged until step 8 of the spec, so a blog page fix currently goes in both places.
 
 ### Admin Site (`apps/admin`)
 The dashboard, sign-in, auth API and every write, on port 3002 locally. It was copied from the Main Site and must stay that way until step 5 of the spec: the Main Site keeps its old dashboard as the rollback, so a dashboard fix currently goes in both places. It has its own env schema (`REVALIDATE_SECRET`, `MAIN_SITE_URL` required; `BLOG_SITE_URL` optional; no `ENCRYPTION_KEY`), connects locally as `portfolio_admin`, trusts only its own origin, redirects `/` to `/dashboard` and signed-out visitors to `/sign-in`, and is `noindex` with `robots.txt` disallowing everything. Its local env is `apps/admin/.env.local` (see `apps/admin/.env.example`).
@@ -95,7 +100,7 @@ Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call
 Stays fully centralized — not split per feature, same as pipfolio's `src/lib/db/`.
 - `@portfolio/db/schema` — Drizzle tables (`TbProfile`, `TbProject`, etc.), drizzle-zod schemas, shared domain types (`IProfile`, `IProject`, ...), `genId`, and the refresh message type (`RevalidateMessage`). Opens no connection.
 - `@portfolio/db/client` — `createDBClient` (requires `max`), `createDB`, and the `DB` type. Server-only.
-- `@portfolio/db/queries` — reads both public Sites need (`getAppConfig`, `getPublishedBlogPosts`). Each takes a `DB` argument; the Site wraps it in one line that passes its own client and applies `cache()`.
+- `@portfolio/db/queries` — reads both public Sites need (`getAppConfig`, `getPublishedBlogPosts`, `getBlogPostBySlug`, `getBlogDetail`). Each takes a `DB` argument; the Site wraps it in one line that passes its own client and applies `cache()`.
 - The package also holds `migrations/`, the drizzle-kit configs, the Compose file and the local fixtures.
 - `apps/main/src/db/drizzle.ts` — the Main Site's own client, the development-only `localhost` guard, and `takeFirst`/`takeFirstOrThrow` helpers.
 

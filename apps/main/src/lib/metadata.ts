@@ -62,9 +62,6 @@ export const generateMetadata = ({
       creator: '@lornsamnang',
       images: [imageUrl],
     },
-    verification: {
-      google: 'your-google-site-verification-code',
-    },
     alternates: {
       canonical: siteUrl,
     },
