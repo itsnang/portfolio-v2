@@ -2,19 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { stripHtml } from "@portfolio/wireframe/wireframe-utils";
 import { getAppConfig, getBlogDetail } from "@/lib/queries";
-import { blogUrl, mainUrl } from "@/lib/site-urls";
+import { AUTHOR, SITE_NAME, authorUrl, postUrl } from "@/lib/metadata";
 import { BlogDetail } from "./blog-detail";
 import { WireframeBlogDetail } from "./wireframe-blog-detail";
 
 export const revalidate = 3600;
 
-const AUTHOR = "Lorn Samnang";
-
 interface BlogDetailPageProps {
   params: Promise<{ slug: string }>;
 }
-
-const postUrl = (slug: string) => new URL(slug, blogUrl).toString();
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -29,14 +25,14 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     title: post.title,
     description: post.excerpt,
     keywords: [post.category, "blog", AUTHOR, "software development"],
-    authors: [{ name: AUTHOR, url: mainUrl }],
+    authors: [{ name: AUTHOR, url: authorUrl }],
     alternates: { canonical: url },
     openGraph: {
       type: "article",
       url,
       title: post.title,
       description: post.excerpt,
-      siteName: `${AUTHOR}'s Blog`,
+      siteName: SITE_NAME,
       locale: "en_US",
       publishedTime: published,
       modifiedTime: modified,
@@ -74,8 +70,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     dateModified: (post.updatedAt ?? post.publishedAt)?.toISOString(),
     wordCount: stripHtml(post.content).split(/\s+/).filter(Boolean).length,
     // The author is the person, whose home is the Main Site.
-    author: { "@type": "Person", name: AUTHOR, url: mainUrl },
-    publisher: { "@type": "Person", name: AUTHOR, url: mainUrl },
+    author: { "@type": "Person", name: AUTHOR, url: authorUrl },
+    publisher: { "@type": "Person", name: AUTHOR, url: authorUrl },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
   };

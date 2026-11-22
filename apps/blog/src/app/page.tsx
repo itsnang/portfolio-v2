@@ -2,25 +2,29 @@ import type { Metadata } from "next";
 import { WireframeBlogList } from "@portfolio/wireframe/wireframe-blog-list";
 import { BlogList } from "@/components/blog-list";
 import { getAppConfig, getPublishedBlogPosts } from "@/lib/queries";
+import { AUTHOR, BLOG_DESCRIPTION, SITE_NAME, blogPageUrl } from "@/lib/metadata";
 import { mainUrl } from "@/lib/site-urls";
 
 export const revalidate = 3600;
 
-const DESCRIPTION =
-  "Write-ups on things I build, break, and learn — mostly software, sometimes not.";
-
 export const metadata: Metadata = {
-  title: { absolute: "Blog | Lorn Samnang" },
-  description: DESCRIPTION,
+  title: { absolute: `Blog | ${AUTHOR}` },
+  description: BLOG_DESCRIPTION,
+  alternates: { canonical: blogPageUrl("/") },
+  // Page-level openGraph and twitter replace the layout's, so repeat the shared fields.
   openGraph: {
     type: "website",
-    title: "Blog | Lorn Samnang",
-    description: DESCRIPTION,
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: blogPageUrl("/"),
+    title: `Blog | ${AUTHOR}`,
+    description: BLOG_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog | Lorn Samnang",
-    description: DESCRIPTION,
+    creator: "@lornsamnang",
+    title: `Blog | ${AUTHOR}`,
+    description: BLOG_DESCRIPTION,
   },
 };
 

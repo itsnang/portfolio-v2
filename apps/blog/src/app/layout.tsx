@@ -5,15 +5,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { MaintenanceBanner } from "@/components/maintenance-banner";
 import { getAppConfig } from "@/lib/queries";
-import { blogUrl } from "@/lib/site-urls";
+import { siteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(blogUrl),
-  title: { default: "Blog | Lorn Samnang", template: "%s | Lorn Samnang" },
-  description: "Write-ups on things I build, break, and learn — mostly software, sometimes not.",
-  // Kept out of search results until the Blog Site replaces the Main Site's /blog.
-  robots: { index: false, follow: false },
-};
+export const metadata: Metadata = siteMetadata;
 
 export default async function RootLayout({
   children,

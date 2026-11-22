@@ -10,7 +10,11 @@ type Page = { path: string; type?: "layout" };
 // that only appear on the Main Site refresh nothing here.
 const pagesFor: Record<RevalidateResource, (slugs: string[]) => Page[]> = {
   // An edited slug arrives as both the old and new values, so both pages refresh.
-  post: (slugs) => [{ path: "/" }, ...slugs.map((slug) => ({ path: `/${slug}` }))],
+  post: (slugs) => [
+    { path: "/" },
+    { path: "/sitemap.xml" },
+    ...slugs.map((slug) => ({ path: `/${slug}` })),
+  ],
   // Theme and maintenance mode affect every page.
   "app-config": () => [{ path: "/", type: "layout" }],
   project: () => [],
