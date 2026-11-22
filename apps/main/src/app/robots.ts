@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { mainPageUrl, mainUrl } from "@/lib/site-urls";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://lornsamnang.com/sitemap.xml",
-    host: "https://lornsamnang.com",
+    sitemap: mainPageUrl("/sitemap.xml"),
+    host: mainUrl,
   };
 }
