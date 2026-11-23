@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteRecommendationAction } from "@/features/recommendations/actions";
+import { deleteRecommendationAction } from "@/features/recommendations/actions/recommendations";
 import { RecommendationsForm } from "@/features/recommendations/components/recommendations-form";
 import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Recommendations } from "@/features/recommendations/schemas";
+import type { Recommendations } from "@portfolio/db/schema";
 
 const EMPTY_STATE_MESSAGE =
   "No recommendations added yet. Add your first one below.";

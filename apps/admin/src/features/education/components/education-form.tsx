@@ -12,12 +12,12 @@ import { toast } from "sonner";
 import {
   createEducationAction,
   updateEducationAction,
-} from "@/features/education/actions";
+} from "@/features/education/actions/education";
 import {
   educationFormSchema,
   type Education,
   type EducationFormValues,
-} from "@/features/education/schemas";
+} from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";

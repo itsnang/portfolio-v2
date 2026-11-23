@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { ProjectLinks, ProjectTechnology } from "@/features/project/types";
+import DOMPurify from "isomorphic-dompurify";
+import type { ProjectLinks, ProjectTechnology } from "@portfolio/db/schema";
 
 interface Project {
   id: string;
@@ -20,8 +21,9 @@ interface Project {
   next: { id: string; title: string } | null;
 }
 
-/** Split TipTap HTML into overview paragraphs + list items */
-function parseDescription(html: string) {
+/** Split TipTap HTML into overview paragraphs + list items. Sanitised first: the HTML is rendered as-is. */
+function parseDescription(rawHtml: string) {
+  const html = DOMPurify.sanitize(rawHtml);
   if (typeof window === "undefined")
     return { overview: html, features: [] as string[] };
   const doc = new DOMParser().parseFromString(html, "text/html");

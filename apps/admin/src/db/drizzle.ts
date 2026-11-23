@@ -17,12 +17,3 @@ if (
 
 const client = createDBClient({ url: databaseUrl, max: 5 });
 export const db = createDB(client);
-
-export function takeFirst<T>(data: T[]): T | undefined {
-  return data.at(0);
-}
-
-export function takeFirstOrThrow<T>(data: T[]): T {
-  if (data[0]) return data[0];
-  throw new Error("Data not found");
-}

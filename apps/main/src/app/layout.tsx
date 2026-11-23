@@ -1,4 +1,4 @@
-import { generateMetadata } from "@/lib/metadata";
+import { buildMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -7,7 +7,7 @@ import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { getAppConfig } from "@/features/app-config/queries";
 import { mainUrl } from "@/lib/site-urls";
 
-export const metadata: Metadata = generateMetadata({});
+export const metadata: Metadata = buildMetadata({});
 
 export default async function RootLayout({
   children,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getImages } from "@/features/media/actions";
+import { getImages } from "@/features/media/actions/images";
 
 /**
  * Cloudinary's image library rarely changes between dashboard navigations, but

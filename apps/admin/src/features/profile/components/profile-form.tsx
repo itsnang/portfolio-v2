@@ -1,7 +1,7 @@
 "use client";
 
 import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
-import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
+import { ProfileInsert, profileInsertSchema } from "@portfolio/db/schema";
 import type { EditableProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
@@ -32,7 +32,7 @@ import {
   CardTitle,
 } from "@portfolio/ui/card";
 import { Separator } from "@portfolio/ui/separator";
-import { updateProfileAction } from "@/features/profile/actions";
+import { updateProfileAction } from "@/features/profile/actions/profile";
 
 interface ProfileFormProps {
   profile: EditableProfile;

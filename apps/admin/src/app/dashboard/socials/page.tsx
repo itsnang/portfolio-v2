@@ -1,5 +1,5 @@
 import { SocialsTable } from "@/features/socials/components/socials-table";
-import { getSocialsAction } from "@/features/socials/actions";
+import { getSocialsAction } from "@/features/socials/actions/socials";
 
 async function SocialsPage() {
   const socials = await getSocialsAction();

@@ -1,5 +1,5 @@
 import { RecommendationsTable } from "@/features/recommendations/components/recommendations-table";
-import { getRecommendations } from "@/features/recommendations/actions";
+import { getRecommendations } from "@/features/recommendations/actions/recommendations";
 
 async function RecommendationsPage() {
   const recommendations = await getRecommendations();

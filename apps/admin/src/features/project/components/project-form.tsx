@@ -32,17 +32,12 @@ import { Button } from "@portfolio/ui/button";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { ImageSelectionDialog } from "@/features/media/components/image-selection-dialog";
 
-import {
-  projecInsertSchema,
-  ProjectInsert,
-  Project,
-} from "@/features/project/schemas";
+import { projecInsertSchema, ProjectInsert, Project, ProjectLinks, ProjectTechnology } from "@portfolio/db/schema";
 import { IImages } from "@/features/media/types";
-import { ProjectLinks, ProjectTechnology } from "@/features/project/types";
 import {
   createProjectAction,
   updateProjectAction,
-} from "@/features/project/actions";
+} from "@/features/project/actions/project";
 
 interface ProjectFormProps {
   images: IImages[];

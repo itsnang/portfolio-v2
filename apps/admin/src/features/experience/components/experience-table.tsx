@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Experiences } from "@/features/experience/schemas";
+import { Experiences } from "@portfolio/db/schema";
 import { convertDate } from "@portfolio/ui/convert-date";
 import { Button } from "@portfolio/ui/button";
 import { PencilIcon } from "lucide-react";

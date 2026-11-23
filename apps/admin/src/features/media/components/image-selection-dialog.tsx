@@ -12,7 +12,7 @@ import { Button } from "@portfolio/ui/button";
 import { IImages } from "@/features/media/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FolderSelector } from "./folder-selector";
-import { getImages } from "@/features/media/actions";
+import { getImages } from "@/features/media/actions/images";
 import { toast } from "sonner";
 import Image from "next/image";
 import { LoaderCircle } from "lucide-react";

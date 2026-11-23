@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import type { IExperience } from "@portfolio/db/schema";
 import { fmt } from "./wireframe-utils";
 
@@ -103,7 +104,7 @@ export function WireframeExperience({ experience }: { experience: IExperience[] 
             </div>
             <div
               className="wf-xp-body"
-              dangerouslySetInnerHTML={{ __html: xp.description ?? "" }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(xp.description ?? "") }}
             />
           </article>
           </div>

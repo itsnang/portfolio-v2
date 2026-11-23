@@ -48,12 +48,19 @@ export async function getBlogDetail(db: DB, slug: string) {
     orderBy: [desc(TbBlogPost.publishedAt)],
   });
 
-  const idx = allPosts.findIndex((p) => p.slug === slug);
-  const total = allPosts.length;
-  // Linear (non-circular) pagination — wrapping around with modulo made prev
-  // and next collide on the same post whenever there were exactly 2 posts.
-  const prev = idx > 0 ? allPosts[idx - 1] : null;
-  const next = idx >= 0 && idx < total - 1 ? allPosts[idx + 1] : null;
+  return { ...post, ...neighbours(allPosts, (p) => p.slug === slug) };
+}
 
-  return { ...post, number: idx + 1, total, prev, next };
+/**
+ * An item's position in a list and its neighbours, without wrapping around:
+ * the first item has no `prev` and the last has no `next`.
+ */
+export function neighbours<T>(items: T[], isCurrent: (item: T) => boolean) {
+  const idx = items.findIndex(isCurrent);
+  return {
+    number: idx + 1,
+    total: items.length,
+    prev: idx > 0 ? items[idx - 1] : null,
+    next: idx >= 0 && idx < items.length - 1 ? items[idx + 1] : null,
+  };
 }

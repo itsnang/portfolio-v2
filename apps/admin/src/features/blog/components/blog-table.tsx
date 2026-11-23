@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PencilIcon } from "lucide-react";
 
-import { BlogPost } from "@/features/blog/schemas";
-import { deleteBlogPostAction } from "@/features/blog/actions";
+import { BlogPost } from "@portfolio/db/schema";
+import { deleteBlogPostAction } from "@/features/blog/actions/blog";
 import { Button } from "@portfolio/ui/button";
 import { Badge } from "@portfolio/ui/badge";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";

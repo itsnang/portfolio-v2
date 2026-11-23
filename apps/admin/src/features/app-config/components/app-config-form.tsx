@@ -8,9 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Check, LoaderCircle, Save } from "lucide-react";
-import { appConfigInsertSchema, AppConfigInsert } from "@/features/app-config/schemas";
-import { updateAppConfigAction } from "@/features/app-config/actions";
-import { AppConfig } from "@portfolio/db/schema";
+import { appConfigInsertSchema, AppConfigInsert, AppConfig } from "@portfolio/db/schema";
+import { updateAppConfigAction } from "@/features/app-config/actions/app-config";
 import { Button } from "@portfolio/ui/button";
 import {
   Form,

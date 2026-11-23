@@ -5,8 +5,7 @@ import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Project } from "@/features/project/schemas";
-import { ProjectTechnology } from "@/features/project/types";
+import { Project, ProjectTechnology } from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
 import {
@@ -37,7 +36,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { reorderProjectsAction } from "@/features/project/actions";
+import { reorderProjectsAction } from "@/features/project/actions/project";
 import { FormSheet } from "@/components/form-sheet";
 import ProjectForm from "@/features/project/components/project-form";
 import { useImages } from "@/features/media/hooks/use-images";

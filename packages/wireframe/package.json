@@ -14,7 +14,8 @@
   "dependencies": {
     "@portfolio/db": "workspace:*",
     "@portfolio/ui": "workspace:*",
-    "date-fns": "^3.6.0"
+    "date-fns": "^3.6.0",
+    "isomorphic-dompurify": "^3.22.0"
   },
   "peerDependencies": {
     "next": "^16.3.0",

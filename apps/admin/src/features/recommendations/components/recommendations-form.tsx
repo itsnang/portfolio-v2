@@ -38,12 +38,12 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createRecommendationAction,
   updateRecommendationAction,
-} from "@/features/recommendations/actions";
+} from "@/features/recommendations/actions/recommendations";
 import {
   recommendationsFormSchema,
   type Recommendations,
   type RecommendationsFormValues,
-} from "@/features/recommendations/schemas";
+} from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 

@@ -28,7 +28,7 @@ import Image from "next/image";
 import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { FolderSelector } from "./folder-selector";
-import { getImages, uploadStagedFile } from "@/features/media/actions";
+import { getImages, uploadStagedFile } from "@/features/media/actions/images";
 import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { toast } from "sonner";
 

@@ -1,5 +1,5 @@
 import { EducationTable } from "@/features/education/components/education-table";
-import { getEducations } from "@/features/education/actions";
+import { getEducations } from "@/features/education/actions/education";
 
 async function EducationPage() {
   const education = await getEducations();

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteSkillAction } from "@/features/skills/actions";
+import { deleteSkillAction } from "@/features/skills/actions/skills";
 import { SkillForm } from "@/features/skills/components/skill-form";
 import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Skills } from "@/features/skills/schemas";
+import type { Skills } from "@portfolio/db/schema";
 
 const EMPTY_STATE_MESSAGE = "No skills added yet. Add your first one below.";
 

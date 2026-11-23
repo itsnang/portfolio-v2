@@ -8,13 +8,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createSkillAction, updateSkillAction } from "@/features/skills/actions";
-import {
-  skillsFormSchema,
-  type Skills,
-  type SkillsFormValues,
-} from "@/features/skills/schemas";
-import { skillCategoryEnum } from "@portfolio/db/schema";
+import { createSkillAction, updateSkillAction } from "@/features/skills/actions/skills";
+import { skillsFormSchema, type Skills, type SkillsFormValues, skillCategoryEnum } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";

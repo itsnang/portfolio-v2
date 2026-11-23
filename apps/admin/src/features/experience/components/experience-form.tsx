@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import {
   insertExperiences,
   updateExperience,
-} from "@/features/experience/actions";
+} from "@/features/experience/actions/experience";
 import { Badge } from "@portfolio/ui/badge";
 import { Button } from "@portfolio/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -53,7 +53,7 @@ import {
   Experiences,
   ExperiencesInsert,
   experiencesInsertSchema,
-} from "@/features/experience/schemas";
+} from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { zodResolver } from "@hookform/resolvers/zod";

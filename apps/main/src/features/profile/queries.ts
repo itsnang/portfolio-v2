@@ -1,11 +1,15 @@
 import "server-only";
 
-import { db, takeFirstOrThrow } from "@/db/drizzle";
+import { cache } from "react";
+import { db } from "@/db/drizzle";
 
-/** Public, unauthenticated read used by the public site — the whole profile aggregate. */
-export const getProfile = async () => {
+/**
+ * Public read of the whole profile aggregate. Cached per request, since the
+ * layout metadata, the page and the sitemap all ask for it.
+ */
+export const getProfile = cache(async () => {
   try {
-    const data = await db.query.TbProfile.findMany({
+    const data = await db.query.TbProfile.findFirst({
       with: {
         skills: {
           where: (skill, { eq, and, isNull }) => and(eq(skill.isActive, true), isNull(skill.deletedAt)),
@@ -32,10 +36,11 @@ export const getProfile = async () => {
           orderBy: (recommendation, { asc }) => [asc(recommendation.createdAt)],
         },
       },
-    }).then(takeFirstOrThrow);
+    });
+    if (!data) throw new Error("No profile found");
     return data;
   } catch (error) {
     console.error("Error fetching profile data:", error);
     throw new Error("Failed to fetch profile data");
   }
-};
+});

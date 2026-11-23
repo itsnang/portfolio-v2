@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteSocialAction } from "@/features/socials/actions";
+import { deleteSocialAction } from "@/features/socials/actions/socials";
 import { SocialsForm } from "@/features/socials/components/socials-form";
 import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Socials } from "@/features/socials/schemas";
+import type { Socials } from "@portfolio/db/schema";
 
 const EMPTY_STATE_MESSAGE = "No socials added yet. Add your first one below.";
 

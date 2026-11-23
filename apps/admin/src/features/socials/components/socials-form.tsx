@@ -8,12 +8,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createSocialAction, updateSocialAction } from "@/features/socials/actions";
+import { createSocialAction, updateSocialAction } from "@/features/socials/actions/socials";
 import {
   socialsFormSchema,
   type Socials,
   type SocialsFormValues,
-} from "@/features/socials/schemas";
+} from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
 import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";

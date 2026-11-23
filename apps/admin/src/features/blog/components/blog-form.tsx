@@ -37,18 +37,13 @@ import {
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
-import {
-  blogPostInsertSchema,
-  BlogPostInsert,
-  BlogPost,
-} from "@/features/blog/schemas";
-import { blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
+import { blogPostInsertSchema, BlogPostInsert, BlogPost, blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
 import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {
   createBlogPostAction,
   updateBlogPostAction,
-} from "@/features/blog/actions";
+} from "@/features/blog/actions/blog";
 
 interface BlogFormProps {
   images: IImages[];

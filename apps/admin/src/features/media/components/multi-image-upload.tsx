@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadStagedFile } from "@/features/media/actions";
+import { uploadStagedFile } from "@/features/media/actions/images";
 import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { FolderSelector } from "./folder-selector";
 import { Button } from "@portfolio/ui/button";

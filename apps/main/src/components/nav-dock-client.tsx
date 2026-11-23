@@ -13,7 +13,7 @@ import { HomeIcon, NotebookIcon, Award } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import type { ISocial } from "@/features/socials/types";
+import type { ISocial } from "@portfolio/db/schema";
 
 export const DockNavClient = ({
   socials,

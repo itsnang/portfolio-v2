@@ -84,7 +84,8 @@ export default async function Home() {
                 src: imageUrl,
                 alt: `Gallery image ${index + 1}`,
                 width: 400,
-                height: Math.floor(Math.random() * 300) + 400,
+                // Varied but stable: random heights would differ between renders.
+                height: 400 + ((index * 137) % 300),
               }))}
               className="max-w-full"
               gap="gap-3"

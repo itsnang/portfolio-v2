@@ -66,19 +66,20 @@ REVALIDATE_SECRET    # shared with the Admin Site for /api/revalidate; optional 
 Vertical-slice architecture: code is organized by feature/domain first, not by technical layer. Modeled on the sibling `pipfolio-trading-pnl` project's `src/features/<domain>/` pattern.
 
 ### Feature slices (`src/features/`)
-Twelve domains in the Admin Site: `achievement`, `app-config`, `auth`, `blog`, `education`, `experience`, `media`, `profile`, `project`, `recommendations`, `skills`, `socials`. The Main Site keeps only the public parts (`queries.ts`, section components, `types.ts`, and the static `features/achievement/data.tsx`). Each slice has only the subfolders it needs:
+Twelve domains in the Admin Site: `achievement`, `app-config`, `auth`, `blog`, `education`, `experience`, `media`, `profile`, `project`, `recommendations`, `skills`, `socials`. The Main Site keeps only the public parts (`queries.ts`, section components, and the static `features/achievement/data.tsx`). Each slice has only the subfolders it needs:
 ```
 src/features/<domain>/
-  actions/          # Admin Site only: 'use server' per-file; index.ts is a barrel re-export only
+  actions/          # Admin Site only: one 'use server' file per domain, imported directly (no barrel)
   queries.ts        # public reads, 'server-only'
   admin-queries.ts  # Admin Site only: dashboard reads for Server Components, 'server-only', checks the session
   components/
   hooks/            # only if the domain needs its own hook (rare today)
-  schemas/          # index.ts re-exports the domain's drizzle-zod schema from `@portfolio/db/schema`
-  types.ts          # the domain's public TS types
+  types.ts          # only for types the domain defines itself; shared ones come from `@portfolio/db/schema`
   utils/
 ```
-**Slices don't import each other**, with one sanctioned exception: `features/media` (image picker/upload/CRUD) is a genuine cross-cutting dependency that other slices import directly, the same way pipfolio's `features/profile/components/avatar-upload.tsx` is reused elsewhere. `features/profile` is the other expected exception in the other direction — it's the aggregate root (`getProfile()` joins every other domain), so `features/profile/types.ts` imports each leaf domain's exported type.
+Tables, zod schemas and domain types are imported straight from `@portfolio/db/schema`; slices don't re-export them.
+
+**Slices don't import each other**, with one sanctioned exception: `features/media` (image picker/upload/CRUD) is a genuine cross-cutting dependency that other slices import directly, the same way pipfolio's `features/profile/components/avatar-upload.tsx` is reused elsewhere. `features/profile` is the aggregate root: `getProfile()` joins every other domain, typed by `IProfile` from `@portfolio/db/schema`.
 
 ### Reads and writes
 Writes live only in the Admin Site; the Main Site has no `'use server'` file. Keep reads and writes in separate files. Importing one export from a `'use server'` file can expose every export in it as a callable endpoint, so public pages must never import from `actions/`, directly or through its barrel. Every export left in a `'use server'` file must be wrapped in `withAuthAction`.

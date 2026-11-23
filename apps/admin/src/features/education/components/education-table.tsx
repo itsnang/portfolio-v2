@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { deleteEducationAction } from "@/features/education/actions";
+import { deleteEducationAction } from "@/features/education/actions/education";
 import { EducationForm } from "@/features/education/components/education-form";
 import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Education } from "@/features/education/schemas";
+import type { Education } from "@portfolio/db/schema";
 
 const EMPTY_STATE_MESSAGE =
   "No education added yet. Add your first entry below.";
