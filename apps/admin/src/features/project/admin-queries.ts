@@ -1,20 +1,16 @@
 import "server-only";
 
+import { and, asc, desc, eq, isNull } from "drizzle-orm";
+import { TbProject } from "@portfolio/db/schema";
 import { db } from "@/db/drizzle";
-import { requireAuth } from "@/lib/auth/get-current-user";
+import { getOwnProfile } from "@/lib/auth/session";
 
-export const getProjects = async () => {
-  await requireAuth();
-  try {
-    const projects = await db.query.TbProject.findMany({
-      orderBy: (project, { asc, desc }) => [
-        asc(project.sortOrder),
-        desc(project.createdAt),
-      ],
-    });
-    return projects;
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    throw new Error("Failed to fetch projects");
-  }
-};
+/** Every project the admin owns, including inactive ones, in display order. */
+export async function getProjects() {
+  const profile = await getOwnProfile();
+  if (!profile) return [];
+  return db.query.TbProject.findMany({
+    where: and(eq(TbProject.profileId, profile.id), isNull(TbProject.deletedAt)),
+    orderBy: [asc(TbProject.sortOrder), desc(TbProject.createdAt)],
+  });
+}

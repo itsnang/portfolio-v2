@@ -5,14 +5,7 @@ import { refreshPublicSites } from "@/lib/refresh-public-sites";
 import { db } from "@/db/drizzle";
 import { TbAppConfig, appConfigInsertSchema, AppConfigInsert } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
-import { getAppConfig } from "@/features/app-config/queries";
 
-export const getAppConfigAction = withAuthAction(async () => {
-  return {
-    success: true,
-    data: await getAppConfig(),
-  };
-});
 
 export const updateAppConfigAction = withAuthAction(
   async (_auth, data: AppConfigInsert) => {

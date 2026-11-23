@@ -8,16 +8,6 @@ import { db } from "@/db/drizzle";
 import { skillsInsertSchema, type SkillsFormValues, TbSkills } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
-export const getSkills = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbSkills.findMany({
-    where: and(
-      eq(TbSkills.userId, auth.profile.id),
-      isNull(TbSkills.deletedAt)
-    ),
-    orderBy: [desc(TbSkills.createdAt)],
-  });
-});
 
 export const createSkillAction = withAuthAction(
   async (auth, skill: SkillsFormValues) => {

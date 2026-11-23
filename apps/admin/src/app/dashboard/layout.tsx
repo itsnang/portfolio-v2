@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AppSidebar } from "@/components/dashboard-shell/app-sidebar";
 import { DashboardBreadcrumb } from "@/components/dashboard-shell/dashboard-breadcrumb";
-import { requireAuth } from "@/lib/auth/get-current-user";
+import { requireAuth } from "@/lib/auth/session";
 import { Separator } from "@portfolio/ui/separator";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
 import {

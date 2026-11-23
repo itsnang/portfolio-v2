@@ -71,7 +71,7 @@ Twelve domains in the Admin Site: `achievement`, `app-config`, `auth`, `blog`, `
 src/features/<domain>/
   actions/          # Admin Site only: one 'use server' file per domain, imported directly (no barrel)
   queries.ts        # public reads, 'server-only'
-  admin-queries.ts  # Admin Site only: dashboard reads for Server Components, 'server-only', checks the session
+  admin-queries.ts  # Admin Site only: dashboard reads for Server Components, 'server-only', scoped to the owner's profile
   components/
   hooks/            # only if the domain needs its own hook (rare today)
   types.ts          # only for types the domain defines itself; shared ones come from `@portfolio/db/schema`
@@ -82,7 +82,7 @@ Tables, zod schemas and domain types are imported straight from `@portfolio/db/s
 **Slices don't import each other**, with one sanctioned exception: `features/media` (image picker/upload/CRUD) is a genuine cross-cutting dependency that other slices import directly, the same way pipfolio's `features/profile/components/avatar-upload.tsx` is reused elsewhere. `features/profile` is the aggregate root: `getProfile()` joins every other domain, typed by `IProfile` from `@portfolio/db/schema`.
 
 ### Reads and writes
-Writes live only in the Admin Site; the Main Site has no `'use server'` file. Keep reads and writes in separate files. Importing one export from a `'use server'` file can expose every export in it as a callable endpoint, so public pages must never import from `actions/`, directly or through its barrel. Every export left in a `'use server'` file must be wrapped in `withAuthAction`.
+Writes live only in the Admin Site; the Main Site has no `'use server'` file. Keep reads and writes in separate files: every Admin Site dashboard read lives in its slice's `admin-queries.ts` (`server-only`), scoped to the owner through `getOwnProfile()` from `apps/admin/src/lib/auth/session.ts`, never in an `actions/` file. Importing one export from a `'use server'` file can expose every export in it as a callable endpoint, so public pages must never import from `actions/`, directly or through its barrel. Every export left in a `'use server'` file must be wrapped in `withAuthAction`.
 
 ### Route Groups (`src/app/`)
 Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call a feature's queries or actions and render its components.

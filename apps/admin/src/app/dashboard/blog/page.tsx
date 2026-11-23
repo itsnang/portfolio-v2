@@ -1,5 +1,5 @@
 import { BlogTable } from "@/features/blog/components/blog-table";
-import { getBlogPosts } from "@/features/blog/actions/blog";
+import { getBlogPosts } from "@/features/blog/admin-queries";
 import { env } from "@/utils/env";
 
 async function BlogPage() {

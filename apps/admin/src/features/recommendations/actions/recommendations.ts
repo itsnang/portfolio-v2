@@ -8,16 +8,6 @@ import { db } from "@/db/drizzle";
 import { recommendationsInsertSchema, type RecommendationsFormValues, TbRecommendations } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
-export const getRecommendations = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbRecommendations.findMany({
-    where: and(
-      eq(TbRecommendations.profileId, auth.profile.id),
-      isNull(TbRecommendations.deletedAt)
-    ),
-    orderBy: [desc(TbRecommendations.createdAt)],
-  });
-});
 
 export const createRecommendationAction = withAuthAction(
   async (auth, data: RecommendationsFormValues) => {

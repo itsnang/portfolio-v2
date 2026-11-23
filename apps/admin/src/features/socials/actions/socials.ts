@@ -9,16 +9,6 @@ import { socialsInsertSchema, type SocialsFormValues, TbSocials } from "@portfol
 import { withAuthAction } from "@/lib/auth/middleware";
 
 /** Authenticated read for the dashboard CMS table (scoped to the current profile). */
-export const getSocialsAction = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbSocials.findMany({
-    where: and(
-      eq(TbSocials.userId, auth.profile.id),
-      isNull(TbSocials.deletedAt)
-    ),
-    orderBy: [desc(TbSocials.createdAt)],
-  });
-});
 
 export const createSocialAction = withAuthAction(
   async (auth, social: SocialsFormValues) => {

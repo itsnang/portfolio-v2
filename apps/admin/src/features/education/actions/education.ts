@@ -8,16 +8,6 @@ import { db } from "@/db/drizzle";
 import { educationInsertSchema, type EducationFormValues, TbEducation } from "@portfolio/db/schema";
 import { withAuthAction } from "@/lib/auth/middleware";
 
-export const getEducations = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbEducation.findMany({
-    where: and(
-      eq(TbEducation.userId, auth.profile.id),
-      isNull(TbEducation.deletedAt)
-    ),
-    orderBy: [desc(TbEducation.startDate)],
-  });
-});
 
 export const createEducationAction = withAuthAction(
   async (auth, education: EducationFormValues) => {

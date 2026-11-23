@@ -34,7 +34,7 @@ import modernPreview from "../../../../public/theme-config/modern.jpg";
 import wireframePreview from "../../../../public/theme-config/wireframe.png";
 
 interface AppConfigFormProps {
-  config: AppConfig;
+  config: Pick<AppConfig, "maintenance" | "theme">;
 }
 
 const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; src: StaticImageData; alt: string }[] = [

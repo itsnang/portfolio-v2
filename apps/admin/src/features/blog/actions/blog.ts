@@ -177,24 +177,4 @@ export const deleteBlogPostAction = withAuthAction(async (auth, id: string) => {
   }
 });
 
-export const getBlogPosts = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbBlogPost.findMany({
-    where: and(
-      eq(TbBlogPost.profileId, auth.profile.id),
-      isNull(TbBlogPost.deletedAt)
-    ),
-    orderBy: [desc(TbBlogPost.createdAt)],
-  });
-});
 
-export const getBlogPostById = withAuthAction(async (auth, id: string) => {
-  if (!auth.profile) return undefined;
-  return db.query.TbBlogPost.findFirst({
-    where: and(
-      eq(TbBlogPost.id, id),
-      eq(TbBlogPost.profileId, auth.profile.id),
-      isNull(TbBlogPost.deletedAt)
-    ),
-  });
-});
