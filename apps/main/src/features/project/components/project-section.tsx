@@ -1,6 +1,6 @@
 import React from "react";
 import { ProjectCard } from "@/features/project/components/project-card";
-import { IProject } from "@/features/project/types";
+import { IProject } from "@portfolio/db/schema";
 
 interface ProjectsProps {
   projects: IProject[];

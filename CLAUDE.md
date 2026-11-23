@@ -33,7 +33,7 @@ After a write that changes public content, an Admin Site action calls `refreshPu
 
 Local development runs against a throwaway Postgres in Docker (`packages/db/compose.yaml`), never production.
 
-- `src/db/drizzle.ts` throws in development unless `DATABASE_URL` points at `localhost`.
+- Each Site's `src/db/drizzle.ts` uses `createSiteDB`, which throws in development unless `DATABASE_URL` points at `localhost`.
 - `pnpm db:reset` wipes and rebuilds it, using the hardcoded URL in `packages/db/src/local.ts`.
 - There is no staging environment, so production is the only shared database.
 
@@ -66,22 +66,23 @@ REVALIDATE_SECRET    # shared with the Admin Site for /api/revalidate; optional 
 Vertical-slice architecture: code is organized by feature/domain first, not by technical layer. Modeled on the sibling `pipfolio-trading-pnl` project's `src/features/<domain>/` pattern.
 
 ### Feature slices (`src/features/`)
-Twelve domains in the Admin Site: `achievement`, `app-config`, `auth`, `blog`, `education`, `experience`, `media`, `profile`, `project`, `recommendations`, `skills`, `socials`. The Main Site keeps only the public parts (`queries.ts`, section components, `types.ts`, and the static `features/achievement/data.tsx`). Each slice has only the subfolders it needs:
+Twelve domains in the Admin Site: `achievement`, `app-config`, `auth`, `blog`, `education`, `experience`, `media`, `profile`, `project`, `recommendations`, `skills`, `socials`. The Main Site keeps only the public parts (`queries.ts`, section components, and the static `features/achievement/data.tsx`). Each slice has only the subfolders it needs:
 ```
 src/features/<domain>/
-  actions/          # Admin Site only: 'use server' per-file; index.ts is a barrel re-export only
+  actions/          # Admin Site only: one 'use server' file per domain, imported directly (no barrel)
   queries.ts        # public reads, 'server-only'
-  admin-queries.ts  # Admin Site only: dashboard reads for Server Components, 'server-only', checks the session
+  admin-queries.ts  # Admin Site only: dashboard reads for Server Components, 'server-only', scoped to the owner's profile
   components/
   hooks/            # only if the domain needs its own hook (rare today)
-  schemas/          # index.ts re-exports the domain's drizzle-zod schema from `@portfolio/db/schema`
-  types.ts          # the domain's public TS types
+  types.ts          # only for types the domain defines itself; shared ones come from `@portfolio/db/schema`
   utils/
 ```
-**Slices don't import each other**, with one sanctioned exception: `features/media` (image picker/upload/CRUD) is a genuine cross-cutting dependency that other slices import directly, the same way pipfolio's `features/profile/components/avatar-upload.tsx` is reused elsewhere. `features/profile` is the other expected exception in the other direction — it's the aggregate root (`getProfile()` joins every other domain), so `features/profile/types.ts` imports each leaf domain's exported type.
+Tables, zod schemas and domain types are imported straight from `@portfolio/db/schema`; slices don't re-export them.
+
+**Slices don't import each other**, with one sanctioned exception: `features/media` (image picker/upload/CRUD) is a genuine cross-cutting dependency that other slices import directly, the same way pipfolio's `features/profile/components/avatar-upload.tsx` is reused elsewhere. `features/profile` is the aggregate root: `getProfile()` joins every other domain, typed by `IProfile` from `@portfolio/db/schema`.
 
 ### Reads and writes
-Writes live only in the Admin Site; the Main Site has no `'use server'` file. Keep reads and writes in separate files. Importing one export from a `'use server'` file can expose every export in it as a callable endpoint, so public pages must never import from `actions/`, directly or through its barrel. Every export left in a `'use server'` file must be wrapped in `withAuthAction`.
+Writes live only in the Admin Site; the Main Site has no `'use server'` file. Keep reads and writes in separate files: every Admin Site dashboard read lives in its slice's `admin-queries.ts` (`server-only`), scoped to the owner through `getOwnProfile()` from `apps/admin/src/lib/auth/session.ts`, never in an `actions/` file. Importing one export from a `'use server'` file can expose every export in it as a callable endpoint, so public pages must never import from `actions/`. Every export in a `'use server'` file must be an `adminAction`.
 
 ### Route Groups (`src/app/`)
 Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call a feature's queries or actions and render its components.
@@ -93,26 +94,26 @@ Pure routing layer — `page.tsx`/`layout.tsx` files are thin wrappers that call
 ### Database Layer (`packages/db`, `@portfolio/db`)
 Stays fully centralized — not split per feature, same as pipfolio's `src/lib/db/`.
 - `@portfolio/db/schema` — Drizzle tables (`TbProfile`, `TbProject`, etc.), drizzle-zod schemas, shared domain types (`IProfile`, `IProject`, ...), `genId`, and the refresh message type (`RevalidateMessage`). Opens no connection.
-- `@portfolio/db/client` — `createDBClient` (requires `max`), `createDB`, and the `DB` type. Server-only.
+- `@portfolio/db/client` — `createSiteDB({ url, max, site })`, which every Site's `src/db/drizzle.ts` calls and which refuses a non-`localhost` `DATABASE_URL` in development; `createDBClient`/`createDB` for scripts; the `DB` type. Server-only.
+- `@portfolio/db/revalidate-route` — `createRevalidateRoute({ secret, pagesFor })`: the shared token check and handler behind each public Site's `/api/revalidate`, which only supplies its `pagesFor` map.
 - `@portfolio/db/queries` — reads both public Sites need (`getAppConfig`, `getPublishedBlogPosts`, `getBlogPostBySlug`, `getBlogDetail`). Each takes a `DB` argument; the Site wraps it in one line that passes its own client and applies `cache()`.
 - The package also holds `migrations/`, the drizzle-kit configs, the Compose file and the local fixtures.
-- `apps/main/src/db/drizzle.ts` — the Main Site's own client, the development-only `localhost` guard, and `takeFirst`/`takeFirstOrThrow` helpers.
 
-### Auth middleware (`apps/admin/src/lib/auth/middleware.ts`)
-All auth-required actions wrap with `withAuthAction` from `apps/admin/src/lib/auth/middleware.ts` (cross-cutting infra, not feature-owned). The middleware resolves the Better Auth session and injects `{ user, session, profile, db }` as the first argument. Use `withOptionalAuthAction` for unauthenticated variants.
+### Admin actions (`apps/admin/src/lib/admin-action.ts`)
+Every Admin Site write is `adminAction(fallbackError, async ({ profile }, ...args) => ...)`. It requires a session (an expired one redirects to `/sign-in`) and the admin's profile, runs the body, then revalidates `dashboardPath` and refreshes the public Sites with `refresh`, both returned by the body along with `data` and `message`. It returns `ActionResult<T>`: `{ success: true, data, message, warning? }` or `{ success: false, error }`. Throw `ActionError` for a message the admin should see; anything else is logged and shown as `fallbackError`. Validate with `parseInput(schema, input, message)` and write the value it returns, never the raw input. Forms show `warning` with `toastRefreshWarning(result)`.
 
-Return shape convention: `{ success: true, data, message }` or `{ success: false, error: string }`. Admin Site writes that refresh public pages add `warning?: string`, which forms show with `toastRefreshWarning(result)`.
+Reads go through each slice's `admin-queries.ts`; the image library is read through `GET /api/images` and `/api/image-folders` (Server Actions run one at a time, so reads would queue behind uploads) via `features/media/hooks/use-images.ts`.
 
 ### UI package (`packages/ui`, `@portfolio/ui`)
-UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.
+UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), the pages every Site shares (`/error-page`, `/not-found-page`, `/maintenance-banner`; each Site's `error.tsx`/`not-found.tsx` re-exports them), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.
 
 ### Wireframe package (`packages/wireframe`, `@portfolio/wireframe`)
-The alternate site theme for the Main and Blog Sites: its components (`@portfolio/wireframe/<component>`), its stylesheet (`/styles.css`, imported by `src/app/globals.css`), and the OG image renderer (`/og`). The OG fonts live beside the renderer and are read with literal `new URL(..., import.meta.url)` paths, so the build traces exactly those files. Data types come from `@portfolio/db/schema`, never from a feature slice.
+The alternate site theme for the Main and Blog Sites: its components (`@portfolio/wireframe/<component>`), the sketch helpers every wireframe page uses (`/wireframe-sketch`: `paintEdges`, `observeReveals`, `useSketchPage`, `<Wobble />`), its stylesheet (`/styles.css`, imported by `src/app/globals.css`), and the OG image renderer (`/og`). The OG fonts live beside the renderer and are read with literal `new URL(..., import.meta.url)` paths, so the build traces exactly those files. Data types come from `@portfolio/db/schema`, never from a feature slice.
 
 ### Shared components (`src/components/`)
 Everything here is cross-cutting infra used by 2+ features — not feature-owned:
 - `dock.tsx` / `nav-dock-client.tsx` — public-site nav dock (achievement + home pages)
-- flat files (`maintenance-banner.tsx`, `navbar.tsx`, `resume-card.tsx`) — generic reusable primitives
+- flat files (`navbar.tsx`, `resume-card.tsx`) — generic reusable primitives
 
 The Admin Site's `src/components/` also holds the dashboard-only shadcn/ui primitives (`ui/`), the vendored Tiptap editor toolkit (`tiptap-*/`), `dashboard-shell/`, `form-sheet.tsx` and `delete-confirm-button.tsx`.
 

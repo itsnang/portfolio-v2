@@ -1,14 +1,13 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
-import { ProfileInsert, profileInsertSchema } from "@/features/profile/schemas";
+import { useRunAction } from "@/lib/use-run-action";
+import { ProfileInsert, profileInsertSchema } from "@portfolio/db/schema";
 import type { EditableProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageSelector } from "@/features/media/components/image-selector";
-import { useImages } from "@/features/media/hooks/use-images";
 import { Button } from "@portfolio/ui/button";
 import {
   Form,
@@ -23,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -32,7 +30,7 @@ import {
   CardTitle,
 } from "@portfolio/ui/card";
 import { Separator } from "@portfolio/ui/separator";
-import { updateProfileAction } from "@/features/profile/actions";
+import { updateProfileAction } from "@/features/profile/actions/profile";
 
 interface ProfileFormProps {
   profile: EditableProfile;
@@ -41,8 +39,7 @@ interface ProfileFormProps {
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   profile,
 }) => {
-  const { data: images = [] } = useImages();
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
 
   const form = useForm<ProfileInsert>({
     resolver: zodResolver(profileInsertSchema),
@@ -61,28 +58,12 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     formState: { errors, isDirty, isValid },
   } = form;
 
-  const onSubmit = async (data: ProfileInsert) => {
+  const onSubmit = (data: ProfileInsert) => {
     if (!isValid) {
       toast.error("Please fix the form errors before submitting");
       return;
     }
-
-    setIsPending(true);
-    try {
-      const result = await updateProfileAction(data);
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success(result.message);
-      toastRefreshWarning(result);
-      form.reset(data);
-    } catch (error) {
-      console.error("Profile update error:", error);
-      toast.error("Failed to update profile. Please try again.");
-    } finally {
-      setIsPending(false);
-    }
+    run(() => updateProfileAction(data), () => form.reset(data));
   };
 
   const handleFormReset = () => {
@@ -157,7 +138,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                     <FormControl>
                       <ImageSelector
                         control={form.control}
-                        images={images}
                         name="imageUrl"
                         mode="single"
                         aspectRatio="video"
@@ -257,7 +237,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                     <FormControl>
                       <ImageSelector
                         control={form.control}
-                        images={images}
                         name="aboutImages"
                         mode="multiple"
                         aspectRatio="portrait"

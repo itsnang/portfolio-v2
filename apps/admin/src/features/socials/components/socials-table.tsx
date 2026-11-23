@@ -1,16 +1,13 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useEditorSheet } from "@/lib/use-editor-sheet";
+import { showActionResult } from "@/lib/use-run-action";
 
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 
-import { deleteSocialAction } from "@/features/socials/actions";
+import { deleteSocialAction } from "@/features/socials/actions/socials";
 import { SocialsForm } from "@/features/socials/components/socials-form";
-import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@portfolio/ui/badge";
@@ -23,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Socials } from "@/features/socials/schemas";
+import type { Socials } from "@portfolio/db/schema";
 
 const EMPTY_STATE_MESSAGE = "No socials added yet. Add your first one below.";
 
@@ -32,42 +29,18 @@ interface SocialsTableProps {
 }
 
 export function SocialsTable({ items }: SocialsTableProps) {
-  const router = useRouter();
-  const { data: images = [] } = useImages();
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Socials | null>(null);
-
-  function openCreate() {
-    setEditingItem(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(item: Socials) {
-    setEditingItem(item);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
+  const sheet = useEditorSheet<Socials>();
 
   async function handleDelete(id: string) {
     const result = await deleteSocialAction(id);
-    if (!result.success) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success("Social deleted");
-    toastRefreshWarning(result);
-    router.refresh();
+    showActionResult(result);
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Socials</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Social
         </Button>
       </div>
@@ -119,7 +92,7 @@ export function SocialsTable({ items }: SocialsTableProps) {
                           variant="ghost"
                           size="icon"
                           aria-label={`Edit ${item.name}`}
-                          onClick={() => openEdit(item)}
+                          onClick={() => sheet.openEdit(item)}
                         >
                           <PencilIcon className="h-4 w-4" />
                         </Button>
@@ -161,7 +134,7 @@ export function SocialsTable({ items }: SocialsTableProps) {
                       variant="ghost"
                       size="icon"
                       aria-label={`Edit ${item.name}`}
-                      onClick={() => openEdit(item)}
+                      onClick={() => sheet.openEdit(item)}
                     >
                       <PencilIcon className="h-4 w-4" />
                     </Button>
@@ -181,20 +154,19 @@ export function SocialsTable({ items }: SocialsTableProps) {
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingItem ? "Edit Social" : "Add Social"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Social" : "Add Social"}
         description={
-          editingItem
+          sheet.editing
             ? "Update this social link."
             : "Add a social link to your portfolio."
         }
       >
         <SocialsForm
-          key={editingItem?.id ?? "create"}
-          images={images}
-          initialValues={editingItem ?? undefined}
-          onSuccess={handleFormSuccess}
+          key={sheet.editing?.id ?? "create"}
+          initialValues={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { IRecommendation } from "@/features/recommendations/types";
+import { IRecommendation } from "@portfolio/db/schema";
 import { RecommendationCard } from "@/features/recommendations/components/recommendation-card";
 
 interface RecommendationsProps {

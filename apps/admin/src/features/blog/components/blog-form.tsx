@@ -1,11 +1,11 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
-import React, { useRef, useTransition } from "react";
+import React, { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+
 import { LoaderCircle, FileText, ImageIcon, Send } from "lucide-react";
 
 import {
@@ -37,21 +37,14 @@ import {
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
-import {
-  blogPostInsertSchema,
-  BlogPostInsert,
-  BlogPost,
-} from "@/features/blog/schemas";
-import { blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
-import { IImages } from "@/features/media/types";
+import { blogPostInsertSchema, BlogPostInsert, BlogPost, blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
 import { slugify } from "@/utils/slugify";
 import {
   createBlogPostAction,
   updateBlogPostAction,
-} from "@/features/blog/actions";
+} from "@/features/blog/actions/blog";
 
 interface BlogFormProps {
-  images: IImages[];
   /** The Blog Site's address, where Posts live at `/:slug`. */
   blogUrl: string;
   initialData?: BlogPost;
@@ -82,7 +75,7 @@ const getDefaultValues = (initialData?: BlogPost): BlogPostInsert => {
   };
 };
 
-const CoverImageCard = ({ images }: { images: IImages[] }) => {
+const CoverImageCard = () => {
   const { control } = useFormContext<BlogPostInsert>();
   return (
     <Card>
@@ -98,7 +91,6 @@ const CoverImageCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           name="coverImage"
           mode="single"
           aspectRatio="video"
@@ -297,12 +289,11 @@ const PublishCard = () => {
 };
 
 const BlogForm: React.FC<BlogFormProps> = ({
-  images,
   blogUrl,
   initialData,
   onSuccess,
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, run } = useRunAction();
 
   const form = useForm<BlogPostInsert>({
     resolver: zodResolver(blogPostInsertSchema),
@@ -310,31 +301,13 @@ const BlogForm: React.FC<BlogFormProps> = ({
   });
 
   const onSubmit = (data: BlogPostInsert) => {
-    startTransition(async () => {
-      try {
-        const result = initialData?.id
-          ? await updateBlogPostAction(initialData.id, data)
-          : await createBlogPostAction(data);
-
-        if (!result.success) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success(result.message);
-
-        toastRefreshWarning(result);
+    run(
+      () => (initialData?.id ? updateBlogPostAction(initialData.id, data) : createBlogPostAction(data)),
+      () => {
         form.reset();
         onSuccess?.();
-      } catch (error) {
-        console.error("Blog post error:", error);
-        toast.error(
-          initialData
-            ? "Failed to update blog post. Please try again."
-            : "Failed to create blog post. Please try again."
-        );
       }
-    });
+    );
   };
 
   const isFormValid = form.formState.isValid;
@@ -344,7 +317,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <BasicInfoCard isEditing={Boolean(initialData)} blogUrl={blogUrl} />
-          <CoverImageCard images={images} />
+          <CoverImageCard />
           <ContentCard />
           <PublishCard />
 

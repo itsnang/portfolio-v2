@@ -1,22 +1,15 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
-import { createSkillAction, updateSkillAction } from "@/features/skills/actions";
-import {
-  skillsFormSchema,
-  type Skills,
-  type SkillsFormValues,
-} from "@/features/skills/schemas";
-import { skillCategoryEnum } from "@portfolio/db/schema";
+import { createSkillAction, updateSkillAction } from "@/features/skills/actions/skills";
+import { skillsFormSchema, type Skills, type SkillsFormValues, skillCategoryEnum } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@portfolio/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,17 +31,15 @@ import {
 } from "@/components/ui/select";
 
 interface SkillFormProps {
-  images: IImages[];
   initialValues?: Skills;
   onSuccess?: () => void;
 }
 
 export const SkillForm: React.FC<SkillFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const isEditing = Boolean(initialValues);
 
   const form = useForm<SkillsFormValues>({
@@ -68,29 +59,14 @@ export const SkillForm: React.FC<SkillFormProps> = ({
         },
   });
 
-  async function onSubmit(values: SkillsFormValues) {
-    setIsPending(true);
-    try {
-      const result = isEditing
-        ? await updateSkillAction(initialValues!.id, values)
-        : await createSkillAction(values);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
+  function onSubmit(values: SkillsFormValues) {
+    run(
+      () => (isEditing ? updateSkillAction(initialValues!.id, values) : createSkillAction(values)),
+      () => {
+        if (!isEditing) form.reset();
+        onSuccess?.();
       }
-
-      toast.success(isEditing ? "Skill updated" : "Skill added");
-
-      toastRefreshWarning(result);
-      if (!isEditing) form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.log(error);
-      toast.error(isEditing ? "Failed to update skill" : "Failed to add skill");
-    } finally {
-      setIsPending(false);
-    }
+    );
   }
 
   return (
@@ -105,7 +81,6 @@ export const SkillForm: React.FC<SkillFormProps> = ({
               <FormControl>
                 <ImageSelector
                   control={form.control}
-                  images={images}
                   name="logoUrl"
                   mode="single"
                   aspectRatio="video"

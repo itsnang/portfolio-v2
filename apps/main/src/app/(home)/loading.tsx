@@ -1,15 +1,23 @@
-import { getAppConfig } from "@/features/app-config/queries";
 import { WireframeHomeSkeleton } from "@portfolio/wireframe/wireframe-home-skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@portfolio/ui/card";
 import { Skeleton } from "@portfolio/ui/skeleton";
 
-export default async function Loading() {
-  const config = await getAppConfig();
+// No database read here, so the fallback shows instantly: both themes' skeletons
+// render and the theme class on <html> (set by the root layout) hides one.
+export default function Loading() {
+  return (
+    <>
+      <div className="[html:not(.wireframe)_&]:hidden">
+        <WireframeHomeSkeleton />
+      </div>
+      <div className="[html.wireframe_&]:hidden">
+        <ModernHomeSkeleton />
+      </div>
+    </>
+  );
+}
 
-  if (config.theme === "wireframe") {
-    return <WireframeHomeSkeleton />;
-  }
-
+function ModernHomeSkeleton() {
   return (
     <main className="w-full max-w-4xl min-h-screen">
       <div className="w-full lg:h-56 md:h-44 h-40 relative mb-[114px] block rounded-lg">

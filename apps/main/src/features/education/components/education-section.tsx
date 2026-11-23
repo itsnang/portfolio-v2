@@ -1,6 +1,6 @@
 import React from "react";
 import { ResumeCard } from "@/components/resume-card";
-import { IEducation } from "@/features/education/types";
+import { IEducation } from "@portfolio/db/schema";
 import { convertDate } from "@portfolio/ui/convert-date";
 
 interface EducationProps {

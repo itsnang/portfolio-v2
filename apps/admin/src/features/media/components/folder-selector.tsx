@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@portfolio/ui/button";
 import {
   Select,
@@ -20,7 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolderPlus, FolderOpen } from "lucide-react";
 import { toast } from "sonner";
-import { createFolder, getFolders } from "@/features/media/actions";
+import { unstable_rethrow } from "next/navigation";
+import { createFolder } from "@/features/media/actions/images";
+import { useImageFolders, useRefreshImageLibrary } from "@/features/media/hooks/use-images";
 
 interface FolderSelectorProps {
   onFolderSelect: (folderPath: string) => void;
@@ -33,27 +35,15 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
   selectedFolder,
   className,
 }) => {
-  const [folders, setFolders] = useState<{ name: string; path: string }[]>([]);
+  const { data: folders = [], isError } = useImageFolders();
+  const refreshLibrary = useRefreshImageLibrary();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    loadFolders();
-  }, []);
-
-  const loadFolders = async () => {
-    try {
-      const result = await getFolders();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      setFolders(result.data);
-    } catch (error) {
-      console.error("Error loading folders:", error);
-      toast.error("Failed to load folders");
-    }
-  };
+    if (isError) toast.error("Failed to load folders");
+  }, [isError]);
 
   const handleCreateFolder = async () => {
     if (!newFolderName.trim()) {
@@ -65,14 +55,16 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
     try {
       const result = await createFolder(newFolderName.trim());
       if (!result.success) {
-        throw new Error(result.error);
+        toast.error(result.error);
+        return;
       }
       toast.success(result.message);
       setNewFolderName("");
       setIsCreateDialogOpen(false);
-      await loadFolders();
+      await refreshLibrary();
     } catch (error) {
-      console.error("Error creating folder:", error);
+      unstable_rethrow(error);
+      console.error("Failed to create folder:", error);
       toast.error("Failed to create folder");
     } finally {
       setIsLoading(false);

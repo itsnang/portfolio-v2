@@ -1,11 +1,11 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
-import React, { useTransition } from "react";
+import React from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+
 import { LoaderCircle, Minus, Plus, Link2, Settings2 } from "lucide-react";
 import Image from "next/image";
 
@@ -32,20 +32,13 @@ import { Button } from "@portfolio/ui/button";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { ImageSelectionDialog } from "@/features/media/components/image-selection-dialog";
 
-import {
-  projecInsertSchema,
-  ProjectInsert,
-  Project,
-} from "@/features/project/schemas";
-import { IImages } from "@/features/media/types";
-import { ProjectLinks, ProjectTechnology } from "@/features/project/types";
+import { projecInsertSchema, ProjectInsert, Project, ProjectLinks, ProjectTechnology } from "@portfolio/db/schema";
 import {
   createProjectAction,
   updateProjectAction,
-} from "@/features/project/actions";
+} from "@/features/project/actions/project";
 
 interface ProjectFormProps {
-  images: IImages[];
   initialData?: Project;
   onSuccess?: () => void;
 }
@@ -89,7 +82,7 @@ const getDefaultValues = (initialData?: Project): ProjectInsert => {
   };
 };
 
-const ThumbnailCard = ({ images }: { images: IImages[] }) => {
+const ThumbnailCard = () => {
   const { control } = useFormContext<ProjectInsert>();
   return (
     <Card>
@@ -102,7 +95,6 @@ const ThumbnailCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           name="thumbnail"
           mode="single"
           aspectRatio="video"
@@ -204,7 +196,7 @@ const BasicInfoCard = () => {
   );
 };
 
-const TechnologiesCard = ({ images }: { images: IImages[] }) => {
+const TechnologiesCard = () => {
   const { control, register, watch, setValue } =
     useFormContext<ProjectInsert>();
   const { fields, append, remove } = useFieldArray({
@@ -251,7 +243,6 @@ const TechnologiesCard = ({ images }: { images: IImages[] }) => {
               )}
 
               <ImageSelectionDialog
-                images={images}
                 onSelect={(url) =>
                   setValue(`technologies.${fieldIndex}.logoUrl`, url)
                 }
@@ -352,7 +343,7 @@ const LinksCard = () => {
   );
 };
 
-const GalleryCard = ({ images }: { images: IImages[] }) => {
+const GalleryCard = () => {
   const { control } = useFormContext<ProjectInsert>();
   return (
     <Card>
@@ -362,7 +353,6 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           mode="multiple"
           name="detailImage"
         />
@@ -372,11 +362,10 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
 };
 
 const ProjectForm: React.FC<ProjectFormProps> = ({
-  images,
   initialData,
   onSuccess,
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, run } = useRunAction();
 
   const form = useForm<ProjectInsert>({
     resolver: zodResolver(projecInsertSchema),
@@ -384,45 +373,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   });
 
   const onSubmit = (data: ProjectInsert) => {
-    startTransition(async () => {
-      try {
-        // Filter out empty links
-        const cleanedData = {
-          ...data,
-          links: data.links?.filter(
-            (link) => link.type?.trim() || link.href?.trim()
-          ),
-        };
-
-        let result;
-        if (initialData?.id) {
-          result = await updateProjectAction(
-            initialData.id as string,
-            cleanedData
-          );
-        } else {
-          result = await createProjectAction(cleanedData);
-        }
-
-        if (!result.success) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success(result.message);
-
-        toastRefreshWarning(result);
+    // Drop link rows left completely empty.
+    const cleanedData = {
+      ...data,
+      links: data.links?.filter((link) => link.type?.trim() || link.href?.trim()),
+    };
+    run(
+      () =>
+        initialData?.id
+          ? updateProjectAction(initialData.id as string, cleanedData)
+          : createProjectAction(cleanedData),
+      () => {
         form.reset();
         onSuccess?.();
-      } catch (error) {
-        console.error("Project error:", error);
-        toast.error(
-          initialData
-            ? "Failed to update project. Please try again."
-            : "Failed to create project. Please try again."
-        );
       }
-    });
+    );
   };
 
   const isFormValid = form.formState.isValid;
@@ -431,11 +396,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     <div className="max-w-4xl mx-auto space-y-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <ThumbnailCard images={images} />
+          <ThumbnailCard />
           <BasicInfoCard />
-          <TechnologiesCard images={images} />
+          <TechnologiesCard />
           <LinksCard />
-          <GalleryCard images={images} />
+          <GalleryCard />
 
           {/* Submit Section */}
           <Card className="shadow-sm border-2">

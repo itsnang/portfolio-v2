@@ -1,12 +1,11 @@
 "use client";
 
+import { useEditorSheet } from "@/lib/use-editor-sheet";
 import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
-
+import { toast } from "sonner";
 
 import { useState, useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Project } from "@/features/project/schemas";
-import { ProjectTechnology } from "@/features/project/types";
+import { Project, ProjectTechnology } from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
 import {
@@ -37,10 +36,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { reorderProjectsAction } from "@/features/project/actions";
+import { reorderProjectsAction } from "@/features/project/actions/project";
 import { FormSheet } from "@/components/form-sheet";
 import ProjectForm from "@/features/project/components/project-form";
-import { useImages } from "@/features/media/hooks/use-images";
 
 const MAX_VISIBLE_TECHNOLOGIES = 2;
 const EMPTY_STATE_MESSAGE =
@@ -262,30 +260,12 @@ export const ProjectTable = ({
 }: {
   projects: Project[];
 }) => {
-  const router = useRouter();
-  const { data: images = [] } = useImages();
   const [items, setItems] = useState<Project[]>(projects);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Project | null>(null);
+  const sheet = useEditorSheet<Project>();
 
   useEffect(() => {
     setItems(projects);
   }, [projects]);
-
-  function openCreate() {
-    setEditingItem(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(project: Project) {
-    setEditingItem(project);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -308,7 +288,12 @@ export const ProjectTable = ({
       const result = await reorderProjectsAction(
         reordered.map((p, i) => ({ id: p.id, sortOrder: i }))
       );
-      if (result.success) toastRefreshWarning(result);
+      if (result.success) {
+        toastRefreshWarning(result);
+      } else {
+        toast.error(result.error);
+        setItems(items); // put the old order back
+      }
     },
     [items]
   );
@@ -317,7 +302,7 @@ export const ProjectTable = ({
     <div className="space-y-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Projects</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Project
         </Button>
       </div>
@@ -358,7 +343,7 @@ export const ProjectTable = ({
                       <SortableProjectTableRow
                         key={project.id}
                         project={project}
-                        onEdit={openEdit}
+                        onEdit={sheet.openEdit}
                       />
                     ))}
                   </TableBody>
@@ -371,7 +356,7 @@ export const ProjectTable = ({
                   <SortableProjectCard
                     key={project.id}
                     project={project}
-                    onEdit={openEdit}
+                    onEdit={sheet.openEdit}
                   />
                 ))}
               </div>
@@ -381,20 +366,19 @@ export const ProjectTable = ({
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingItem ? "Edit Project" : "Add Project"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Project" : "Add Project"}
         description={
-          editingItem
+          sheet.editing
             ? "Update this project."
             : "Add a new project to your portfolio."
         }
       >
         <ProjectForm
-          key={editingItem?.id ?? "create"}
-          images={images}
-          initialData={editingItem ?? undefined}
-          onSuccess={handleFormSuccess}
+          key={sheet.editing?.id ?? "create"}
+          initialData={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

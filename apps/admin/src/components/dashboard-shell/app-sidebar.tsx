@@ -1,22 +1,10 @@
-"use client";
-
 import * as React from "react";
-import {
-  BookOpen,
-  LifeBuoy,
-  Settings2,
-  UserPen,
-  Image as ImageLogo,
-} from "lucide-react";
-
 import Image from "next/image";
+import Link from "next/link";
 
 import favIcon from "@/app/favicon.ico";
-
 import { NavMain } from "@/components/dashboard-shell/nav-main";
-// import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/dashboard-shell/nav-secondary";
-import { NavUser } from "@/components/dashboard-shell/nav-user";
+import { NavUser, type NavUserProps } from "@/components/dashboard-shell/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -26,121 +14,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavProjects } from "./nav-projects";
-import Link from "next/link";
 
-const data = {
-  user: {
-    name: "Lorn Samnang",
-    email: "huotchhayyy@gmail.com",
-    avatar: "/favIcon.",
-  },
-  navMain: [
-    {
-      title: "Profile",
-      url: "#",
-      icon: UserPen,
-      isActive: true,
-      items: [
-        {
-          title: "Profile",
-          url: "/dashboard/profile",
-        },
-        {
-          title: "Skills",
-          url: "/dashboard/skills",
-        },
-        {
-          title: "Experience",
-          url: "/dashboard/experience",
-        },
-        {
-          title: "Education",
-          url: "/dashboard/education",
-        },
-        {
-          title: "Projects",
-          url: "/dashboard/project",
-        },
-        {
-          title: "Blog",
-          url: "/dashboard/blog",
-        },
-        {
-          title: "Socials",
-          url: "/dashboard/socials",
-        },
-        {
-          title: "Recommendations",
-          url: "/dashboard/recommendations",
-        },
-      ],
-    },
-
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "App Config",
-          url: "/dashboard/config",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: LifeBuoy,
-    },
-  ],
-  projects: [
-    {
-      name: "Images",
-      url: "/dashboard/images",
-      icon: ImageLogo,
-    },
-  ],
-};
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { user: NavUserProps["user"] }) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
+              <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Image alt="logo" src={favIcon} height={28} width={28} />
                 </div>
@@ -153,12 +38,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
 import { Card, CardContent, CardHeader } from "@portfolio/ui/card";
 import { Quote } from "lucide-react";

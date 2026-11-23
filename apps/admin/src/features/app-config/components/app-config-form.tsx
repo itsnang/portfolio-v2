@@ -1,16 +1,14 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import Image, { type StaticImageData } from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { useState } from "react";
+
 import { Check, LoaderCircle, Save } from "lucide-react";
-import { appConfigInsertSchema, AppConfigInsert } from "@/features/app-config/schemas";
-import { updateAppConfigAction } from "@/features/app-config/actions";
-import { AppConfig } from "@portfolio/db/schema";
+import { appConfigInsertSchema, AppConfigInsert, AppConfig } from "@portfolio/db/schema";
+import { updateAppConfigAction } from "@/features/app-config/actions/app-config";
 import { Button } from "@portfolio/ui/button";
 import {
   Form,
@@ -35,7 +33,7 @@ import modernPreview from "../../../../public/theme-config/modern.jpg";
 import wireframePreview from "../../../../public/theme-config/wireframe.png";
 
 interface AppConfigFormProps {
-  config: AppConfig;
+  config: Pick<AppConfig, "maintenance" | "theme">;
 }
 
 const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; src: StaticImageData; alt: string }[] = [
@@ -44,7 +42,7 @@ const THEME_OPTIONS: { value: AppConfigInsert["theme"]; label: string; src: Stat
 ];
 
 export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
 
   const form = useForm<AppConfigInsert>({
     resolver: zodResolver(appConfigInsertSchema),
@@ -56,20 +54,8 @@ export const AppConfigForm: React.FC<AppConfigFormProps> = ({ config }) => {
 
   const { formState: { isDirty } } = form;
 
-  const onSubmit = async (data: AppConfigInsert) => {
-    setIsPending(true);
-    try {
-      const result = await updateAppConfigAction(data);
-      if (result.success) {
-        toast.success(result.message ?? "Config updated");
-        toastRefreshWarning(result);
-        form.reset(data);
-      } else {
-        toast.error(result.error ?? "Failed to update config");
-      }
-    } finally {
-      setIsPending(false);
-    }
+  const onSubmit = (data: AppConfigInsert) => {
+    run(() => updateAppConfigAction(data), () => form.reset(data));
   };
 
   return (

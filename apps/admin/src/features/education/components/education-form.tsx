@@ -1,23 +1,22 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import {
   createEducationAction,
   updateEducationAction,
-} from "@/features/education/actions";
+} from "@/features/education/actions/education";
 import {
   educationFormSchema,
   type Education,
   type EducationFormValues,
-} from "@/features/education/schemas";
+} from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,21 +36,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 
 interface EducationFormProps {
-  images: IImages[];
   initialValues?: Education;
   onSuccess?: () => void;
 }
 
 export const EducationForm: React.FC<EducationFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const isEditing = Boolean(initialValues);
 
   const form = useForm<EducationFormValues>({
@@ -75,31 +71,14 @@ export const EducationForm: React.FC<EducationFormProps> = ({
         },
   });
 
-  async function onSubmit(values: EducationFormValues) {
-    setIsPending(true);
-    try {
-      const result = isEditing
-        ? await updateEducationAction(initialValues!.id, values)
-        : await createEducationAction(values);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
+  function onSubmit(values: EducationFormValues) {
+    run(
+      () => (isEditing ? updateEducationAction(initialValues!.id, values) : createEducationAction(values)),
+      () => {
+        if (!isEditing) form.reset();
+        onSuccess?.();
       }
-
-      toast.success(isEditing ? "Education updated" : "Education added");
-
-      toastRefreshWarning(result);
-      if (!isEditing) form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        isEditing ? "Failed to update education" : "Failed to add education"
-      );
-    } finally {
-      setIsPending(false);
-    }
+    );
   }
 
   return (
@@ -107,7 +86,6 @@ export const EducationForm: React.FC<EducationFormProps> = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <ImageSelector
           control={form.control}
-          images={images}
           name="logoUrl"
           mode="single"
           aspectRatio="video"

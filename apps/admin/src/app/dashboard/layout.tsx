@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import { AppSidebar } from "@/components/dashboard-shell/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { DashboardBreadcrumb } from "@/components/dashboard-shell/dashboard-breadcrumb";
+import { requireAuth } from "@/lib/auth/session";
 import { Separator } from "@portfolio/ui/separator";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
 import {
@@ -22,35 +16,25 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await requireAuth();
+
   return (
     <div className="dark bg-background text-foreground min-h-screen">
       <ReactQueryProvider>
         <SidebarProvider>
-          <AppSidebar />
+          <AppSidebar user={user} />
           <SidebarInset>
             <main>
               <header className="flex h-16 shrink-0 items-center gap-2">
                 <div className="flex items-center gap-2 px-4">
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">
-                          Building Your Application
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
+                  <DashboardBreadcrumb />
                 </div>
               </header>
               {children}

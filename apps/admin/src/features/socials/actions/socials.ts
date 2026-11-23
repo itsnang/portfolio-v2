@@ -1,140 +1,43 @@
 "use server";
 
-import { and, desc, eq, isNull } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { and, eq, isNull } from "drizzle-orm";
+import { socialsInsertSchema, type SocialsFormValues, TbSocials } from "@portfolio/db/schema";
 
 import { db } from "@/db/drizzle";
-import { socialsInsertSchema, type SocialsFormValues, TbSocials } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
-/** Authenticated read for the dashboard CMS table (scoped to the current profile). */
-export const getSocialsAction = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbSocials.findMany({
-    where: and(
-      eq(TbSocials.userId, auth.profile.id),
-      isNull(TbSocials.deletedAt)
-    ),
-    orderBy: [desc(TbSocials.createdAt)],
-  });
-});
+const dashboardPath = "/dashboard/socials";
+// Socials appear on the home page, the achievement page and the dock.
+const refresh = { resource: "socials" } as const;
 
-export const createSocialAction = withAuthAction(
-  async (auth, social: SocialsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found. Please create a profile first.");
-      }
+const ownSocial = (id: string, profileId: string) =>
+  and(eq(TbSocials.id, id), eq(TbSocials.userId, profileId), isNull(TbSocials.deletedAt));
 
-      const validated = socialsInsertSchema.safeParse({
-        ...social,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid social data");
-      }
-
-      const [created] = await db
-        .insert(TbSocials)
-        .values(validated.data)
-        .returning();
-
-      revalidatePath("/dashboard/socials");
-      const warning = await refreshPublicSites({ resource: "socials" });
-
-      return {
-        warning,
-        success: true as const,
-        data: created,
-        message: "Social added successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to add social" };
-    }
+export const createSocialAction = adminAction(
+  "Failed to add social",
+  async ({ profile }, input: SocialsFormValues) => {
+    const values = parseInput(socialsInsertSchema, { ...input, userId: profile.id }, "Invalid social data");
+    const [created] = await db.insert(TbSocials).values(values).returning();
+    return { data: created, message: "Social added successfully", dashboardPath, refresh };
   }
 );
 
-export const updateSocialAction = withAuthAction(
-  async (auth, id: string, social: SocialsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const validated = socialsInsertSchema.safeParse({
-        ...social,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid social data");
-      }
-
-      const existing = await db.query.TbSocials.findFirst({
-        where: and(
-          eq(TbSocials.id, id),
-          eq(TbSocials.userId, auth.profile.id)
-        ),
-      });
-      if (!existing) {
-        throw new Error("Social not found");
-      }
-
-      const [updated] = await db
-        .update(TbSocials)
-        .set(validated.data)
-        .where(
-          and(eq(TbSocials.id, id), eq(TbSocials.userId, auth.profile.id))
-        )
-        .returning();
-
-      revalidatePath("/dashboard/socials");
-      const warning = await refreshPublicSites({ resource: "socials" });
-
-      return {
-        warning,
-        success: true as const,
-        data: updated,
-        message: "Social updated successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to update social" };
-    }
+export const updateSocialAction = adminAction(
+  "Failed to update social",
+  async ({ profile }, id: string, input: SocialsFormValues) => {
+    const values = parseInput(socialsInsertSchema, { ...input, userId: profile.id }, "Invalid social data");
+    const [updated] = await db.update(TbSocials).set(values).where(ownSocial(id, profile.id)).returning();
+    if (!updated) throw new ActionError("Social not found");
+    return { data: updated, message: "Social updated successfully", dashboardPath, refresh };
   }
 );
 
-export const deleteSocialAction = withAuthAction(async (auth, id: string) => {
-  try {
-    if (!auth.profile) {
-      throw new Error("Profile not found.");
-    }
-
-    const existing = await db.query.TbSocials.findFirst({
-      where: and(eq(TbSocials.id, id), eq(TbSocials.userId, auth.profile.id)),
-    });
-    if (!existing) {
-      throw new Error("Social not found");
-    }
-
-    await db
-      .update(TbSocials)
-      .set({ deletedAt: new Date() })
-      .where(and(eq(TbSocials.id, id), eq(TbSocials.userId, auth.profile.id)));
-
-    revalidatePath("/dashboard/socials");
-    const warning = await refreshPublicSites({ resource: "socials" });
-
-    return { warning, success: true as const, message: "Social deleted" };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false as const, error: error.message };
-    }
-    return { success: false as const, error: "Failed to delete social" };
-  }
+export const deleteSocialAction = adminAction("Failed to delete social", async ({ profile }, id: string) => {
+  const [deleted] = await db
+    .update(TbSocials)
+    .set({ deletedAt: new Date() })
+    .where(ownSocial(id, profile.id))
+    .returning({ id: TbSocials.id });
+  if (!deleted) throw new ActionError("Social not found");
+  return { data: undefined, message: "Social deleted", dashboardPath, refresh };
 });

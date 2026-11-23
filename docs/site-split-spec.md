@@ -76,7 +76,7 @@ Each Site still needs its own `postcss.config.mjs`, and Sites consuming `.scss` 
 | `getProjects`, `getExperiences`, a small profile query | Admin Site |
 
 - Functions in `@portfolio/db/queries` take a `db` client as an argument. Each Site has a one-line wrapper that passes its own client and applies `cache()`, for example `export const getAppConfig = cache(() => queries.getAppConfig(db))` (#152).
-- Every Admin Site read is auth-checked inside the read: plain `server-only` when only Server Components call it, `withAuthAction` when client code does.
+- Every Admin Site read is auth-checked inside the read: `server-only` reads in each slice's `admin-queries.ts` behind `requireAuth()`, and session-checked route handlers (`/api/images`, `/api/image-folders`) when client code reads.
 - `getExperienceById` and `getProjectById` are deleted.
 
 ## Access (#140)

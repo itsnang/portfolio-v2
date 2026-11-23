@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,61 +9,35 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@portfolio/ui/button";
-import { IImages } from "@/features/media/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FolderSelector } from "./folder-selector";
-import { getImages } from "@/features/media/actions";
+import { useImages } from "@/features/media/hooks/use-images";
 import { toast } from "sonner";
 import Image from "next/image";
 import { LoaderCircle } from "lucide-react";
 
 interface ImageSelectionDialogProps {
-  images: IImages[];
   onSelect: (url: string) => void;
   triggerText: string;
   className?: string;
 }
 
 export function ImageSelectionDialog({
-  images: initialImages,
   onSelect,
   triggerText,
   className,
 }: ImageSelectionDialogProps) {
   const [open, setOpen] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
-  const [images, setImages] = useState<IImages[]>(initialImages);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const loadFolderImages = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const result = await getImages(selectedFolder);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      setImages(result.data);
-    } catch (error) {
-      console.error("Error loading folder images:", error);
-      toast.error("Failed to load folder images");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedFolder]);
+  const { data: images = [], isLoading, isError } = useImages(selectedFolder);
 
   useEffect(() => {
-    if (!open) {
-      setSelectedFolder("");
-      setImages(initialImages);
-      return;
-    }
+    if (isError) toast.error("Failed to load folder images");
+  }, [isError]);
 
-    if (selectedFolder) {
-      loadFolderImages();
-    } else {
-      setImages(initialImages);
-    }
-  }, [selectedFolder, open, initialImages, loadFolderImages]);
+  useEffect(() => {
+    if (!open) setSelectedFolder("");
+  }, [open]);
 
   const handleSelect = (url: string) => {
     onSelect(url);
