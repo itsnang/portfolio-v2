@@ -11,7 +11,7 @@ pnpm db:reset                                   # recreate the local database fr
 pnpm --filter @portfolio/db db:generate         # write a migration for a change to src/tables
 pnpm --filter @portfolio/db db:migrate          # apply pending migrations to DATABASE_URL
 pnpm --filter @portfolio/db db:mark-baseline    # dry run; add --apply to write
-pnpm --filter @portfolio/db db:roles           # apply roles.sql to DATABASE_URL and check permissions
+pnpm --filter @portfolio/db db:roles            # apply roles.sql to DATABASE_URL and check every table's grants
 ```
 
 `db:generate` and `db:migrate` use `drizzle.config.ts`, which reads `DATABASE_URL`. Point it at production only to run a migration by hand with the owner credential, after rehearsing it locally.
@@ -42,7 +42,7 @@ The script refuses a database without the existing schema, refuses if a recorded
 
 ## Roles
 
-`roles.sql` defines the roles the Sites connect as. It's idempotent and run with the owner credential; `db:reset` applies it locally with local-only passwords (`portfolio_public` / `portfolio_admin`). In production run `db:roles` with `DATABASE_URL` set to the owner credential: it applies the file and checks what each role can do. Setting `PUBLIC_ROLE_PASSWORD` or `ADMIN_ROLE_PASSWORD` (24+ letters or digits) also sets that role's password.
+`roles.sql` defines the roles the Sites connect as. It's idempotent and run with the owner credential; `db:reset` applies it locally with local-only passwords (`portfolio_public` / `portfolio_admin`). In production run `db:roles` with `DATABASE_URL` set to the owner credential: it applies the file and checks every table against it: `portfolio_public` reads exactly the tables listed there and writes none, `portfolio_admin` reads and writes all of them, and neither can create objects. Setting `PUBLIC_ROLE_PASSWORD` or `ADMIN_ROLE_PASSWORD` (24+ letters, digits or underscores outside localhost) also sets that role's password, sent as a SCRAM-SHA-256 verifier so the plaintext stays out of the database's statement logs. `db:reset` runs the same script locally.
 
 | Role | Used by | Access |
 | --- | --- | --- |
