@@ -1,7 +1,8 @@
--- Database roles for the Sites. Run with the owner credential; safe to re-run.
--- Passwords are never set here: set them separately with
---   ALTER ROLE portfolio_public PASSWORD '...';
--- so they stay out of the repo.
+-- Database roles for the Sites. Safe to re-run. Apply it with
+--   DATABASE_URL=<owner> pnpm --filter @portfolio/db db:roles
+-- which also checks every table's grants against this file, and sets the
+-- passwords from PUBLIC_ROLE_PASSWORD / ADMIN_ROLE_PASSWORD when given.
+-- Passwords never go in this file.
 --
 -- portfolio_public: Main and Blog Sites. SELECT only, on the public tables.
 -- portfolio_admin:  Admin Site. Reads and writes data, never changes the schema.
