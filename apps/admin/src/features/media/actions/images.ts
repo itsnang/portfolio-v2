@@ -35,10 +35,16 @@ export const uploadStagedFile = adminAction(
       throw new ActionError(message ?? "Upload to Cloudinary failed");
     }
 
-    const [created] = await db
-      .insert(TbImages)
-      .values({ imageUrl, isActive: true })
-      .returning({ id: TbImages.id, imageUrl: TbImages.imageUrl });
-    return { data: created, message: "Image uploaded" };
+    try {
+      const [created] = await db
+        .insert(TbImages)
+        .values({ imageUrl, isActive: true })
+        .returning({ id: TbImages.id, imageUrl: TbImages.imageUrl });
+      return { data: created, message: "Image uploaded" };
+    } catch (error) {
+      console.error("Image record insert error:", error);
+      // The file is already in Cloudinary; say so rather than blaming the upload.
+      throw new ActionError("Image uploaded but failed to save record");
+    }
   }
 );

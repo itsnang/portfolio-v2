@@ -42,3 +42,18 @@ export function useRefreshImageLibrary() {
       queryClient.invalidateQueries({ queryKey: ["image-folders"] }),
     ]);
 }
+
+/**
+ * Call after an upload. Cloudinary's search index lags new uploads, so a refetch
+ * would usually miss the image: add it to that folder's cached list instead, and
+ * mark the other lists stale so they refetch next time they're shown.
+ */
+export function useAddUploadedImage() {
+  const queryClient = useQueryClient();
+  return async (image: IImages, folder: string) => {
+    await queryClient.invalidateQueries({ queryKey: ["images"], refetchType: "none" });
+    queryClient.setQueryData<IImages[]>(["images", folder || "all"], (images) =>
+      images && !images.some((cached) => cached.imageUrl === image.imageUrl) ? [image, ...images] : images
+    );
+  };
+}

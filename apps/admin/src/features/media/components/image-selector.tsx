@@ -28,9 +28,10 @@ import Image from "next/image";
 import { cn } from "@portfolio/ui/cn";
 import { FolderSelector } from "./folder-selector";
 import { uploadStagedFile } from "@/features/media/actions/images";
-import { useImages, useRefreshImageLibrary } from "@/features/media/hooks/use-images";
+import { useAddUploadedImage, useImages } from "@/features/media/hooks/use-images";
 import { fileTooLargeMessage, MAX_FILE_SIZE } from "@/features/media/constants";
 import { toast } from "sonner";
+import { unstable_rethrow } from "next/navigation";
 
 interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {
   control: Control<TFieldValues>;
@@ -52,7 +53,7 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const { data: images = [], isLoading, isError } = useImages(selectedFolder);
-  const refreshLibrary = useRefreshImageLibrary();
+  const addUploadedImage = useAddUploadedImage();
   const [gridSize, setGridSize] = useState(4);
   const [isUploading, setIsUploading] = useState(false);
   const { field } = useController({
@@ -119,13 +120,17 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
           return;
         }
         handleImageSelect(result.data.imageUrl);
-        toast.success("Image uploaded");
-        await refreshLibrary();
+        toast.success(result.message);
+        await addUploadedImage(result.data, selectedFolder);
+      } catch (error) {
+        unstable_rethrow(error);
+        console.error("Failed to upload image:", error);
+        toast.error("Failed to upload image");
       } finally {
         setIsUploading(false);
       }
     },
-    [selectedFolder, handleImageSelect, refreshLibrary]
+    [selectedFolder, handleImageSelect, addUploadedImage]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

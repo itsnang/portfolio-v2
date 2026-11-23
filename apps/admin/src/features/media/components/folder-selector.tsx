@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolderPlus, FolderOpen } from "lucide-react";
 import { toast } from "sonner";
+import { unstable_rethrow } from "next/navigation";
 import { createFolder } from "@/features/media/actions/images";
 import { useImageFolders, useRefreshImageLibrary } from "@/features/media/hooks/use-images";
 
@@ -61,6 +62,10 @@ export const FolderSelector: React.FC<FolderSelectorProps> = ({
       setNewFolderName("");
       setIsCreateDialogOpen(false);
       await refreshLibrary();
+    } catch (error) {
+      unstable_rethrow(error);
+      console.error("Failed to create folder:", error);
+      toast.error("Failed to create folder");
     } finally {
       setIsLoading(false);
     }

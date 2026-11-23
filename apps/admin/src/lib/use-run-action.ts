@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { unstable_rethrow } from "next/navigation";
 import { toast } from "sonner";
 import type { ActionResult } from "@/lib/admin-action";
 import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
@@ -20,6 +21,8 @@ export function useRunAction() {
       try {
         result = await action();
       } catch (error) {
+        // An expired session redirects to /sign-in by rejecting the action; let Next handle it.
+        unstable_rethrow(error);
         console.error(error);
         toast.error("Something went wrong. Please try again.");
         return;
