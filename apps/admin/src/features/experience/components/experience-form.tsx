@@ -1,6 +1,6 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import {
   formatCambodiaDate,
@@ -56,8 +56,8 @@ import {
 } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { toast } from "sonner";
+import React from "react";
+
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
@@ -70,7 +70,7 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
   initialData,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const form = useForm<ExperiencesInsert>({
     resolver: zodResolver(experiencesInsertSchema),
     defaultValues: initialData
@@ -99,41 +99,23 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
         },
   });
 
-  async function onSubmit(values: ExperiencesInsert) {
-    setIsPending(true);
-    try {
-      // Normalize dates to Cambodia timezone before saving
-      const normalizedValues = {
-        ...values,
-        startDate: normalizeToCambodiaStartOfDay(values.startDate),
-        endDate: values.endDate
-          ? normalizeToCambodiaStartOfDay(values.endDate)
-          : undefined,
-      };
-
-      const result =
-        initialData && initialData.id
-          ? await updateExperienceAction(initialData.id as string, normalizedValues)
-          : await createExperienceAction(normalizedValues);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
+  function onSubmit(values: ExperiencesInsert) {
+    // Store dates as the start of the day in Cambodia time.
+    const normalizedValues = {
+      ...values,
+      startDate: normalizeToCambodiaStartOfDay(values.startDate),
+      endDate: values.endDate ? normalizeToCambodiaStartOfDay(values.endDate) : undefined,
+    };
+    run(
+      () =>
+        initialData?.id
+          ? updateExperienceAction(initialData.id as string, normalizedValues)
+          : createExperienceAction(normalizedValues),
+      () => {
+        form.reset();
+        onSuccess?.();
       }
-
-      toast.success(result.message);
-
-      toastRefreshWarning(result);
-      form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        initialData ? "Failed to update experience" : "Failed to add experience"
-      );
-    } finally {
-      setIsPending(false);
-    }
+    );
   }
 
   const isFormValid = form.formState.isValid;

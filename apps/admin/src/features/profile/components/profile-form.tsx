@@ -1,6 +1,6 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 import { ProfileInsert, profileInsertSchema } from "@portfolio/db/schema";
 import type { EditableProfile } from "@/features/profile/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -40,7 +39,7 @@ interface ProfileFormProps {
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   profile,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
 
   const form = useForm<ProfileInsert>({
     resolver: zodResolver(profileInsertSchema),
@@ -59,28 +58,12 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     formState: { errors, isDirty, isValid },
   } = form;
 
-  const onSubmit = async (data: ProfileInsert) => {
+  const onSubmit = (data: ProfileInsert) => {
     if (!isValid) {
       toast.error("Please fix the form errors before submitting");
       return;
     }
-
-    setIsPending(true);
-    try {
-      const result = await updateProfileAction(data);
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success(result.message);
-      toastRefreshWarning(result);
-      form.reset(data);
-    } catch (error) {
-      console.error("Profile update error:", error);
-      toast.error("Failed to update profile. Please try again.");
-    } finally {
-      setIsPending(false);
-    }
+    run(() => updateProfileAction(data), () => form.reset(data));
   };
 
   const handleFormReset = () => {

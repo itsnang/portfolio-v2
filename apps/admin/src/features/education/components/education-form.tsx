@@ -1,13 +1,12 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import {
   createEducationAction,
@@ -48,7 +47,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
   initialValues,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const isEditing = Boolean(initialValues);
 
   const form = useForm<EducationFormValues>({
@@ -72,31 +71,14 @@ export const EducationForm: React.FC<EducationFormProps> = ({
         },
   });
 
-  async function onSubmit(values: EducationFormValues) {
-    setIsPending(true);
-    try {
-      const result = isEditing
-        ? await updateEducationAction(initialValues!.id, values)
-        : await createEducationAction(values);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
+  function onSubmit(values: EducationFormValues) {
+    run(
+      () => (isEditing ? updateEducationAction(initialValues!.id, values) : createEducationAction(values)),
+      () => {
+        if (!isEditing) form.reset();
+        onSuccess?.();
       }
-
-      toast.success(isEditing ? "Education updated" : "Education added");
-
-      toastRefreshWarning(result);
-      if (!isEditing) form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        isEditing ? "Failed to update education" : "Failed to add education"
-      );
-    } finally {
-      setIsPending(false);
-    }
+    );
   }
 
   return (

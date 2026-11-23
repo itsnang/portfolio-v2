@@ -1,6 +1,6 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -10,9 +10,8 @@ import {
   Quote,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@portfolio/ui/button";
@@ -55,7 +54,7 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
   initialValues,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const isEditing = Boolean(initialValues);
 
   const form = useForm<RecommendationsFormValues>({
@@ -77,35 +76,17 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
         },
   });
 
-  async function handleSubmit(values: RecommendationsFormValues) {
-    setIsPending(true);
-    try {
-      const result = isEditing
-        ? await updateRecommendationAction(initialValues!.id, values)
-        : await createRecommendationAction(values);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-
-      toast.success(
-        isEditing ? "Recommendation updated" : "Recommendation added successfully"
-      );
-
-      toastRefreshWarning(result);
-      if (!isEditing) form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.error(error);
-      toast.error(
+  function handleSubmit(values: RecommendationsFormValues) {
+    run(
+      () =>
         isEditing
-          ? "Failed to update recommendation"
-          : "Failed to add recommendation"
-      );
-    } finally {
-      setIsPending(false);
-    }
+          ? updateRecommendationAction(initialValues!.id, values)
+          : createRecommendationAction(values),
+      () => {
+        if (!isEditing) form.reset();
+        onSuccess?.();
+      }
+    );
   }
 
   return (

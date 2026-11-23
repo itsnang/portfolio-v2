@@ -1,11 +1,11 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
-import React, { useRef, useTransition } from "react";
+import React, { useRef } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+
 import { LoaderCircle, FileText, ImageIcon, Send } from "lucide-react";
 
 import {
@@ -293,7 +293,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
   initialData,
   onSuccess,
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, run } = useRunAction();
 
   const form = useForm<BlogPostInsert>({
     resolver: zodResolver(blogPostInsertSchema),
@@ -301,31 +301,13 @@ const BlogForm: React.FC<BlogFormProps> = ({
   });
 
   const onSubmit = (data: BlogPostInsert) => {
-    startTransition(async () => {
-      try {
-        const result = initialData?.id
-          ? await updateBlogPostAction(initialData.id, data)
-          : await createBlogPostAction(data);
-
-        if (!result.success) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success(result.message);
-
-        toastRefreshWarning(result);
+    run(
+      () => (initialData?.id ? updateBlogPostAction(initialData.id, data) : createBlogPostAction(data)),
+      () => {
         form.reset();
         onSuccess?.();
-      } catch (error) {
-        console.error("Blog post error:", error);
-        toast.error(
-          initialData
-            ? "Failed to update blog post. Please try again."
-            : "Failed to create blog post. Please try again."
-        );
       }
-    });
+    );
   };
 
   const isFormValid = form.formState.isValid;

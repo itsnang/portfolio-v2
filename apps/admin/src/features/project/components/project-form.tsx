@@ -1,11 +1,11 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
-import React, { useTransition } from "react";
+import React from "react";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+
 import { LoaderCircle, Minus, Plus, Link2, Settings2 } from "lucide-react";
 import Image from "next/image";
 
@@ -365,7 +365,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   initialData,
   onSuccess,
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, run } = useRunAction();
 
   const form = useForm<ProjectInsert>({
     resolver: zodResolver(projecInsertSchema),
@@ -373,45 +373,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   });
 
   const onSubmit = (data: ProjectInsert) => {
-    startTransition(async () => {
-      try {
-        // Filter out empty links
-        const cleanedData = {
-          ...data,
-          links: data.links?.filter(
-            (link) => link.type?.trim() || link.href?.trim()
-          ),
-        };
-
-        let result;
-        if (initialData?.id) {
-          result = await updateProjectAction(
-            initialData.id as string,
-            cleanedData
-          );
-        } else {
-          result = await createProjectAction(cleanedData);
-        }
-
-        if (!result.success) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success(result.message);
-
-        toastRefreshWarning(result);
+    // Drop link rows left completely empty.
+    const cleanedData = {
+      ...data,
+      links: data.links?.filter((link) => link.type?.trim() || link.href?.trim()),
+    };
+    run(
+      () =>
+        initialData?.id
+          ? updateProjectAction(initialData.id as string, cleanedData)
+          : createProjectAction(cleanedData),
+      () => {
         form.reset();
         onSuccess?.();
-      } catch (error) {
-        console.error("Project error:", error);
-        toast.error(
-          initialData
-            ? "Failed to update project. Please try again."
-            : "Failed to create project. Please try again."
-        );
       }
-    });
+    );
   };
 
   const isFormValid = form.formState.isValid;
