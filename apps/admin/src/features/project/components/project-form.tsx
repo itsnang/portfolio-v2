@@ -33,14 +33,12 @@ import { ImageSelector } from "@/features/media/components/image-selector";
 import { ImageSelectionDialog } from "@/features/media/components/image-selection-dialog";
 
 import { projecInsertSchema, ProjectInsert, Project, ProjectLinks, ProjectTechnology } from "@portfolio/db/schema";
-import { IImages } from "@/features/media/types";
 import {
   createProjectAction,
   updateProjectAction,
 } from "@/features/project/actions/project";
 
 interface ProjectFormProps {
-  images: IImages[];
   initialData?: Project;
   onSuccess?: () => void;
 }
@@ -84,7 +82,7 @@ const getDefaultValues = (initialData?: Project): ProjectInsert => {
   };
 };
 
-const ThumbnailCard = ({ images }: { images: IImages[] }) => {
+const ThumbnailCard = () => {
   const { control } = useFormContext<ProjectInsert>();
   return (
     <Card>
@@ -97,7 +95,6 @@ const ThumbnailCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           name="thumbnail"
           mode="single"
           aspectRatio="video"
@@ -199,7 +196,7 @@ const BasicInfoCard = () => {
   );
 };
 
-const TechnologiesCard = ({ images }: { images: IImages[] }) => {
+const TechnologiesCard = () => {
   const { control, register, watch, setValue } =
     useFormContext<ProjectInsert>();
   const { fields, append, remove } = useFieldArray({
@@ -246,7 +243,6 @@ const TechnologiesCard = ({ images }: { images: IImages[] }) => {
               )}
 
               <ImageSelectionDialog
-                images={images}
                 onSelect={(url) =>
                   setValue(`technologies.${fieldIndex}.logoUrl`, url)
                 }
@@ -347,7 +343,7 @@ const LinksCard = () => {
   );
 };
 
-const GalleryCard = ({ images }: { images: IImages[] }) => {
+const GalleryCard = () => {
   const { control } = useFormContext<ProjectInsert>();
   return (
     <Card>
@@ -357,7 +353,6 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           mode="multiple"
           name="detailImage"
         />
@@ -367,7 +362,6 @@ const GalleryCard = ({ images }: { images: IImages[] }) => {
 };
 
 const ProjectForm: React.FC<ProjectFormProps> = ({
-  images,
   initialData,
   onSuccess,
 }) => {
@@ -426,11 +420,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     <div className="max-w-4xl mx-auto space-y-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <ThumbnailCard images={images} />
+          <ThumbnailCard />
           <BasicInfoCard />
-          <TechnologiesCard images={images} />
+          <TechnologiesCard />
           <LinksCard />
-          <GalleryCard images={images} />
+          <GalleryCard />
 
           {/* Submit Section */}
           <Card className="shadow-sm border-2">

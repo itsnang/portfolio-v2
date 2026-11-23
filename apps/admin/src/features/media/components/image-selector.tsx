@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@portfolio/ui/button";
 import {
@@ -26,16 +26,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { FolderSelector } from "./folder-selector";
-import { getImages, uploadStagedFile } from "@/features/media/actions/images";
-import { MAX_FILE_SIZE } from "@/features/media/constants";
+import { uploadStagedFile } from "@/features/media/actions/images";
+import { useImages, useRefreshImageLibrary } from "@/features/media/hooks/use-images";
+import { fileTooLargeMessage, MAX_FILE_SIZE } from "@/features/media/constants";
 import { toast } from "sonner";
 
 interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
-  images: IImages[];
   mode?: "single" | "multiple";
   trigger?: React.ReactNode;
   className?: string;
@@ -45,7 +44,6 @@ interface ImageSelectorProps<TFieldValues extends Record<string, unknown>> {
 export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
   control,
   name,
-  images: initialImages,
   mode = "single",
   trigger,
   className,
@@ -53,8 +51,8 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
 }: ImageSelectorProps<TFieldValues>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<string>("");
-  const [images, setImages] = useState<IImages[]>(initialImages);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: images = [], isLoading, isError } = useImages(selectedFolder);
+  const refreshLibrary = useRefreshImageLibrary();
   const [gridSize, setGridSize] = useState(4);
   const [isUploading, setIsUploading] = useState(false);
   const { field } = useController({
@@ -84,29 +82,9 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
     }
   }, [field.value, images.length, mode]);
 
-  const loadFolderImages = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const result = await getImages(selectedFolder);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      setImages(result.data);
-    } catch (error) {
-      console.error("Error loading folder images:", error);
-      toast.error("Failed to load folder images");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedFolder]);
-
   useEffect(() => {
-    if (selectedFolder) {
-      loadFolderImages();
-    } else {
-      setImages(initialImages);
-    }
-  }, [selectedFolder, initialImages, loadFolderImages]);
+    if (isError) toast.error("Failed to load folder images");
+  }, [isError]);
 
   const handleImageSelect = (image: string) => {
     if (mode === "single") {
@@ -128,35 +106,26 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
         toast.error("Select a folder first");
         return;
       }
-      if (files[0].size > MAX_FILE_SIZE) {
-        toast.error(
-          `File is too large (${(files[0].size / (1024 * 1024)).toFixed(1)}MB). Max is ${MAX_FILE_SIZE / (1024 * 1024)}MB.`
-        );
+      const tooLarge = fileTooLargeMessage(files[0].size);
+      if (tooLarge) {
+        toast.error(tooLarge);
         return;
       }
       setIsUploading(true);
       try {
         const result = await uploadStagedFile(files[0], selectedFolder);
         if (!result.success) {
-          throw new Error(result.error);
+          toast.error(result.error);
+          return;
         }
-        const uploaded = result.data;
-        setImages((prev) => [
-          { id: uploaded.id, imageUrl: uploaded.imageUrl },
-          ...prev,
-        ]);
-        handleImageSelect(uploaded.imageUrl);
+        handleImageSelect(result.data.imageUrl);
         toast.success("Image uploaded");
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        const message =
-          error instanceof Error ? error.message : "Failed to upload image";
-        toast.error(message);
+        await refreshLibrary();
       } finally {
         setIsUploading(false);
       }
     },
-    [selectedFolder, handleImageSelect]
+    [selectedFolder, handleImageSelect, refreshLibrary]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

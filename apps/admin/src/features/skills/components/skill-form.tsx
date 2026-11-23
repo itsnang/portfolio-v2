@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import { createSkillAction, updateSkillAction } from "@/features/skills/actions/skills";
 import { skillsFormSchema, type Skills, type SkillsFormValues, skillCategoryEnum } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@portfolio/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,13 +32,11 @@ import {
 } from "@/components/ui/select";
 
 interface SkillFormProps {
-  images: IImages[];
   initialValues?: Skills;
   onSuccess?: () => void;
 }
 
 export const SkillForm: React.FC<SkillFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
@@ -100,7 +97,6 @@ export const SkillForm: React.FC<SkillFormProps> = ({
               <FormControl>
                 <ImageSelector
                   control={form.control}
-                  images={images}
                   name="logoUrl"
                   mode="single"
                   aspectRatio="video"

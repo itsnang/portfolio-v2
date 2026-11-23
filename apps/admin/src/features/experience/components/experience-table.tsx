@@ -18,7 +18,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
 import { Badge } from "@portfolio/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
-import { useImages } from "@/features/media/hooks/use-images";
 
 interface ExperienceTableProps {
   experiences: Experiences[];
@@ -26,7 +25,6 @@ interface ExperienceTableProps {
 
 export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Experiences | null>(null);
 
@@ -176,7 +174,6 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
       >
         <ExperienceForm
           key={editingItem?.id ?? "create"}
-          images={images}
           initialData={editingItem ?? undefined}
           onSuccess={handleFormSuccess}
         />

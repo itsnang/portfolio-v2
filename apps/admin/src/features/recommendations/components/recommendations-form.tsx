@@ -45,16 +45,13 @@ import {
   type RecommendationsFormValues,
 } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 
 interface RecommendationsFormProps {
-  images: IImages[];
   initialValues?: Recommendations;
   onSuccess?: () => void;
 }
 
 export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
@@ -128,7 +125,6 @@ export const RecommendationsForm: React.FC<RecommendationsFormProps> = ({
           <CardContent>
             <ImageSelector
               control={form.control}
-              images={images}
               name="profileImageUrl"
               mode="single"
               aspectRatio="video"

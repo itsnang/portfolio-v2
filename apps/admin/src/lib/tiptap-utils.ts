@@ -13,7 +13,7 @@ import {
   type NodeWithPos,
 } from "@tiptap/react";
 import { uploadStagedFile } from "@/features/media/actions/images";
-import { MAX_FILE_SIZE } from "@/features/media/constants";
+import { fileTooLargeMessage, MAX_FILE_SIZE } from "@/features/media/constants";
 
 export { MAX_FILE_SIZE };
 
@@ -372,11 +372,8 @@ export const handleImageUpload = async (
     throw new Error("No file provided");
   }
 
-  if (file.size > MAX_FILE_SIZE) {
-    throw new Error(
-      `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
-    );
-  }
+  const tooLarge = fileTooLargeMessage(file.size);
+  if (tooLarge) throw new Error(tooLarge);
 
   try {
     // Start upload with progress tracking

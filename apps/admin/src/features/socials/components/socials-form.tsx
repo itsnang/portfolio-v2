@@ -15,7 +15,6 @@ import {
   type SocialsFormValues,
 } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@portfolio/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,13 +30,11 @@ import {
 import { Input } from "@/components/ui/input";
 
 interface SocialsFormProps {
-  images: IImages[];
   initialValues?: Socials;
   onSuccess?: () => void;
 }
 
 export const SocialsForm: React.FC<SocialsFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
@@ -98,7 +95,6 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({
               <FormControl>
                 <ImageSelector
                   control={form.control}
-                  images={images}
                   name="icon"
                   mode="single"
                   aspectRatio="video"

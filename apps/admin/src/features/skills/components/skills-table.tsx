@@ -10,7 +10,6 @@ import { toast } from "sonner";
 
 import { deleteSkillAction } from "@/features/skills/actions/skills";
 import { SkillForm } from "@/features/skills/components/skill-form";
-import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@portfolio/ui/badge";
@@ -33,7 +32,6 @@ interface SkillsTableProps {
 
 export function SkillsTable({ items }: SkillsTableProps) {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Skills | null>(null);
 
@@ -190,7 +188,6 @@ export function SkillsTable({ items }: SkillsTableProps) {
       >
         <SkillForm
           key={editingItem?.id ?? "create"}
-          images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}
         />

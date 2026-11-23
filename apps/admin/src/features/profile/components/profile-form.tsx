@@ -8,7 +8,6 @@ import { FileText, Image as ImageIcon, LoaderCircle, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ImageSelector } from "@/features/media/components/image-selector";
-import { useImages } from "@/features/media/hooks/use-images";
 import { Button } from "@portfolio/ui/button";
 import {
   Form,
@@ -41,7 +40,6 @@ interface ProfileFormProps {
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   profile,
 }) => {
-  const { data: images = [] } = useImages();
   const [isPending, setIsPending] = useState(false);
 
   const form = useForm<ProfileInsert>({
@@ -157,7 +155,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                     <FormControl>
                       <ImageSelector
                         control={form.control}
-                        images={images}
                         name="imageUrl"
                         mode="single"
                         aspectRatio="video"
@@ -257,7 +254,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                     <FormControl>
                       <ImageSelector
                         control={form.control}
-                        images={images}
                         name="aboutImages"
                         mode="multiple"
                         aspectRatio="portrait"

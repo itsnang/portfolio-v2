@@ -38,7 +38,6 @@ import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 import { blogPostInsertSchema, BlogPostInsert, BlogPost, blogStatusEnum, blogCategoryEnum } from "@portfolio/db/schema";
-import { IImages } from "@/features/media/types";
 import { slugify } from "@/utils/slugify";
 import {
   createBlogPostAction,
@@ -46,7 +45,6 @@ import {
 } from "@/features/blog/actions/blog";
 
 interface BlogFormProps {
-  images: IImages[];
   /** The Blog Site's address, where Posts live at `/:slug`. */
   blogUrl: string;
   initialData?: BlogPost;
@@ -77,7 +75,7 @@ const getDefaultValues = (initialData?: BlogPost): BlogPostInsert => {
   };
 };
 
-const CoverImageCard = ({ images }: { images: IImages[] }) => {
+const CoverImageCard = () => {
   const { control } = useFormContext<BlogPostInsert>();
   return (
     <Card>
@@ -93,7 +91,6 @@ const CoverImageCard = ({ images }: { images: IImages[] }) => {
       <CardContent>
         <ImageSelector
           control={control}
-          images={images}
           name="coverImage"
           mode="single"
           aspectRatio="video"
@@ -292,7 +289,6 @@ const PublishCard = () => {
 };
 
 const BlogForm: React.FC<BlogFormProps> = ({
-  images,
   blogUrl,
   initialData,
   onSuccess,
@@ -339,7 +335,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <BasicInfoCard isEditing={Boolean(initialData)} blogUrl={blogUrl} />
-          <CoverImageCard images={images} />
+          <CoverImageCard />
           <ContentCard />
           <PublishCard />
 

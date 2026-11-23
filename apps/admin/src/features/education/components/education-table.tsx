@@ -11,7 +11,6 @@ import { toast } from "sonner";
 
 import { deleteEducationAction } from "@/features/education/actions/education";
 import { EducationForm } from "@/features/education/components/education-form";
-import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@portfolio/ui/badge";
@@ -41,7 +40,6 @@ interface EducationTableProps {
 
 export function EducationTable({ items }: EducationTableProps) {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Education | null>(null);
 
@@ -205,7 +203,6 @@ export function EducationTable({ items }: EducationTableProps) {
       >
         <EducationForm
           key={editingItem?.id ?? "create"}
-          images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}
         />

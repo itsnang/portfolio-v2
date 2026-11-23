@@ -19,8 +19,8 @@ import {
 import { useForm } from "react-hook-form";
 
 import {
-  insertExperiences,
-  updateExperience,
+  createExperienceAction,
+  updateExperienceAction,
 } from "@/features/experience/actions/experience";
 import { Badge } from "@portfolio/ui/badge";
 import { Button } from "@portfolio/ui/button";
@@ -55,7 +55,6 @@ import {
   experiencesInsertSchema,
 } from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -63,13 +62,11 @@ import { ImageSelector } from "@/features/media/components/image-selector";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 interface ExperienceProps {
-  images: IImages[];
   initialData?: Experiences;
   onSuccess?: () => void;
 }
 
 export const ExperienceForm: React.FC<ExperienceProps> = ({
-  images,
   initialData,
   onSuccess,
 }) => {
@@ -116,8 +113,8 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
 
       const result =
         initialData && initialData.id
-          ? await updateExperience(initialData.id as string, normalizedValues)
-          : await insertExperiences(normalizedValues);
+          ? await updateExperienceAction(initialData.id as string, normalizedValues)
+          : await createExperienceAction(normalizedValues);
 
       if (!result.success) {
         toast.error(result.error);
@@ -130,7 +127,6 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
       form.reset();
       onSuccess?.();
     } catch (error) {
-      // withAuthAction throws when there is no valid session.
       console.error(error);
       toast.error(
         initialData ? "Failed to update experience" : "Failed to add experience"
@@ -167,7 +163,6 @@ export const ExperienceForm: React.FC<ExperienceProps> = ({
                     <FormControl>
                       <ImageSelector
                         control={form.control}
-                        images={images}
                         name="imageUrl"
                         mode="single"
                         aspectRatio="video"

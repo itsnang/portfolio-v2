@@ -99,10 +99,10 @@ Stays fully centralized — not split per feature, same as pipfolio's `src/lib/d
 - The package also holds `migrations/`, the drizzle-kit configs, the Compose file and the local fixtures.
 - `apps/main/src/db/drizzle.ts` — the Main Site's own client, the development-only `localhost` guard, and `takeFirst`/`takeFirstOrThrow` helpers.
 
-### Auth middleware (`apps/admin/src/lib/auth/middleware.ts`)
-All auth-required actions wrap with `withAuthAction` from `apps/admin/src/lib/auth/middleware.ts` (cross-cutting infra, not feature-owned). The middleware resolves the Better Auth session and injects `{ user, session, profile, db }` as the first argument. Use `withOptionalAuthAction` for unauthenticated variants.
+### Admin actions (`apps/admin/src/lib/admin-action.ts`)
+Every Admin Site write is `adminAction(fallbackError, async ({ profile }, ...args) => ...)`. It requires a session (an expired one redirects to `/sign-in`) and the admin's profile, runs the body, then revalidates `dashboardPath` and refreshes the public Sites with `refresh`, both returned by the body along with `data` and `message`. It returns `ActionResult<T>`: `{ success: true, data, message, warning? }` or `{ success: false, error }`. Throw `ActionError` for a message the admin should see; anything else is logged and shown as `fallbackError`. Validate with `parseInput(schema, input, message)` and write the value it returns, never the raw input. Forms show `warning` with `toastRefreshWarning(result)`.
 
-Return shape convention: `{ success: true, data, message }` or `{ success: false, error: string }`. Admin Site writes that refresh public pages add `warning?: string`, which forms show with `toastRefreshWarning(result)`.
+Reads go through each slice's `admin-queries.ts`; the image library is read through `GET /api/images` and `/api/image-folders` (Server Actions run one at a time, so reads would queue behind uploads) via `features/media/hooks/use-images.ts`.
 
 ### UI package (`packages/ui`, `@portfolio/ui`)
 UI used by public pages: the primitives they need (`@portfolio/ui/button`, `/card`, ...), `RichText` with its Tiptap node stylesheets, `cn`, `icons`, `date-utils`, `convert-date`, the `next/font` definitions (`/fonts`), and the base stylesheet (`/base.css`, imported first by `src/app/globals.css`, with `@source` so Tailwind scans the package). It must not depend on Better Auth, Cloudinary or the Tiptap editor.

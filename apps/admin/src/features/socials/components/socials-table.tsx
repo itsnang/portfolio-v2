@@ -10,7 +10,6 @@ import { toast } from "sonner";
 
 import { deleteSocialAction } from "@/features/socials/actions/socials";
 import { SocialsForm } from "@/features/socials/components/socials-form";
-import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@portfolio/ui/badge";
@@ -33,7 +32,6 @@ interface SocialsTableProps {
 
 export function SocialsTable({ items }: SocialsTableProps) {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Socials | null>(null);
 
@@ -192,7 +190,6 @@ export function SocialsTable({ items }: SocialsTableProps) {
       >
         <SocialsForm
           key={editingItem?.id ?? "create"}
-          images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}
         />

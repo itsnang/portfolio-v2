@@ -37,17 +37,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 
 interface EducationFormProps {
-  images: IImages[];
   initialValues?: Education;
   onSuccess?: () => void;
 }
 
 export const EducationForm: React.FC<EducationFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
@@ -107,7 +104,6 @@ export const EducationForm: React.FC<EducationFormProps> = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <ImageSelector
           control={form.control}
-          images={images}
           name="logoUrl"
           mode="single"
           aspectRatio="video"

@@ -1,143 +1,43 @@
 "use server";
 
-import { and, desc, eq, isNull } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { and, eq, isNull } from "drizzle-orm";
+import { recommendationsInsertSchema, type RecommendationsFormValues, TbRecommendations } from "@portfolio/db/schema";
 
 import { db } from "@/db/drizzle";
-import { recommendationsInsertSchema, type RecommendationsFormValues, TbRecommendations } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
+const dashboardPath = "/dashboard/recommendations";
+// Recommendations appear on the home page only.
+const refresh = { resource: "profile" } as const;
 
-export const createRecommendationAction = withAuthAction(
-  async (auth, data: RecommendationsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found. Please create a profile first.");
-      }
+const ownRecommendation = (id: string, profileId: string) =>
+  and(eq(TbRecommendations.id, id), eq(TbRecommendations.profileId, profileId), isNull(TbRecommendations.deletedAt));
 
-      const validated = recommendationsInsertSchema.safeParse({
-        ...data,
-        profileId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid recommendation data");
-      }
-
-      const [created] = await db
-        .insert(TbRecommendations)
-        .values(validated.data)
-        .returning();
-
-      revalidatePath("/dashboard/recommendations");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: created,
-        message: "Recommendation added successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return {
-        success: false as const,
-        error: "Failed to add recommendation",
-      };
-    }
+export const createRecommendationAction = adminAction(
+  "Failed to add recommendation",
+  async ({ profile }, input: RecommendationsFormValues) => {
+    const values = parseInput(recommendationsInsertSchema, { ...input, profileId: profile.id }, "Invalid recommendation data");
+    const [created] = await db.insert(TbRecommendations).values(values).returning();
+    return { data: created, message: "Recommendation added successfully", dashboardPath, refresh };
   }
 );
 
-export const updateRecommendationAction = withAuthAction(
-  async (auth, id: string, data: RecommendationsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const validated = recommendationsInsertSchema.safeParse({
-        ...data,
-        profileId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid recommendation data");
-      }
-
-      const existing = await db.query.TbRecommendations.findFirst({
-        where: and(
-          eq(TbRecommendations.id, id),
-          eq(TbRecommendations.profileId, auth.profile.id)
-        ),
-      });
-      if (!existing) {
-        throw new Error("Recommendation not found");
-      }
-
-      const [updated] = await db
-        .update(TbRecommendations)
-        .set(validated.data)
-        .where(
-          and(eq(TbRecommendations.id, id), eq(TbRecommendations.profileId, auth.profile.id))
-        )
-        .returning();
-
-      revalidatePath("/dashboard/recommendations");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: updated,
-        message: "Recommendation updated successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return {
-        success: false as const,
-        error: "Failed to update recommendation",
-      };
-    }
+export const updateRecommendationAction = adminAction(
+  "Failed to update recommendation",
+  async ({ profile }, id: string, input: RecommendationsFormValues) => {
+    const values = parseInput(recommendationsInsertSchema, { ...input, profileId: profile.id }, "Invalid recommendation data");
+    const [updated] = await db.update(TbRecommendations).set(values).where(ownRecommendation(id, profile.id)).returning();
+    if (!updated) throw new ActionError("Recommendation not found");
+    return { data: updated, message: "Recommendation updated successfully", dashboardPath, refresh };
   }
 );
 
-export const deleteRecommendationAction = withAuthAction(
-  async (auth, id: string) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const existing = await db.query.TbRecommendations.findFirst({
-        where: and(
-          eq(TbRecommendations.id, id),
-          eq(TbRecommendations.profileId, auth.profile.id)
-        ),
-      });
-      if (!existing) {
-        throw new Error("Recommendation not found");
-      }
-
-      await db
-        .update(TbRecommendations)
-        .set({ deletedAt: new Date() })
-        .where(and(eq(TbRecommendations.id, id), eq(TbRecommendations.profileId, auth.profile.id)));
-
-      revalidatePath("/dashboard/recommendations");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return { warning, success: true as const, message: "Recommendation deleted" };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return {
-        success: false as const,
-        error: "Failed to delete recommendation",
-      };
-    }
-  }
-);
+export const deleteRecommendationAction = adminAction("Failed to delete recommendation", async ({ profile }, id: string) => {
+  const [deleted] = await db
+    .update(TbRecommendations)
+    .set({ deletedAt: new Date() })
+    .where(ownRecommendation(id, profile.id))
+    .returning({ id: TbRecommendations.id });
+  if (!deleted) throw new ActionError("Recommendation not found");
+  return { data: undefined, message: "Recommendation deleted", dashboardPath, refresh };
+});

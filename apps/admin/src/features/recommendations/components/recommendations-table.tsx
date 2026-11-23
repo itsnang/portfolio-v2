@@ -10,7 +10,6 @@ import { toast } from "sonner";
 
 import { deleteRecommendationAction } from "@/features/recommendations/actions/recommendations";
 import { RecommendationsForm } from "@/features/recommendations/components/recommendations-form";
-import { useImages } from "@/features/media/hooks/use-images";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
 import { FormSheet } from "@/components/form-sheet";
 import { Badge } from "@portfolio/ui/badge";
@@ -36,7 +35,6 @@ export function RecommendationsTable({
   items,
 }: RecommendationsTableProps) {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Recommendations | null>(
     null
@@ -204,7 +202,6 @@ export function RecommendationsTable({
       >
         <RecommendationsForm
           key={editingItem?.id ?? "create"}
-          images={images}
           initialValues={editingItem ?? undefined}
           onSuccess={handleFormSuccess}
         />

@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadStagedFile } from "@/features/media/actions/images";
+import { useRefreshImageLibrary } from "@/features/media/hooks/use-images";
 import { MAX_FILE_SIZE } from "@/features/media/constants";
 import { FolderSelector } from "./folder-selector";
 import { Button } from "@portfolio/ui/button";
@@ -22,6 +23,7 @@ export const MultiImageUpload = () => {
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const router = useRouter();
+  const refreshLibrary = useRefreshImageLibrary();
   const form = useForm<MultiImageUploadFormData>({
     defaultValues: {
       images: [],
@@ -96,6 +98,7 @@ export const MultiImageUpload = () => {
         }
       }
 
+      if (succeeded > 0) await refreshLibrary();
       if (succeeded === data.images.length) {
         toast.success("Images uploaded successfully");
         router.push("/dashboard/images");

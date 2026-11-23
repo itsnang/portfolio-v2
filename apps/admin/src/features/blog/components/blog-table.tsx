@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useImages } from "@/features/media/hooks/use-images";
 import BlogForm from "@/features/blog/components/blog-form";
 
 const EMPTY_STATE_MESSAGE = "No blog posts yet. Write your first post below.";
@@ -53,7 +52,6 @@ interface BlogTableProps {
 
 export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
   const router = useRouter();
-  const { data: images = [] } = useImages();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 
@@ -193,7 +191,6 @@ export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
       >
         <BlogForm
           key={editingPost?.id ?? "create"}
-          images={images}
           blogUrl={blogUrl}
           initialData={editingPost ?? undefined}
           onSuccess={handleFormSuccess}
