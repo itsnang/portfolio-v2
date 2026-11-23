@@ -3,7 +3,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
-import { MaintenanceBanner } from "@/components/maintenance-banner";
+import { MaintenanceBanner } from "@portfolio/ui/maintenance-banner";
 import { getAppConfig } from "@/lib/queries";
 import { siteMetadata } from "@/lib/metadata";
 

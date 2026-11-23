@@ -1,19 +1,8 @@
-import { createDB, createDBClient } from "@portfolio/db/client";
-import { config } from "dotenv";
-// import { drizzle } from "drizzle-orm/neon-http";
+import { createSiteDB } from "@portfolio/db/client";
 
-config({ path: ".env" }); // or .env.local
-const databaseUrl = process.env.DATABASE_URL!;
+// Reads process.env directly rather than the validated env: scripts/seed-admin.ts
+// imports this outside Next, with only DATABASE_URL set.
+const url = process.env.DATABASE_URL;
+if (!url) throw new Error("DATABASE_URL is not set.");
 
-// Local development must never reach the production database.
-if (
-  process.env.NODE_ENV === "development" &&
-  !["localhost", "127.0.0.1", "[::1]"].includes(new URL(databaseUrl).hostname)
-) {
-  throw new Error(
-    "DATABASE_URL must point at localhost in development. Run `pnpm db:reset` and copy DATABASE_URL from apps/admin/.env.example into apps/admin/.env.local."
-  );
-}
-
-const client = createDBClient({ url: databaseUrl, max: 5 });
-export const db = createDB(client);
+export const db = createSiteDB({ url, max: 5, site: "admin" });

@@ -1,16 +1,6 @@
-import { createDB, createDBClient } from "@portfolio/db/client";
+import "server-only";
 
-const databaseUrl = process.env.DATABASE_URL!;
+import { createSiteDB } from "@portfolio/db/client";
+import { env } from "@/utils/env";
 
-// Local development must never reach the production database.
-if (
-  process.env.NODE_ENV === "development" &&
-  !["localhost", "127.0.0.1", "[::1]"].includes(new URL(databaseUrl).hostname)
-) {
-  throw new Error(
-    "DATABASE_URL must point at localhost in development. Run `pnpm db:reset` and copy DATABASE_URL from apps/main/.env.example into apps/main/.env.local."
-  );
-}
-
-const client = createDBClient({ url: databaseUrl, max: 5 });
-export const db = createDB(client);
+export const db = createSiteDB({ url: env.DATABASE_URL, max: 5, site: "main" });

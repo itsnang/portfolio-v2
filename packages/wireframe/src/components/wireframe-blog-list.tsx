@@ -2,57 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { WireframeLink } from "./wireframe-link";
+import { observeReveals, paintEdges, Wobble } from "./wireframe-sketch";
 import { WireframeBlogCard, postHref, type WireframeBlogPostSummary } from "./wireframe-blog-card";
 
-function paintEdges(root: HTMLElement) {
-  root
-    .querySelectorAll(".wf-sketch, .wf-photo, .wf-chip, .wf-btn, .wf-stack, .wf-xbox")
-    .forEach((el) => {
-      if (!el.querySelector(":scope > .wf-edge")) {
-        const edge = document.createElement("div");
-        edge.className = "wf-edge";
-        el.insertBefore(edge, el.firstChild);
-      }
-    });
-}
 
-function observeReveals(root: HTMLElement) {
-  const io = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("in");
-          io.unobserve(e.target);
-        }
-      }),
-    { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
-  );
-  root.querySelectorAll(".wf-reveal").forEach((el) => io.observe(el));
-  return io;
-}
 
-const WOBBLE = (
-  <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-    <defs>
-      <filter id="wobble">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.014 0.022"
-          numOctaves={2}
-          seed={7}
-          result="n"
-        />
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="n"
-          scale={3}
-          xChannelSelector="R"
-          yChannelSelector="G"
-        />
-      </filter>
-    </defs>
-  </svg>
-);
 
 export interface WireframeBlogListProps {
   posts: WireframeBlogPostSummary[];
@@ -88,7 +42,7 @@ export function WireframeBlogList({ posts, postBaseUrl, homeUrl }: WireframeBlog
 
   return (
     <div className="sketch-page" ref={rootRef}>
-      {WOBBLE}
+      <Wobble />
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "26px 28px 0" }}>
         <WireframeLink
           href={homeUrl}
