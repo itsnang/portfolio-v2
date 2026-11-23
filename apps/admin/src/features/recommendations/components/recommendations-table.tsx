@@ -1,12 +1,10 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useEditorSheet } from "@/lib/use-editor-sheet";
+import { showActionResult } from "@/lib/use-run-action";
 
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 
 import { deleteRecommendationAction } from "@/features/recommendations/actions/recommendations";
 import { RecommendationsForm } from "@/features/recommendations/components/recommendations-form";
@@ -34,43 +32,18 @@ interface RecommendationsTableProps {
 export function RecommendationsTable({
   items,
 }: RecommendationsTableProps) {
-  const router = useRouter();
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Recommendations | null>(
-    null
-  );
-
-  function openCreate() {
-    setEditingItem(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(item: Recommendations) {
-    setEditingItem(item);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
+  const sheet = useEditorSheet<Recommendations>();
 
   async function handleDelete(id: string) {
     const result = await deleteRecommendationAction(id);
-    if (!result.success) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success("Recommendation deleted");
-    toastRefreshWarning(result);
-    router.refresh();
+    showActionResult(result);
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Recommendations</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Recommendation
         </Button>
       </div>
@@ -126,7 +99,7 @@ export function RecommendationsTable({
                           variant="ghost"
                           size="icon"
                           aria-label={`Edit ${item.name}`}
-                          onClick={() => openEdit(item)}
+                          onClick={() => sheet.openEdit(item)}
                         >
                           <PencilIcon className="h-4 w-4" />
                         </Button>
@@ -171,7 +144,7 @@ export function RecommendationsTable({
                       variant="ghost"
                       size="icon"
                       aria-label={`Edit ${item.name}`}
-                      onClick={() => openEdit(item)}
+                      onClick={() => sheet.openEdit(item)}
                     >
                       <PencilIcon className="h-4 w-4" />
                     </Button>
@@ -191,19 +164,19 @@ export function RecommendationsTable({
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingItem ? "Edit Recommendation" : "Add Recommendation"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Recommendation" : "Add Recommendation"}
         description={
-          editingItem
+          sheet.editing
             ? "Update this recommendation."
             : "Add a recommendation from a colleague or manager."
         }
       >
         <RecommendationsForm
-          key={editingItem?.id ?? "create"}
-          initialValues={editingItem ?? undefined}
-          onSuccess={handleFormSuccess}
+          key={sheet.editing?.id ?? "create"}
+          initialValues={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

@@ -1,12 +1,10 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useEditorSheet } from "@/lib/use-editor-sheet";
+import { showActionResult } from "@/lib/use-run-action";
 
 import { PencilIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 
 import { deleteSkillAction } from "@/features/skills/actions/skills";
 import { SkillForm } from "@/features/skills/components/skill-form";
@@ -31,41 +29,18 @@ interface SkillsTableProps {
 }
 
 export function SkillsTable({ items }: SkillsTableProps) {
-  const router = useRouter();
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Skills | null>(null);
-
-  function openCreate() {
-    setEditingItem(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(item: Skills) {
-    setEditingItem(item);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
+  const sheet = useEditorSheet<Skills>();
 
   async function handleDelete(id: string) {
     const result = await deleteSkillAction(id);
-    if (!result.success) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success("Skill deleted");
-    toastRefreshWarning(result);
-    router.refresh();
+    showActionResult(result);
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Skills</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Skill
         </Button>
       </div>
@@ -115,7 +90,7 @@ export function SkillsTable({ items }: SkillsTableProps) {
                           variant="ghost"
                           size="icon"
                           aria-label={`Edit ${item.name}`}
-                          onClick={() => openEdit(item)}
+                          onClick={() => sheet.openEdit(item)}
                         >
                           <PencilIcon className="h-4 w-4" />
                         </Button>
@@ -157,7 +132,7 @@ export function SkillsTable({ items }: SkillsTableProps) {
                       variant="ghost"
                       size="icon"
                       aria-label={`Edit ${item.name}`}
-                      onClick={() => openEdit(item)}
+                      onClick={() => sheet.openEdit(item)}
                     >
                       <PencilIcon className="h-4 w-4" />
                     </Button>
@@ -177,19 +152,19 @@ export function SkillsTable({ items }: SkillsTableProps) {
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingItem ? "Edit Skill" : "Add Skill"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Skill" : "Add Skill"}
         description={
-          editingItem
+          sheet.editing
             ? "Update this skill."
             : "Add a skill to your portfolio."
         }
       >
         <SkillForm
-          key={editingItem?.id ?? "create"}
-          initialValues={editingItem ?? undefined}
-          onSuccess={handleFormSuccess}
+          key={sheet.editing?.id ?? "create"}
+          initialValues={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

@@ -24,15 +24,20 @@ export function useRunAction() {
         toast.error("Something went wrong. Please try again.");
         return;
       }
-      if (!result.success) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success(result.message);
-      toastRefreshWarning(result);
-      onSuccess?.(result.data);
+      if (showActionResult(result)) onSuccess?.(result.data);
     });
   }
 
   return { isPending, run };
+}
+
+/** Shows an action's error, or its success message and any refresh warning. Returns whether it succeeded. */
+export function showActionResult<T>(result: ActionResult<T>): result is Extract<ActionResult<T>, { success: true }> {
+  if (!result.success) {
+    toast.error(result.error);
+    return false;
+  }
+  toast.success(result.message);
+  toastRefreshWarning(result);
+  return true;
 }
