@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@portfolio/ui/sonner";
-import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
+import { hostGrotesk, jetbrainsMono } from "./fonts";
 
 export const metadata: Metadata = {
   title: { default: "Portfolio CMS", template: "%s | Portfolio CMS" },
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}
+        className={`${hostGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         {children}

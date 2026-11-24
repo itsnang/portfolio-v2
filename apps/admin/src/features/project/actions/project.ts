@@ -51,6 +51,25 @@ export const updateProjectAction = adminAction(
   }
 );
 
+export const deleteProjectAction = adminAction(
+  "Failed to delete project",
+  async ({ profile }, id: string) => {
+    const [deleted] = await db
+      .update(TbProject)
+      .set({ deletedAt: new Date() })
+      .where(ownProject(id, profile.id))
+      .returning({ id: TbProject.id });
+    if (!deleted) throw new ActionError("Project not found");
+    return {
+      data: undefined,
+      message: "Project deleted",
+      dashboardPath,
+      // Refreshing the Project's page turns it into a 404.
+      refresh: { resource: "project", slugs: [id] },
+    };
+  }
+);
+
 export const reorderProjectsAction = adminAction(
   "Failed to reorder projects",
   async ({ profile }, items: { id: string; sortOrder: number }[]) => {

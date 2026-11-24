@@ -1,1 +1,61 @@
 @import "@portfolio/ui/base.css";
+
+/*
+ * The Admin Site's own look: a quiet editor. Palette "Stone and blueprint" and the
+ * Host Grotesk + JetBrains Mono pairing, dealt by tasteskill for a developer tool.
+ * One warm stone ground, near-black ink, one blue accent; no coloured pills.
+ */
+
+@theme inline {
+  --font-sans: var(--font-host-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+:root {
+  --radius: 0.5rem;
+
+  --background: #dfdedb;
+  --foreground: #26251e;
+  /* Sheets, dialogs and menus sit one step lighter than the ground. */
+  --card: #e9e8e5;
+  --card-foreground: #26251e;
+  --popover: #e9e8e5;
+  --popover-foreground: #26251e;
+
+  --primary: #2456d6;
+  --primary-foreground: #ffffff;
+  --secondary: #d3d2ce;
+  --secondary-foreground: #26251e;
+  --muted: #d3d2ce;
+  --muted-foreground: #5a5850;
+  --accent: #d3d2ce;
+  --accent-foreground: #26251e;
+  --destructive: #b3261e;
+  --destructive-foreground: #ffffff;
+
+  --border: rgb(38 37 30 / 0.12);
+  --input: rgb(38 37 30 / 0.2);
+  --ring: #2456d6;
+
+  --sidebar: #dfdedb;
+  --sidebar-foreground: #26251e;
+  --sidebar-primary: #2456d6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #d3d2ce;
+  --sidebar-accent-foreground: #26251e;
+  --sidebar-border: rgb(38 37 30 / 0.12);
+  --sidebar-ring: #2456d6;
+}
+
+/* Form fields read as fields on the stone ground. */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select,
+[data-slot="select-trigger"] {
+  background-color: var(--card);
+}
+
+/* The vendored Tiptap editor styles set body { font-family: Inter } globally; keep the Admin Site's face. */
+html body {
+  font-family: var(--font-host-grotesk), system-ui, sans-serif;
+}

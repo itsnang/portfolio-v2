@@ -2,7 +2,8 @@
 
 import { FolderSelector } from "@/features/media/components/folder-selector";
 import { Button } from "@portfolio/ui/button";
-import { Card, CardContent } from "@portfolio/ui/card";
+import { UploadIcon } from "lucide-react";
+import { ListHeader } from "@/components/content-list";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -25,45 +26,45 @@ function Page() {
   }, [isError]);
 
   return (
-    <div className="mt-6 mx-4 dark:text-white">
-      <div className="p-4 flex justify-between items-center">
-        <FolderSelector
-          onFolderSelect={setSelectedFolder}
-          selectedFolder={selectedFolder}
-        />
-        <Button asChild>
-          <Link href="/dashboard/images/upload">Upload image</Link>
+    <div>
+      <ListHeader
+        title="Images"
+        description="Your Cloudinary library. Every image picker in the forms reads from here."
+        count={isLoading ? undefined : images.length}
+      >
+        <FolderSelector onFolderSelect={setSelectedFolder} selectedFolder={selectedFolder} />
+        <Button size="sm" asChild>
+          <Link href="/dashboard/images/upload">
+            <UploadIcon className="size-4" />
+            Upload
+          </Link>
         </Button>
-      </div>
+      </ListHeader>
+
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      ) : images.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No images found in this folder
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {images.map((image) => (
-            <Card
-              key={image.id}
-              className="overflow-hidden group cursor-pointer relative"
-            >
-              <CardContent className="p-0">
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={image.imageUrl}
-                    alt={`Image ${image.id}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="transition-transform duration-300 group-hover:scale-110 object-cover"
-                  />
-                </div>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-2 gap-3 border-t border-border pt-6 md:grid-cols-4">
+          {Array.from({ length: 8 }, (_, i) => (
+            <div key={i} className="aspect-square animate-pulse rounded-md bg-muted" />
           ))}
         </div>
+      ) : images.length === 0 ? (
+        <p className="border-t border-border py-16 text-center text-sm text-muted-foreground">
+          No images in this folder.
+        </p>
+      ) : (
+        <ul className="grid grid-cols-2 gap-3 border-t border-border pt-6 md:grid-cols-4">
+          {images.map((image) => (
+            <li key={image.id} className="relative aspect-square overflow-hidden rounded-md border border-border bg-muted">
+              <Image
+                src={image.imageUrl}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 50vw, 240px"
+                className="object-cover transition-transform duration-300 hover:scale-[1.03]"
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
