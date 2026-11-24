@@ -4,7 +4,7 @@ import { useEditorSheet } from "@/lib/use-editor-sheet";
 import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
 import { toast } from "sonner";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Project, ProjectTechnology } from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
@@ -261,11 +261,14 @@ export const ProjectTable = ({
   projects: Project[];
 }) => {
   const [items, setItems] = useState<Project[]>(projects);
+  const [syncedProjects, setSyncedProjects] = useState(projects);
   const sheet = useEditorSheet<Project>();
 
-  useEffect(() => {
+  // Fresh projects from the server replace the local order (set during render, not in an effect).
+  if (projects !== syncedProjects) {
+    setSyncedProjects(projects);
     setItems(projects);
-  }, [projects]);
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),

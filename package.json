@@ -8,6 +8,7 @@
     "db:reset": "pnpm --filter @portfolio/db db:rebuild && pnpm --filter @portfolio/admin seed:local && pnpm --filter @portfolio/db db:fixtures",
     "dev:main": "pnpm --filter @portfolio/main dev",
     "dev:blog": "pnpm --filter @portfolio/blog dev",
-    "dev:admin": "pnpm --filter @portfolio/admin dev"
+    "dev:admin": "pnpm --filter @portfolio/admin dev",
+    "lint": "pnpm -r --parallel lint"
   }
 }
