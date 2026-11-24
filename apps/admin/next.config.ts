@@ -33,6 +33,10 @@ const nextConfig: NextConfig = {
   // image format" when generating opengraph images.
   serverExternalPackages: ["sharp"],
   experimental: {
+    // Vercel restores .next/cache before every build, and a restored Turbopack
+    // cache once shipped a stale stylesheet (the Admin Site redesign deployed
+    // without its colours). Build fresh; dev keeps its cache.
+    turbopackFileSystemCacheForBuild: false,
     serverActions: {
       // Next's default is 1MB, which silently rejects most real photos before
       // they ever reach Cloudinary — image uploads go through uploadStagedFile
