@@ -15,7 +15,8 @@ export const getProfile = cache(async () => {
           where: (skill, { eq, and, isNull }) => and(eq(skill.isActive, true), isNull(skill.deletedAt)),
         },
         experience: {
-          where: (experience, { eq }) => eq(experience.isActive, true),
+          where: (experience, { eq, and, isNull }) =>
+            and(eq(experience.isActive, true), isNull(experience.deletedAt)),
           orderBy: (experience, { asc }) => [asc(experience.sortOrder)],
         },
         education: {
@@ -24,7 +25,7 @@ export const getProfile = cache(async () => {
           orderBy: (education, { asc }) => [asc(education.startDate)],
         },
         projects: {
-          where: (project, { eq }) => eq(project.isActive, true),
+          where: (project, { eq, and, isNull }) => and(eq(project.isActive, true), isNull(project.deletedAt)),
           orderBy: (project, { desc }) => [desc(project.createdAt)],
         },
         socials: {
