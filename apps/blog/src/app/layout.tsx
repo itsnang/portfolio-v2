@@ -6,6 +6,8 @@ import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { MaintenanceBanner } from "@portfolio/ui/maintenance-banner";
 import { getAppConfig } from "@/lib/queries";
 import { siteMetadata } from "@/lib/metadata";
+import { preconnect } from "react-dom";
+import { mainUrl } from "@/lib/site-urls";
 
 export const metadata: Metadata = siteMetadata;
 
@@ -14,6 +16,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Crossing to the Main Site is a full page load; open the connection early.
+  preconnect(mainUrl);
   const config = await getAppConfig();
   const htmlClass = config.theme === "wireframe" ? "wireframe" : "dark";
 

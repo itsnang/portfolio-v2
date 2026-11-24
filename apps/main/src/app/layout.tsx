@@ -5,7 +5,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { getAppConfig } from "@/features/app-config/queries";
-import { mainUrl } from "@/lib/site-urls";
+import { preconnect } from "react-dom";
+import { blogUrl, mainUrl } from "@/lib/site-urls";
 
 export const metadata: Metadata = buildMetadata({});
 
@@ -14,6 +15,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Crossing to the Blog Site is a full page load; open the connection early.
+  preconnect(blogUrl);
   const config = await getAppConfig();
   const htmlClass = config.theme === "wireframe" ? "wireframe" : "dark";
 
