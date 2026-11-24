@@ -1,12 +1,6 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  NODE_ENV: z.union([
-    z.literal("development"),
-    z.literal("production"),
-    z.literal("test"),
-    z.literal("stage"),
-  ]),
   DATABASE_URL: z.string(),
   // Shared with the Admin Site, which sends it to refresh pages.
   REVALIDATE_SECRET: z.string().min(32),
