@@ -68,16 +68,31 @@ Every Site refuses to start in development unless `DATABASE_URL` points at `loca
 
 Schema-change rules, migrations and the production database steps are in [`packages/db/README.md`](./packages/db/README.md).
 
+## Main Site and Blog Site
+
+Both public Sites follow the theme chosen in the Admin Site. They're shown here in the "Wireframe" theme, as they are live today.
+
+|                                            |                                            |
+| ------------------------------------------ | ------------------------------------------ |
+| **Main: home**<br>![Main Site home](docs/screenshots/main-home.png) | **Main: a project**<br>![A project page](docs/screenshots/main-project.png) |
+| **Blog: the Post list**<br>![Blog Site Post list](docs/screenshots/blog-list.png) | **Blog: a Post**<br>![A Post](docs/screenshots/blog-post.png) |
+
 ## Admin Site (CMS)
 
-A password-protected dashboard (Better Auth, sign-up disabled) lets the site owner manage every piece of content shown on the Main and Blog Sites, no redeploy required.
+A password-protected dashboard (Better Auth, sign-up disabled) lets the site owner manage every piece of content shown on the Main and Blog Sites, with no redeploy needed.
+
+It has its own look, a quiet editor:
+- **Colours:** a warm stone ground, near-black ink and one blue accent.
+- **Fonts:** Host Grotesk for text and JetBrains Mono for counts.
+- **List pages:** each content type is a plain list with thin dividers, and each row shows a dot and a word for whether it's live. Clicking a row's title opens its editor.
 
 |                                            |                                            |
 | ------------------------------------------ | ------------------------------------------ |
 | **Sign In**<br>![Sign in](docs/screenshots/cms-sign-in.png) | **Projects**<br>![Projects](docs/screenshots/dashboard-projects.png) |
-| **Experience**<br>![Experience](docs/screenshots/dashboard-experience.png) | **Profile**<br>![Profile](docs/screenshots/dashboard-profile.png) |
+| **Experience**<br>![Experience](docs/screenshots/dashboard-experience.png) | **Posts**<br>![Posts](docs/screenshots/dashboard-blog.png) |
 | **Education**<br>![Education](docs/screenshots/dashboard-education.png) | **Recommendations**<br>![Recommendations](docs/screenshots/dashboard-recommendations.png) |
-| **Image Library**<br>![Images](docs/screenshots/dashboard-images.png) | **App Config**<br>![App Config](docs/screenshots/dashboard-app-config.png) |
+| **Image Library**<br>![Images](docs/screenshots/dashboard-images.png) | **Profile**<br>![Profile](docs/screenshots/dashboard-profile.png) |
+| **App Config**<br>![App Config](docs/screenshots/dashboard-app-config.png) | |
 
 Content types managed from the CMS:
 
