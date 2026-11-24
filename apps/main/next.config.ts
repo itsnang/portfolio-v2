@@ -7,6 +7,12 @@ if (!blogUrl) throw new Error("NEXT_PUBLIC_BLOG_URL must be set: /blog redirects
 const blogOrigin = blogUrl.replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Vercel restores .next/cache before every build, and a restored Turbopack
+    // cache once shipped a stale stylesheet (the Admin Site redesign deployed
+    // without its colours). Build fresh; dev keeps its cache.
+    turbopackFileSystemCacheForBuild: false,
+  },
   images: {
     remotePatterns: [
       {

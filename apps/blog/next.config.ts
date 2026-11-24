@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 
 // Not a PWA: unlike the Main Site, there's no withPWA wrapper here.
 const nextConfig: NextConfig = {
+  experimental: {
+    // Vercel restores .next/cache before every build, and a restored Turbopack
+    // cache once shipped a stale stylesheet (the Admin Site redesign deployed
+    // without its colours). Build fresh; dev keeps its cache.
+    turbopackFileSystemCacheForBuild: false,
+  },
   images: {
     remotePatterns: [
       {
