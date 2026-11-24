@@ -14,7 +14,7 @@ export const auth = betterAuth({
       session: TbSession,
     },
   }),
-  secret: process.env.BETTER_AUTH_SECRET,
+  secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
   // Only the Admin Site's own host; cookies stay on it.
   trustedOrigins: [env.BETTER_AUTH_URL],

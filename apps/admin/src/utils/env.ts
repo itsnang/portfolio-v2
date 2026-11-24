@@ -1,12 +1,6 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  NODE_ENV: z.union([
-    z.literal("development"),
-    z.literal("production"),
-    z.literal("test"),
-    z.literal("stage"),
-  ]),
   DATABASE_URL: z.string(),
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
