@@ -1,21 +1,19 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useRunAction } from "@/lib/use-run-action";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
-import { createSocialAction, updateSocialAction } from "@/features/socials/actions";
+import { createSocialAction, updateSocialAction } from "@/features/socials/actions/socials";
 import {
   socialsFormSchema,
   type Socials,
   type SocialsFormValues,
-} from "@/features/socials/schemas";
+} from "@portfolio/db/schema";
 import { cn } from "@portfolio/ui/cn";
-import { IImages } from "@/features/media/types";
 import { ImageSelector } from "@/features/media/components/image-selector";
 import { Button } from "@portfolio/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,17 +29,15 @@ import {
 import { Input } from "@/components/ui/input";
 
 interface SocialsFormProps {
-  images: IImages[];
   initialValues?: Socials;
   onSuccess?: () => void;
 }
 
 export const SocialsForm: React.FC<SocialsFormProps> = ({
-  images,
   initialValues,
   onSuccess,
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const { isPending, run } = useRunAction();
   const isEditing = Boolean(initialValues);
 
   const form = useForm<SocialsFormValues>({
@@ -61,29 +57,14 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({
         },
   });
 
-  async function onSubmit(values: SocialsFormValues) {
-    setIsPending(true);
-    try {
-      const result = isEditing
-        ? await updateSocialAction(initialValues!.id, values)
-        : await createSocialAction(values);
-
-      if (!result.success) {
-        toast.error(result.error);
-        return;
+  function onSubmit(values: SocialsFormValues) {
+    run(
+      () => (isEditing ? updateSocialAction(initialValues!.id, values) : createSocialAction(values)),
+      () => {
+        if (!isEditing) form.reset();
+        onSuccess?.();
       }
-
-      toast.success(isEditing ? "Social updated" : "Social added");
-
-      toastRefreshWarning(result);
-      if (!isEditing) form.reset();
-      onSuccess?.();
-    } catch (error) {
-      console.log(error);
-      toast.error(isEditing ? "Failed to update social" : "Failed to add social");
-    } finally {
-      setIsPending(false);
-    }
+    );
   }
 
   return (
@@ -98,7 +79,6 @@ export const SocialsForm: React.FC<SocialsFormProps> = ({
               <FormControl>
                 <ImageSelector
                   control={form.control}
-                  images={images}
                   name="icon"
                   mode="single"
                   aspectRatio="video"

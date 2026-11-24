@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useSketchPage, Wobble } from "@portfolio/wireframe/wireframe-sketch";
+
+import { useRef } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,66 +20,14 @@ interface Post {
   next: { slug: string; title: string } | null;
 }
 
-function paintEdges(root: HTMLElement) {
-  root
-    .querySelectorAll(".wf-sketch, .wf-photo, .wf-chip, .wf-btn, .wf-stack, .wf-xbox")
-    .forEach((el) => {
-      if (!el.querySelector(":scope > .wf-edge")) {
-        const edge = document.createElement("div");
-        edge.className = "wf-edge";
-        el.insertBefore(edge, el.firstChild);
-      }
-    });
-}
 
-function observeReveals(root: HTMLElement) {
-  const io = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("in");
-          io.unobserve(e.target);
-        }
-      }),
-    { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
-  );
-  root.querySelectorAll(".wf-reveal").forEach((el) => io.observe(el));
-  return io;
-}
 
-const WOBBLE = (
-  <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-    <defs>
-      <filter id="wobble">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.014 0.022"
-          numOctaves={2}
-          seed={7}
-          result="n"
-        />
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="n"
-          scale={3}
-          xChannelSelector="R"
-          yChannelSelector="G"
-        />
-      </filter>
-    </defs>
-  </svg>
-);
 
 /** `homeUrl` is the Main Site's home page: another Site, so a plain link. */
 export function WireframeBlogDetail({ post, homeUrl }: { post: Post; homeUrl: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!rootRef.current) return;
-    paintEdges(rootRef.current);
-    const io = observeReveals(rootRef.current);
-    return () => io.disconnect();
-  }, []);
+  useSketchPage(rootRef);
 
   const publishedLabel = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -95,7 +45,7 @@ export function WireframeBlogDetail({ post, homeUrl }: { post: Post; homeUrl: st
 
   return (
     <div className="sketch-page" ref={rootRef}>
-      {WOBBLE}
+      <Wobble />
 
       <div
         style={{

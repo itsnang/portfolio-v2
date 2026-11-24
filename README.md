@@ -1,6 +1,14 @@
 ## Portfolio v2
 
-Personal portfolio built with Next.js 15, React 19, Tailwind CSS 4, and a modern animation + content tooling stack. The codebase powers [Samnang Lorn](https://github.com/samnanglorn)'s public folio site and is not intended as a starter kit or template.
+Personal portfolio of [Samnang Lorn](https://github.com/samnanglorn), split into three Next.js Sites that share one database:
+
+| Site | Address | What it is |
+| --- | --- | --- |
+| **Main** | [lornsamnang.com](https://lornsamnang.com) | The portfolio: profile, experience, projects, achievements |
+| **Blog** | [blog.lornsamnang.com](https://blog.lornsamnang.com) | The Post list and each Post |
+| **Admin** | admin.lornsamnang.com | The CMS that edits everything above (sign-in only, not indexed) |
+
+The codebase powers this one site and is not intended as a starter kit or template.
 
 ## Respect This Work
 
@@ -14,26 +22,55 @@ Viewing the source for learning or inspiration is fine—just build something or
 
 See the [`LICENSE`](./LICENSE) file for the full legal terms (All Rights Reserved).
 
+## How it fits together
+
+```text
+apps/
+  main/    Main Site   (public, read-only)   port 3000
+  blog/    Blog Site   (public, read-only)   port 3001
+  admin/   Admin Site  (sign-in, every write) port 3002
+packages/
+  db/         Drizzle tables, shared reads, migrations, database roles
+  ui/         Primitives and base styles the public Sites share
+  wireframe/  The alternate "wireframe" theme and the OG image renderer
+```
+
+- **One pnpm workspace**, no Nx or Turborepo. Shared Packages export TypeScript source.
+- **Separate database roles.** Main and Blog connect as `portfolio_public`, which can only read the public tables. Admin connects as `portfolio_admin`, which can read and write data but never change the schema.
+- **Saves refresh the public Sites.** After a save, the Admin Site calls each public Site's `/api/revalidate` with a shared secret, so changes appear immediately. If a refresh fails, the save still stands and the pages catch up on their own timers.
+- **The blog moved.** `lornsamnang.com/blog` and its Posts redirect to the Blog Site.
+
+[`docs/site-split-spec.md`](./docs/site-split-spec.md) has the full design and [`GLOSSARY.md`](./GLOSSARY.md) defines the terms.
+
 ## Getting Started
+
+You need Node 24, pnpm 10 and Docker.
 
 ```bash
 pnpm install
+pnpm db:reset
 pnpm dev
 ```
 
-Open `http://localhost:3000` to develop locally. Update content in `apps/main/src/app/(home)` and components under `apps/main/src/components/**`.
+1. `pnpm db:reset` starts a throwaway Postgres in Docker and fills it with made-up content and a local admin account. It recreates the database each time, so anything saved locally is lost.
+2. For each Site, copy `apps/<site>/.env.example` to `apps/<site>/.env.local` and fill in the blanks. Use the same `REVALIDATE_SECRET` in all three.
+3. `pnpm dev` starts all three Sites. Sign in to the Admin Site at `http://localhost:3002/sign-in` with `admin@lornsamnang.com` / `admin123`.
 
-## Local Database
+Every Site refuses to start in development unless `DATABASE_URL` points at `localhost`, so local work never touches production.
 
-Local development uses a throwaway Postgres with made-up content, and `pnpm dev` refuses to connect to anything but `localhost`.
+| Command | What it does |
+| --- | --- |
+| `pnpm dev` | All three Sites (`dev:main`, `dev:blog`, `dev:admin` for one) |
+| `pnpm build` | Production build of the Main Site (`pnpm --filter @portfolio/blog build`, `... admin build` for the others) |
+| `pnpm db:reset` | Recreate the local database |
+| `pnpm --filter @portfolio/db db:generate` | Write a migration after changing a table |
+| `pnpm --filter @portfolio/db db:roles` | Apply `roles.sql` and check every table's grants |
 
-1. Start Docker, then run `pnpm db:reset`. It recreates the database, so anything saved locally is lost.
-2. Copy `apps/main/.env.example` to `apps/main/.env.local` and fill in the blanks.
-3. Run `pnpm dev` and sign in at `/sign-in` with `admin@lornsamnang.com` / `admin123`.
+Schema-change rules, migrations and the production database steps are in [`packages/db/README.md`](./packages/db/README.md).
 
-## Portfolio CMS
+## Admin Site (CMS)
 
-A password-protected dashboard (`/dashboard`, gated by Better Auth) lets the site owner manage every piece of content shown on the public portfolio, no redeploy required.
+A password-protected dashboard (Better Auth, sign-up disabled) lets the site owner manage every piece of content shown on the Main and Blog Sites, no redeploy required.
 
 |                                            |                                            |
 | ------------------------------------------ | ------------------------------------------ |
@@ -49,26 +86,30 @@ Content types managed from the CMS:
 - **Experience** — work history with company, role, and period
 - **Education** — schools, degrees, and dates
 - **Projects** — title, description, tech stack, thumbnail, and active/inactive status
+- **Blog** — Posts with a rich-text editor, cover image, category, and draft/published status
 - **Socials** — social links with logos
 - **Recommendations** — testimonials with reviewer photo and details
 - **Images** — a Cloudinary-backed media library (folder-organized) used across all the forms above
-- **App Config** — maintenance mode banner and portfolio theme (Modern / Wireframe)
+- **App Config** — maintenance mode banner and site theme (Modern / Wireframe), applied to the Main and Blog Sites
 
 ## Tech Stack
 
-- Next.js App Router with Turbopack
-- React Server Components + Suspense patterns
-- Tailwind CSS 4 + custom motion/3D utilities
-- TipTap editor extensions for content tooling
-- Drizzle ORM + Lucia auth integrations
+- Next.js 16 App Router with Turbopack, React 19 Server Components
+- Tailwind CSS 4, Framer Motion
+- Drizzle ORM on Postgres (Neon in production)
+- Better Auth (Admin Site only)
+- Tiptap rich-text editor (Admin Site only)
+- Cloudinary for images
+- pnpm workspaces
 
 ## Deployment
 
-Deploy to Vercel or any Next.js-compatible platform:
+Each Site is its own Vercel project on the same repository, with its Root Directory set to `apps/main`, `apps/blog` or `apps/admin`. Only the `main` branch deploys: each Site's `vercel.json` turns off deployments for every other branch, so there are no preview deployments.
 
-```bash
-pnpm build
-pnpm --filter @portfolio/main start
-```
+| Site | Environment variables |
+| --- | --- |
+| Main | `DATABASE_URL` (`portfolio_public`), `REVALIDATE_SECRET`, `NEXT_PUBLIC_MAIN_URL`, `NEXT_PUBLIC_BLOG_URL` |
+| Blog | same as Main |
+| Admin | `DATABASE_URL` (`portfolio_admin`), `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET`, `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET`, `IMAGE_FOLDER`, `REVALIDATE_SECRET`, `MAIN_SITE_URL`, `BLOG_SITE_URL` |
 
-On Vercel, set Root Directory to `apps/main`. Ensure environment variables match your deployment target (database, auth, analytics).
+`REVALIDATE_SECRET` must be the same on all three. Builds never run migrations: they're rehearsed locally and run by hand with the database owner credential, which is never stored in Vercel.

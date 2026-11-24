@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
 import { Badge } from "@portfolio/ui/badge";
 import { Card, CardHeader } from "@portfolio/ui/card";

@@ -6,7 +6,7 @@ import { NavBar } from "@/components/navbar";
 import { Projects } from "@/features/project/components/project-section";
 import { Recommendations } from "@/features/recommendations/components/recommendations-section";
 import { Skills } from "@/features/skills/components/skills-section";
-import { MaintenanceBanner } from "@/components/maintenance-banner";
+import { MaintenanceBanner } from "@portfolio/ui/maintenance-banner";
 import { WireframeHome } from "@portfolio/wireframe/wireframe-home";
 import { MasonryGallery } from "@portfolio/ui/masonry-gallery";
 import { getAppConfig } from "@/features/app-config/queries";
@@ -84,7 +84,8 @@ export default async function Home() {
                 src: imageUrl,
                 alt: `Gallery image ${index + 1}`,
                 width: 400,
-                height: Math.floor(Math.random() * 300) + 400,
+                // Varied but stable: random heights would differ between renders.
+                height: 400 + ((index * 137) % 300),
               }))}
               className="max-w-full"
               gap="gap-3"

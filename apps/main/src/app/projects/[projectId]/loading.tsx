@@ -1,4 +1,3 @@
-import { getAppConfig } from "@/features/app-config/queries";
 import { Skel } from "@portfolio/wireframe/wireframe-home-skeleton";
 
 function WireframeProjectDetailSkeleton() {
@@ -100,15 +99,15 @@ function WireframeProjectDetailSkeleton() {
   );
 }
 
-export default async function Loading() {
-  const config = await getAppConfig();
-
-  if (config.theme === "wireframe") {
-    return <WireframeProjectDetailSkeleton />;
-  }
-
+// No database read here, so the fallback shows instantly: both themes' skeletons
+// render and the theme class on <html> (set by the root layout) hides one.
+export default function Loading() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <>
+      <div className="[html:not(.wireframe)_&]:hidden">
+        <WireframeProjectDetailSkeleton />
+      </div>
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 [html.wireframe_&]:hidden">
       <div className="h-8 bg-gray-200 rounded w-1/3 animate-pulse" />
       <div className="h-64 bg-gray-200 rounded animate-pulse" />
       <div className="space-y-3">
@@ -117,5 +116,6 @@ export default async function Loading() {
         <div className="h-4 bg-gray-200 rounded w-4/5 animate-pulse" />
       </div>
     </div>
+    </>
   );
 }

@@ -12,43 +12,9 @@ import { WireframeGallery } from "./wireframe-gallery";
 import { WireframeBlogHome } from "./wireframe-blog-home";
 import type { WireframeBlogPostSummary } from "./wireframe-blog-card";
 import { WireframeFooter } from "./wireframe-footer";
+import { HOME_EDGE_SELECTORS, observeReveals, paintEdges, Wobble } from "./wireframe-sketch";
 
-const WOBBLE = (
-  <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-    <defs>
-      <filter id="wobble">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.014 0.022"
-          numOctaves={2}
-          seed={7}
-          result="n"
-        />
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="n"
-          scale={3}
-          xChannelSelector="R"
-          yChannelSelector="G"
-        />
-      </filter>
-    </defs>
-  </svg>
-);
 
-function paintEdges(root: HTMLElement) {
-  root
-    .querySelectorAll(
-      ".wf-sketch, .wf-photo, .wf-chip, .wf-btn, .wf-xp, .wf-badge, .wf-proj, .wf-edu-card, .wf-quote",
-    )
-    .forEach((el) => {
-      if (!el.querySelector(":scope > .wf-edge")) {
-        const edge = document.createElement("div");
-        edge.className = "wf-edge";
-        el.insertBefore(edge, el.firstChild);
-      }
-    });
-}
 
 export function WireframeHome({
   profile,
@@ -70,19 +36,12 @@ export function WireframeHome({
 
   useEffect(() => {
     if (!rootRef.current) return;
-    paintEdges(rootRef.current);
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            revealedEls.current.add(e.target);
-            io.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
-    );
-    rootRef.current.querySelectorAll(".wf-reveal").forEach((el) => io.observe(el));
+    paintEdges(rootRef.current, HOME_EDGE_SELECTORS);
+    const io = observeReveals(rootRef.current, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -8% 0px",
+      onReveal: (el) => revealedEls.current.add(el),
+    });
     return () => io.disconnect();
   }, []);
 
@@ -93,7 +52,7 @@ export function WireframeHome({
 
   return (
     <div className="sketch-page" ref={rootRef}>
-      {WOBBLE}
+      <Wobble />
       <WireframeHero
         name={profile.name}
         isAvailable={profile.isAvailable}

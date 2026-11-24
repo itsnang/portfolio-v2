@@ -3,7 +3,6 @@
 import { FolderSelector } from "@/features/media/components/folder-selector";
 import { Button } from "@portfolio/ui/button";
 import { Card, CardContent } from "@portfolio/ui/card";
-import { getCurrentUser } from "@/lib/auth/get-current-user";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,7 +11,6 @@ import { useImages } from "@/features/media/hooks/use-images";
 
 function Page() {
   const [selectedFolder, setSelectedFolder] = useState<string>("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const {
     data: images = [],
@@ -21,24 +19,10 @@ function Page() {
   } = useImages(selectedFolder);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const user = await getCurrentUser();
-      if (user) {
-        setIsAuthenticated(true);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
     if (isError) {
       toast.error("Failed to load images");
     }
   }, [isError]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   return (
     <div className="mt-6 mx-4 dark:text-white">

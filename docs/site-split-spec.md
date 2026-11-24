@@ -76,7 +76,7 @@ Each Site still needs its own `postcss.config.mjs`, and Sites consuming `.scss` 
 | `getProjects`, `getExperiences`, a small profile query | Admin Site |
 
 - Functions in `@portfolio/db/queries` take a `db` client as an argument. Each Site has a one-line wrapper that passes its own client and applies `cache()`, for example `export const getAppConfig = cache(() => queries.getAppConfig(db))` (#152).
-- Every Admin Site read is auth-checked inside the read: plain `server-only` when only Server Components call it, `withAuthAction` when client code does.
+- Every Admin Site read is auth-checked inside the read: `server-only` reads in each slice's `admin-queries.ts` behind `requireAuth()`, and session-checked route handlers (`/api/images`, `/api/image-folders`) when client code reads.
 - `getExperienceById` and `getProjectById` are deleted.
 
 ## Access (#140)
@@ -97,7 +97,7 @@ Each Site still needs its own `postcss.config.mjs`, and Sites consuming `.scss` 
 - Roles and grants live in one idempotent SQL file in `packages/db`, run with the owner credential. Passwords stay out of the repo.
 - The client factory requires `max`. Each Site starts at `max: 5` with an idle timeout.
 - The session cookie stays on `admin.lornsamnang.com`, cross-subdomain cookies stay off, and that host is the only trusted origin.
-- The Admin Site has no preview deployments. Main and Blog previews use `portfolio_public` and a preview-only `REVALIDATE_SECRET`.
+- No Site has preview deployments: each Site's `vercel.json` sets `git.deploymentEnabled` so only `main` deploys. (Originally Main and Blog previews were to use `portfolio_public` and a preview-only `REVALIDATE_SECRET`; dropped at step 6 because previews had no database credential and adding one meant rotating the live `portfolio_public` password.)
 
 ## Keeping public pages fresh (#139)
 
@@ -216,8 +216,7 @@ Admin Site action
 - Whether the live database matches the code, including whether `blog_post.category` exists.
 - The current database's connection limit under three Sites, so `max: 5` is a starting value. If the Railway move in #154 happens later, recheck this there.
 - That `main` is the Vercel production branch, inferred from merge history.
-- Which database current preview deployments use. This should be checked now.
-- Which Vercel plan this account is on, what instant rollback allows on it, and whether per-branch deployment can be disabled.
+- Which Vercel plan this account is on and what instant rollback allows on it. (Per-branch deployment can be disabled: `git.deploymentEnabled`.)
 - `next dev` across packages, refresh behaviour, and the 3-second timeout. Nothing was built or deployed.
 - The count of admin-only `ui` files, which came from a search.
 - That a service worker was ever live in production, and the no-op worker in Chrome and Safari (#137).

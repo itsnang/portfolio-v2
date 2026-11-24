@@ -1,50 +1,23 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { TbAppConfig, appConfigInsertSchema, type AppConfigInsert } from "@portfolio/db/schema";
+
 import { db } from "@/db/drizzle";
-import { TbAppConfig, appConfigInsertSchema, AppConfigInsert } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
-import { getAppConfig } from "@/features/app-config/queries";
+import { adminAction, parseInput } from "@/lib/admin-action";
 
-export const getAppConfigAction = withAuthAction(async () => {
-  return {
-    success: true,
-    data: await getAppConfig(),
-  };
-});
-
-export const updateAppConfigAction = withAuthAction(
-  async (_auth, data: AppConfigInsert) => {
-    try {
-      const validated = appConfigInsertSchema.safeParse(data);
-      if (!validated.success) {
-        throw new Error("Invalid config data");
-      }
-
-      const result = await db
-        .insert(TbAppConfig)
-        .values({ id: "config", ...data })
-        .onConflictDoUpdate({
-          target: TbAppConfig.id,
-          set: {
-            maintenance: data.maintenance,
-            theme: data.theme,
-            updatedAt: new Date(),
-          },
-        })
-        .returning();
-
-      // Theme + maintenance mode are read on every public page — revalidate all of them.
-      revalidatePath("/dashboard/config");
-      const warning = await refreshPublicSites({ resource: "app-config" });
-
-      return { warning, success: true, data: result[0], message: "Config updated" };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false, error: error.message };
-      }
-      return { success: false, error: "Failed to update config" };
-    }
+export const updateAppConfigAction = adminAction(
+  "Failed to update config",
+  async (_ctx, input: AppConfigInsert) => {
+    const { maintenance, theme } = parseInput(appConfigInsertSchema, input, "Invalid config data");
+    const [config] = await db
+      .insert(TbAppConfig)
+      .values({ id: "config", maintenance, theme })
+      .onConflictDoUpdate({
+        target: TbAppConfig.id,
+        set: { maintenance, theme, updatedAt: new Date() },
+      })
+      .returning();
+    // Theme and maintenance mode are read on every public page.
+    return { data: config, message: "Config updated", dashboardPath: "/dashboard/config", refresh: { resource: "app-config" } };
   }
 );

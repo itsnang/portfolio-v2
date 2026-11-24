@@ -1,91 +1,44 @@
 "use server";
 
+import { and, eq, isNull } from "drizzle-orm";
+import { type ExperiencesInsert, experiencesInsertSchema, TbExperiences } from "@portfolio/db/schema";
+
 import { db } from "@/db/drizzle";
-import { ExperiencesInsert, experiencesInsertSchema, TbExperiences } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
-import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
-export const insertExperiences = withAuthAction(
-  async (auth, experience: ExperiencesInsert) => {
-    if (!auth.profile) {
-      return {
-        success: false as const,
-        error: "Profile not found. Please create a profile first.",
-      };
-    }
+const dashboardPath = "/dashboard/experience";
+// Experience appears on the home page only.
+const refresh = { resource: "profile" } as const;
 
-    const validated = experiencesInsertSchema.safeParse({
-      ...experience,
-      userId: auth.profile.id,
-    });
-    if (!validated.success) {
-      return { success: false as const, error: "Invalid experience data" };
-    }
-
-    try {
-      const [created] = await db
-        .insert(TbExperiences)
-        .values(validated.data)
-        .returning({ id: TbExperiences.id });
-
-      revalidatePath("/dashboard/experience");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: created,
-        message: "Experience added successfully",
-      };
-    } catch (error) {
-      console.error("Error inserting experience:", error);
-      return { success: false as const, error: "Failed to add experience" };
-    }
+export const createExperienceAction = adminAction(
+  "Failed to add experience",
+  async ({ profile }, experience: ExperiencesInsert) => {
+    const values = parseInput(
+      experiencesInsertSchema,
+      { ...experience, userId: profile.id },
+      "Invalid experience data"
+    );
+    const [created] = await db.insert(TbExperiences).values(values).returning({ id: TbExperiences.id });
+    return { data: created, message: "Experience added successfully", dashboardPath, refresh };
   }
 );
 
-export const updateExperience = withAuthAction(
-  async (auth, id: string, experience: ExperiencesInsert) => {
-    if (!auth.profile) {
-      return { success: false as const, error: "Profile not found." };
-    }
-
-    const validated = experiencesInsertSchema.safeParse({
-      ...experience,
-      userId: auth.profile.id,
-    });
-    if (!validated.success) {
-      return { success: false as const, error: "Invalid experience data" };
-    }
-
-    try {
-      const [updated] = await db
-        .update(TbExperiences)
-        .set({
-          ...validated.data,
-          updatedAt: new Date(),
-        })
-        .where(eq(TbExperiences.id, id))
-        .returning({ id: TbExperiences.id });
-
-      if (!updated) {
-        return { success: false as const, error: "Experience not found" };
-      }
-
-      revalidatePath("/dashboard/experience");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: updated,
-        message: "Experience updated successfully",
-      };
-    } catch (error) {
-      console.error("Error updating experience:", error);
-      return { success: false as const, error: "Failed to update experience" };
-    }
+export const updateExperienceAction = adminAction(
+  "Failed to update experience",
+  async ({ profile }, id: string, experience: ExperiencesInsert) => {
+    const values = parseInput(
+      experiencesInsertSchema,
+      { ...experience, userId: profile.id },
+      "Invalid experience data"
+    );
+    const [updated] = await db
+      .update(TbExperiences)
+      .set({ ...values, updatedAt: new Date() })
+      .where(
+        and(eq(TbExperiences.id, id), eq(TbExperiences.userId, profile.id), isNull(TbExperiences.deletedAt))
+      )
+      .returning({ id: TbExperiences.id });
+    if (!updated) throw new ActionError("Experience not found");
+    return { data: updated, message: "Experience updated successfully", dashboardPath, refresh };
   }
 );

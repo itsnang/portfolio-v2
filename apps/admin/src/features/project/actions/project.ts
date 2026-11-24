@@ -1,123 +1,64 @@
 "use server";
 
+import { and, eq, isNull } from "drizzle-orm";
+import { projecInsertSchema, type ProjectInsert, TbProject } from "@portfolio/db/schema";
+
 import { db } from "@/db/drizzle";
-import { projecInsertSchema, ProjectInsert, TbProject } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
-import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
-export const createProjectAction = withAuthAction(
-  async (auth, project: ProjectInsert) => {
-    try {
-      const validated = projecInsertSchema.safeParse(project);
-      if (!validated.success) {
-        throw new Error("Invalid project data");
-      }
+const dashboardPath = "/dashboard/project";
 
-      if (!auth.profile) {
-        throw new Error("Profile not found. Please create a profile first.");
-      }
+const ownProject = (id: string, profileId: string) =>
+  and(eq(TbProject.id, id), eq(TbProject.profileId, profileId), isNull(TbProject.deletedAt));
 
-      const projectData = await db
-        .insert(TbProject)
-        .values({ ...project, profileId: auth.profile.id })
-        .returning();
+/** The parsed project without a client-controlled owner: a project's owner never changes. */
+function parseProject(project: ProjectInsert) {
+  const { profileId: _owner, ...values } = parseInput(projecInsertSchema, project, "Invalid project data");
+  return values;
+}
 
-      revalidatePath("/dashboard/project");
-      const warning = await refreshPublicSites({ resource: "project" });
-
-      return {
-        warning,
-        success: true,
-        data: projectData,
-        message: "Project created successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false, error: error.message };
-      }
-      return { success: false, error: "Failed to create project" };
-    }
+export const createProjectAction = adminAction(
+  "Failed to create project",
+  async ({ profile }, project: ProjectInsert) => {
+    const [created] = await db
+      .insert(TbProject)
+      .values({ ...parseProject(project), profileId: profile.id })
+      .returning();
+    return {
+      data: created,
+      message: "Project created successfully",
+      dashboardPath,
+      refresh: { resource: "project", slugs: [created.id] },
+    };
   }
 );
 
-export const updateProjectAction = withAuthAction(
-  async (auth, id: string, project: ProjectInsert) => {
-    try {
-      const validated = projecInsertSchema.safeParse(project);
-      if (!validated.success) {
-        throw new Error("Invalid project data");
-      }
-
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const existingProject = await db.query.TbProject.findFirst({
-        where: (projectRow, { eq, and }) =>
-          and(eq(projectRow.id, id), eq(projectRow.profileId, auth.profile!.id)),
-      });
-
-      if (!existingProject) {
-        throw new Error("Project not found");
-      }
-
-      // profileId is never client-controlled — a project's owner can't change.
-      const { profileId: _ignoredProfileId, ...safeProject } = project;
-
-      const updatedProject = await db
-        .update(TbProject)
-        .set(safeProject)
-        .where(
-          and(eq(TbProject.id, id), eq(TbProject.profileId, auth.profile.id))
-        )
-        .returning();
-
-      revalidatePath("/dashboard/project");
-      const warning = await refreshPublicSites({ resource: "project", slugs: [id] });
-
-      return {
-        warning,
-        success: true,
-        data: updatedProject,
-        message: "Project updated successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false, error: error.message };
-      }
-      return { success: false, error: "Failed to update project" };
-    }
+export const updateProjectAction = adminAction(
+  "Failed to update project",
+  async ({ profile }, id: string, project: ProjectInsert) => {
+    const [updated] = await db
+      .update(TbProject)
+      .set(parseProject(project))
+      .where(ownProject(id, profile.id))
+      .returning();
+    if (!updated) throw new ActionError("Project not found");
+    return {
+      data: updated,
+      message: "Project updated successfully",
+      dashboardPath,
+      refresh: { resource: "project", slugs: [id] },
+    };
   }
 );
 
-export const reorderProjectsAction = withAuthAction(
-  async (auth, items: { id: string; sortOrder: number }[]) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-      const profileId = auth.profile.id;
-
-      await Promise.all(
-        items.map(({ id, sortOrder }) =>
-          db
-            .update(TbProject)
-            .set({ sortOrder })
-            .where(and(eq(TbProject.id, id), eq(TbProject.profileId, profileId)))
-        )
-      );
-
-      revalidatePath("/dashboard/project");
-      const warning = await refreshPublicSites({ resource: "project" });
-
-      return { warning, success: true, message: "Projects reordered" };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false, error: error.message };
-      }
-      return { success: false, error: "Failed to reorder projects" };
-    }
+export const reorderProjectsAction = adminAction(
+  "Failed to reorder projects",
+  async ({ profile }, items: { id: string; sortOrder: number }[]) => {
+    await Promise.all(
+      items.map(({ id, sortOrder }) =>
+        db.update(TbProject).set({ sortOrder }).where(ownProject(id, profile.id))
+      )
+    );
+    return { data: undefined, message: "Projects reordered", dashboardPath, refresh: { resource: "project" } };
   }
 );

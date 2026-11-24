@@ -1,14 +1,12 @@
 "use client";
 
-import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
+import { useEditorSheet } from "@/lib/use-editor-sheet";
+import { showActionResult } from "@/lib/use-run-action";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { PencilIcon } from "lucide-react";
 
-import { BlogPost } from "@/features/blog/schemas";
-import { deleteBlogPostAction } from "@/features/blog/actions";
+import { BlogPost } from "@portfolio/db/schema";
+import { deleteBlogPostAction } from "@/features/blog/actions/blog";
 import { Button } from "@portfolio/ui/button";
 import { Badge } from "@portfolio/ui/badge";
 import { DeleteConfirmButton } from "@/components/delete-confirm-button";
@@ -21,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useImages } from "@/features/media/hooks/use-images";
 import BlogForm from "@/features/blog/components/blog-form";
 
 const EMPTY_STATE_MESSAGE = "No blog posts yet. Write your first post below.";
@@ -52,42 +49,18 @@ interface BlogTableProps {
 }
 
 export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
-  const router = useRouter();
-  const { data: images = [] } = useImages();
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-
-  function openCreate() {
-    setEditingPost(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(post: BlogPost) {
-    setEditingPost(post);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
+  const sheet = useEditorSheet<BlogPost>();
 
   async function handleDelete(id: string) {
     const result = await deleteBlogPostAction(id);
-    if (!result.success) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success(result.message);
-    toastRefreshWarning(result);
-    router.refresh();
+    showActionResult(result);
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Blog</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Post
         </Button>
       </div>
@@ -130,7 +103,7 @@ export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
                           variant="ghost"
                           size="icon"
                           aria-label={`Edit ${post.title}`}
-                          onClick={() => openEdit(post)}
+                          onClick={() => sheet.openEdit(post)}
                         >
                           <PencilIcon className="h-4 w-4" />
                         </Button>
@@ -161,7 +134,7 @@ export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
                       variant="ghost"
                       size="icon"
                       aria-label={`Edit ${post.title}`}
-                      onClick={() => openEdit(post)}
+                      onClick={() => sheet.openEdit(post)}
                     >
                       <PencilIcon className="h-4 w-4" />
                     </Button>
@@ -182,21 +155,20 @@ export const BlogTable = ({ posts, blogUrl }: BlogTableProps) => {
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingPost ? "Edit Post" : "Write New Post"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Post" : "Write New Post"}
         description={
-          editingPost
+          sheet.editing
             ? "Update this post."
             : "Create a new blog post for your portfolio."
         }
       >
         <BlogForm
-          key={editingPost?.id ?? "create"}
-          images={images}
+          key={sheet.editing?.id ?? "create"}
           blogUrl={blogUrl}
-          initialData={editingPost ?? undefined}
-          onSuccess={handleFormSuccess}
+          initialData={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

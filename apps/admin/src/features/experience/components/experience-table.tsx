@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Experiences } from "@/features/experience/schemas";
+import { useEditorSheet } from "@/lib/use-editor-sheet";
+
+import { Experiences } from "@portfolio/db/schema";
 import { convertDate } from "@portfolio/ui/convert-date";
 import { Button } from "@portfolio/ui/button";
 import { PencilIcon } from "lucide-react";
@@ -18,38 +18,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
 import { Badge } from "@portfolio/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
-import { useImages } from "@/features/media/hooks/use-images";
 
 interface ExperienceTableProps {
   experiences: Experiences[];
 }
 
 export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
-  const router = useRouter();
-  const { data: images = [] } = useImages();
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Experiences | null>(null);
-
-  function openCreate() {
-    setEditingItem(null);
-    setSheetOpen(true);
-  }
-
-  function openEdit(item: Experiences) {
-    setEditingItem(item);
-    setSheetOpen(true);
-  }
-
-  function handleFormSuccess() {
-    setSheetOpen(false);
-    router.refresh();
-  }
+  const sheet = useEditorSheet<Experiences>();
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Experience</h2>
-        <Button variant="outline" size="sm" onClick={openCreate}>
+        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
           Add Experience
         </Button>
       </div>
@@ -103,7 +84,7 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
                           variant="ghost"
                           size="icon"
                           aria-label={`Edit ${experience.title} at ${experience.company}`}
-                          onClick={() => openEdit(experience)}
+                          onClick={() => sheet.openEdit(experience)}
                         >
                           <PencilIcon className="h-4 w-4" />
                         </Button>
@@ -137,7 +118,7 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
                     variant="ghost"
                     size="icon"
                     aria-label={`Edit ${experience.title} at ${experience.company}`}
-                    onClick={() => openEdit(experience)}
+                    onClick={() => sheet.openEdit(experience)}
                   >
                     <PencilIcon className="h-4 w-4" />
                   </Button>
@@ -165,20 +146,19 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
       )}
 
       <FormSheet
-        open={sheetOpen}
-        onOpenChange={setSheetOpen}
-        title={editingItem ? "Edit Experience" : "Add Experience"}
+        open={sheet.open}
+        onOpenChange={sheet.setOpen}
+        title={sheet.editing ? "Edit Experience" : "Add Experience"}
         description={
-          editingItem
+          sheet.editing
             ? "Update this work experience."
             : "Add a new role to your portfolio."
         }
       >
         <ExperienceForm
-          key={editingItem?.id ?? "create"}
-          images={images}
-          initialData={editingItem ?? undefined}
-          onSuccess={handleFormSuccess}
+          key={sheet.editing?.id ?? "create"}
+          initialData={sheet.editing ?? undefined}
+          onSuccess={sheet.close}
         />
       </FormSheet>
     </div>

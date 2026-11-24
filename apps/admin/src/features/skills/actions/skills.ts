@@ -1,136 +1,43 @@
 "use server";
 
-import { and, desc, eq, isNull } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { and, eq, isNull } from "drizzle-orm";
+import { skillsInsertSchema, type SkillsFormValues, TbSkills } from "@portfolio/db/schema";
 
 import { db } from "@/db/drizzle";
-import { skillsInsertSchema, type SkillsFormValues, TbSkills } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
-export const getSkills = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbSkills.findMany({
-    where: and(
-      eq(TbSkills.userId, auth.profile.id),
-      isNull(TbSkills.deletedAt)
-    ),
-    orderBy: [desc(TbSkills.createdAt)],
-  });
-});
+const dashboardPath = "/dashboard/skills";
+// Skills appear on the home page only.
+const refresh = { resource: "profile" } as const;
 
-export const createSkillAction = withAuthAction(
-  async (auth, skill: SkillsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found. Please create a profile first.");
-      }
+const ownSkill = (id: string, profileId: string) =>
+  and(eq(TbSkills.id, id), eq(TbSkills.userId, profileId), isNull(TbSkills.deletedAt));
 
-      const validated = skillsInsertSchema.safeParse({
-        ...skill,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid skill data");
-      }
-
-      const [created] = await db
-        .insert(TbSkills)
-        .values(validated.data)
-        .returning();
-
-      revalidatePath("/dashboard/skills");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: created,
-        message: "Skill added successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to add skill" };
-    }
+export const createSkillAction = adminAction(
+  "Failed to add skill",
+  async ({ profile }, skill: SkillsFormValues) => {
+    const values = parseInput(skillsInsertSchema, { ...skill, userId: profile.id }, "Invalid skill data");
+    const [created] = await db.insert(TbSkills).values(values).returning();
+    return { data: created, message: "Skill added successfully", dashboardPath, refresh };
   }
 );
 
-export const updateSkillAction = withAuthAction(
-  async (auth, id: string, skill: SkillsFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const validated = skillsInsertSchema.safeParse({
-        ...skill,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid skill data");
-      }
-
-      const existing = await db.query.TbSkills.findFirst({
-        where: and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id)),
-      });
-      if (!existing) {
-        throw new Error("Skill not found");
-      }
-
-      const [updated] = await db
-        .update(TbSkills)
-        .set(validated.data)
-        .where(
-          and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id))
-        )
-        .returning();
-
-      revalidatePath("/dashboard/skills");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: updated,
-        message: "Skill updated successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to update skill" };
-    }
+export const updateSkillAction = adminAction(
+  "Failed to update skill",
+  async ({ profile }, id: string, skill: SkillsFormValues) => {
+    const values = parseInput(skillsInsertSchema, { ...skill, userId: profile.id }, "Invalid skill data");
+    const [updated] = await db.update(TbSkills).set(values).where(ownSkill(id, profile.id)).returning();
+    if (!updated) throw new ActionError("Skill not found");
+    return { data: updated, message: "Skill updated successfully", dashboardPath, refresh };
   }
 );
 
-export const deleteSkillAction = withAuthAction(async (auth, id: string) => {
-  try {
-    if (!auth.profile) {
-      throw new Error("Profile not found.");
-    }
-
-    const existing = await db.query.TbSkills.findFirst({
-      where: and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id)),
-    });
-    if (!existing) {
-      throw new Error("Skill not found");
-    }
-
-    await db
-      .update(TbSkills)
-      .set({ deletedAt: new Date() })
-      .where(and(eq(TbSkills.id, id), eq(TbSkills.userId, auth.profile.id)));
-
-    revalidatePath("/dashboard/skills");
-    const warning = await refreshPublicSites({ resource: "profile" });
-
-    return { warning, success: true as const, message: "Skill deleted" };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false as const, error: error.message };
-    }
-    return { success: false as const, error: "Failed to delete skill" };
-  }
+export const deleteSkillAction = adminAction("Failed to delete skill", async ({ profile }, id: string) => {
+  const [deleted] = await db
+    .update(TbSkills)
+    .set({ deletedAt: new Date() })
+    .where(ownSkill(id, profile.id))
+    .returning({ id: TbSkills.id });
+  if (!deleted) throw new ActionError("Skill not found");
+  return { data: undefined, message: "Skill deleted", dashboardPath, refresh };
 });

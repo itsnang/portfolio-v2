@@ -8,7 +8,7 @@ interface SeoProps {
   imageUrl?: string;
 }
 
-export const generateMetadata = ({
+export const buildMetadata = ({
   title = 'Lorn Samnang | Software Developer',
   description = 'Discover the portfolio of Lorn Samnang, a passionate software developer creating innovative and meaningful digital experiences. Explore projects, skills, and professional journey.',
   keywords = [
@@ -65,11 +65,5 @@ export const generateMetadata = ({
       canonical: mainUrl,
     },
     category: 'technology',
-    manifest: '/manifest.json',
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: 'default',
-      title: "Lorn Samnang's Portfolio",
-    },
   };
 };

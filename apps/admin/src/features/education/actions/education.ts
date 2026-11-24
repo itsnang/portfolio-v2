@@ -1,144 +1,43 @@
 "use server";
 
-import { and, desc, eq, isNull } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { refreshPublicSites } from "@/lib/refresh-public-sites";
+import { and, eq, isNull } from "drizzle-orm";
+import { educationInsertSchema, type EducationFormValues, TbEducation } from "@portfolio/db/schema";
 
 import { db } from "@/db/drizzle";
-import { educationInsertSchema, type EducationFormValues, TbEducation } from "@portfolio/db/schema";
-import { withAuthAction } from "@/lib/auth/middleware";
+import { ActionError, adminAction, parseInput } from "@/lib/admin-action";
 
-export const getEducations = withAuthAction(async (auth) => {
-  if (!auth.profile) return [];
-  return db.query.TbEducation.findMany({
-    where: and(
-      eq(TbEducation.userId, auth.profile.id),
-      isNull(TbEducation.deletedAt)
-    ),
-    orderBy: [desc(TbEducation.startDate)],
-  });
+const dashboardPath = "/dashboard/education";
+// Education appears on the home page only.
+const refresh = { resource: "profile" } as const;
+
+const ownEducation = (id: string, profileId: string) =>
+  and(eq(TbEducation.id, id), eq(TbEducation.userId, profileId), isNull(TbEducation.deletedAt));
+
+export const createEducationAction = adminAction(
+  "Failed to add education",
+  async ({ profile }, input: EducationFormValues) => {
+    const values = parseInput(educationInsertSchema, { ...input, userId: profile.id }, "Invalid education data");
+    const [created] = await db.insert(TbEducation).values(values).returning();
+    return { data: created, message: "Education added successfully", dashboardPath, refresh };
+  }
+);
+
+export const updateEducationAction = adminAction(
+  "Failed to update education",
+  async ({ profile }, id: string, input: EducationFormValues) => {
+    const values = parseInput(educationInsertSchema, { ...input, userId: profile.id }, "Invalid education data");
+    const [updated] = await db.update(TbEducation).set(values).where(ownEducation(id, profile.id)).returning();
+    if (!updated) throw new ActionError("Education entry not found");
+    return { data: updated, message: "Education updated successfully", dashboardPath, refresh };
+  }
+);
+
+export const deleteEducationAction = adminAction("Failed to delete education", async ({ profile }, id: string) => {
+  const [deleted] = await db
+    .update(TbEducation)
+    .set({ deletedAt: new Date() })
+    .where(ownEducation(id, profile.id))
+    .returning({ id: TbEducation.id });
+  if (!deleted) throw new ActionError("Education entry not found");
+  return { data: undefined, message: "Education deleted", dashboardPath, refresh };
 });
-
-export const createEducationAction = withAuthAction(
-  async (auth, education: EducationFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found. Please create a profile first.");
-      }
-
-      const validated = educationInsertSchema.safeParse({
-        ...education,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid education data");
-      }
-
-      const [created] = await db
-        .insert(TbEducation)
-        .values(validated.data)
-        .returning();
-
-      revalidatePath("/dashboard/education");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: created,
-        message: "Education added successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to add education" };
-    }
-  }
-);
-
-export const updateEducationAction = withAuthAction(
-  async (auth, id: string, education: EducationFormValues) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const validated = educationInsertSchema.safeParse({
-        ...education,
-        userId: auth.profile.id,
-      });
-      if (!validated.success) {
-        throw new Error("Invalid education data");
-      }
-
-      const existing = await db.query.TbEducation.findFirst({
-        where: and(
-          eq(TbEducation.id, id),
-          eq(TbEducation.userId, auth.profile.id)
-        ),
-      });
-      if (!existing) {
-        throw new Error("Education entry not found");
-      }
-
-      const [updated] = await db
-        .update(TbEducation)
-        .set(validated.data)
-        .where(
-          and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id))
-        )
-        .returning();
-
-      revalidatePath("/dashboard/education");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return {
-        warning,
-        success: true as const,
-        data: updated,
-        message: "Education updated successfully",
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to update education" };
-    }
-  }
-);
-
-export const deleteEducationAction = withAuthAction(
-  async (auth, id: string) => {
-    try {
-      if (!auth.profile) {
-        throw new Error("Profile not found.");
-      }
-
-      const existing = await db.query.TbEducation.findFirst({
-        where: and(
-          eq(TbEducation.id, id),
-          eq(TbEducation.userId, auth.profile.id)
-        ),
-      });
-      if (!existing) {
-        throw new Error("Education entry not found");
-      }
-
-      await db
-        .update(TbEducation)
-        .set({ deletedAt: new Date() })
-        .where(and(eq(TbEducation.id, id), eq(TbEducation.userId, auth.profile.id)));
-
-      revalidatePath("/dashboard/education");
-      const warning = await refreshPublicSites({ resource: "profile" });
-
-      return { warning, success: true as const, message: "Education deleted" };
-    } catch (error) {
-      if (error instanceof Error) {
-        return { success: false as const, error: error.message };
-      }
-      return { success: false as const, error: "Failed to delete education" };
-    }
-  }
-);
