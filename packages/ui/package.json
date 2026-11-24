@@ -7,7 +7,7 @@
     "./date-utils": "./src/date-utils.ts",
     "./convert-date": "./src/convert-date.ts",
     "./icons": "./src/icons.tsx",
-    "./fonts": "./src/fonts.ts",
+    "./fonts": "./src/fonts/index.ts",
     "./base.css": "./src/styles/base.css",
     "./tiptap-node/*": "./src/tiptap-node/*",
     "./*": "./src/components/*.tsx"
