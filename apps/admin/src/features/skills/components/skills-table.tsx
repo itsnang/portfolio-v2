@@ -1,165 +1,48 @@
 "use client";
 
+import type { Skills } from "@portfolio/db/schema";
+
+import { AddButton, ContentList, ContentRow, ListHeader, RowMedia, RowStatus } from "@/components/content-list";
+import { FormSheet } from "@/components/form-sheet";
+import { deleteSkillAction } from "@/features/skills/actions/skills";
+import { SkillForm } from "@/features/skills/components/skill-form";
 import { useEditorSheet } from "@/lib/use-editor-sheet";
 import { showActionResult } from "@/lib/use-run-action";
 
-import { PencilIcon } from "lucide-react";
-import Image from "next/image";
-
-import { deleteSkillAction } from "@/features/skills/actions/skills";
-import { SkillForm } from "@/features/skills/components/skill-form";
-import { DeleteConfirmButton } from "@/components/delete-confirm-button";
-import { FormSheet } from "@/components/form-sheet";
-import { Badge } from "@portfolio/ui/badge";
-import { Button } from "@portfolio/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import type { Skills } from "@portfolio/db/schema";
-
-const EMPTY_STATE_MESSAGE = "No skills added yet. Add your first one below.";
-
-interface SkillsTableProps {
-  items: Skills[];
-}
-
-export function SkillsTable({ items }: SkillsTableProps) {
+export function SkillsTable({ items }: { items: Skills[] }) {
   const sheet = useEditorSheet<Skills>();
 
-  async function handleDelete(id: string) {
-    const result = await deleteSkillAction(id);
-    showActionResult(result);
-  }
-
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Skills</h2>
-        <Button variant="outline" size="sm" onClick={sheet.openCreate}>
-          Add Skill
-        </Button>
-      </div>
+    <div>
+      <ListHeader
+        title="Skills"
+        description="The tools and languages on your home page."
+        count={items.length}
+      >
+        <AddButton label="Add skill" onClick={sheet.openCreate} />
+      </ListHeader>
 
-      {items.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          {EMPTY_STATE_MESSAGE}
-        </div>
-      ) : (
-        <>
-          <div className="hidden md:block rounded-md border overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[70px]">Logo</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead className="w-[90px]">Status</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <div className="relative size-12 rounded-md overflow-hidden border bg-muted shrink-0">
-                        <Image
-                          src={item.logoUrl}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{item.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={item.isActive ? "default" : "secondary"}>
-                        {item.isActive ? "Active" : "Inactive"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          aria-label={`Edit ${item.name}`}
-                          onClick={() => sheet.openEdit(item)}
-                        >
-                          <PencilIcon className="h-4 w-4" />
-                        </Button>
-                        <DeleteConfirmButton
-                          itemLabel={item.name}
-                          onConfirm={() => handleDelete(item.id)}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-4">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="rounded-lg border p-4 space-y-3 bg-card"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="relative size-16 rounded-md overflow-hidden border bg-muted shrink-0">
-                    <Image
-                      src={item.logoUrl}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium truncate">{item.name}</h3>
-                    <Badge variant="outline" className="mt-1">
-                      {item.category}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`Edit ${item.name}`}
-                      onClick={() => sheet.openEdit(item)}
-                    >
-                      <PencilIcon className="h-4 w-4" />
-                    </Button>
-                    <DeleteConfirmButton
-                      itemLabel={item.name}
-                      onConfirm={() => handleDelete(item.id)}
-                    />
-                  </div>
-                </div>
-                <Badge variant={item.isActive ? "default" : "secondary"}>
-                  {item.isActive ? "Active" : "Inactive"}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+      <ContentList isEmpty={items.length === 0} emptyMessage="No skills yet.">
+        {items.map((item) => (
+          <ContentRow
+            key={item.id}
+            media={<RowMedia src={item.logoUrl} alt={item.name} />}
+            title={item.name}
+            subtitle={item.category}
+            status={<RowStatus live={item.isActive} label={item.isActive ? "Shown" : "Hidden"} />}
+            onEdit={() => sheet.openEdit(item)}
+            onDelete={async () => {
+              showActionResult(await deleteSkillAction(item.id));
+            }}
+          />
+        ))}
+      </ContentList>
 
       <FormSheet
         open={sheet.open}
         onOpenChange={sheet.setOpen}
-        title={sheet.editing ? "Edit Skill" : "Add Skill"}
-        description={
-          sheet.editing
-            ? "Update this skill."
-            : "Add a skill to your portfolio."
-        }
+        title={sheet.editing ? "Edit skill" : "Add skill"}
+        description={sheet.editing ? "Update this skill." : "Add a skill to your portfolio."}
       >
         <SkillForm
           key={sheet.editing?.id ?? "create"}
