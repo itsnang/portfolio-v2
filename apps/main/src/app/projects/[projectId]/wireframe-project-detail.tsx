@@ -249,7 +249,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                   fontSize: 14,
                 }}
               >
-                //
+                {"//"}
               </span>
               <h2 className="wf-h" style={{ fontSize: 28 }}>
                 The idea
@@ -279,7 +279,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                       fontSize: 14,
                     }}
                   >
-                    //
+                    {"//"}
                   </span>
                   <h2 className="wf-h" style={{ fontSize: 28 }}>
                     Under the hood
@@ -321,6 +321,8 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
               {project.technologies.map((tech) => (
                 <span key={tech.name} className="wf-sketch wf-chip">
                   {tech.logoUrl && (
+                    // A tiny decorative logo from any host; next/image would need every host allow-listed.
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img src={tech.logoUrl} alt="" className="wf-logo" />
                   )}
                   {tech.name}
@@ -357,7 +359,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
                   fontSize: 14,
                 }}
               >
-                //
+                {"//"}
               </span>
               <h2 className="wf-h" style={{ fontSize: 28 }}>
                 More views
@@ -613,7 +615,7 @@ export function WireframeProjectDetail({ project }: { project: Project }) {
           }}
         >
           <div className="wf-eyebrow" style={{ marginBottom: 8 }}>
-            // like what you see?
+            {"// like what you see?"}
           </div>
           <h2 className="wf-h" style={{ fontSize: "clamp(24px, 5vw, 38px)" }}>
             Let&apos;s build something →

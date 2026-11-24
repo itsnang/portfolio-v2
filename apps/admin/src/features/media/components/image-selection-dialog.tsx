@@ -35,13 +35,15 @@ export function ImageSelectionDialog({
     if (isError) toast.error("Failed to load folder images");
   }, [isError]);
 
-  useEffect(() => {
-    if (!open) setSelectedFolder("");
-  }, [open]);
+  // Closing resets the folder, so the dialog opens fresh next time.
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (!next) setSelectedFolder("");
+  };
 
   const handleSelect = (url: string) => {
     onSelect(url);
-    setOpen(false);
+    handleOpenChange(false);
   };
 
   const handleFolderChange = (folderPath: string) => {
@@ -49,7 +51,7 @@ export function ImageSelectionDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline" className={className}>
           {triggerText}

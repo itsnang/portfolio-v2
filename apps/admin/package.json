@@ -8,7 +8,8 @@
     "start": "next start -p 3002",
     "seed:admin": "tsx --conditions=react-server --env-file=.env.local scripts/seed-admin.ts",
     "seed:local": "tsx --conditions=react-server scripts/seed-local.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

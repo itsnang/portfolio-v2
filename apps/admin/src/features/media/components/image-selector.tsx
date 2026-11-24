@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@portfolio/ui/button";
 import {
@@ -100,38 +100,35 @@ export const ImageSelector = <TFieldValues extends Record<string, unknown>>({
     }
   };
 
-  const handleUpload = useCallback(
-    async (files: File[]) => {
-      if (!files[0]) return;
-      if (!selectedFolder) {
-        toast.error("Select a folder first");
+  const handleUpload = async (files: File[]) => {
+    if (!files[0]) return;
+    if (!selectedFolder) {
+      toast.error("Select a folder first");
+      return;
+    }
+    const tooLarge = fileTooLargeMessage(files[0].size);
+    if (tooLarge) {
+      toast.error(tooLarge);
+      return;
+    }
+    setIsUploading(true);
+    try {
+      const result = await uploadStagedFile(files[0], selectedFolder);
+      if (!result.success) {
+        toast.error(result.error);
         return;
       }
-      const tooLarge = fileTooLargeMessage(files[0].size);
-      if (tooLarge) {
-        toast.error(tooLarge);
-        return;
-      }
-      setIsUploading(true);
-      try {
-        const result = await uploadStagedFile(files[0], selectedFolder);
-        if (!result.success) {
-          toast.error(result.error);
-          return;
-        }
-        handleImageSelect(result.data.imageUrl);
-        toast.success(result.message);
-        await addUploadedImage(result.data, selectedFolder);
-      } catch (error) {
-        unstable_rethrow(error);
-        console.error("Failed to upload image:", error);
-        toast.error("Failed to upload image");
-      } finally {
-        setIsUploading(false);
-      }
-    },
-    [selectedFolder, handleImageSelect, addUploadedImage]
-  );
+      handleImageSelect(result.data.imageUrl);
+      toast.success(result.message);
+      await addUploadedImage(result.data, selectedFolder);
+    } catch (error) {
+      unstable_rethrow(error);
+      console.error("Failed to upload image:", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/png": [], "image/jpeg": [], "image/webp": [] },
