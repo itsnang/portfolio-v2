@@ -4,7 +4,7 @@ import { useEditorSheet } from "@/lib/use-editor-sheet";
 import { toastRefreshWarning } from "@/lib/toast-refresh-warning";
 import { toast } from "sonner";
 
-import { useState, useCallback } from "react";
+import { useCallback, useId, useState } from "react";
 import { Project, ProjectTechnology } from "@portfolio/db/schema";
 import { Button } from "@portfolio/ui/button";
 import { GripVertical, PencilIcon } from "lucide-react";
@@ -36,7 +36,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { reorderProjectsAction } from "@/features/project/actions/project";
+import { deleteProjectAction, reorderProjectsAction } from "@/features/project/actions/project";
+import { DeleteConfirmButton } from "@/components/delete-confirm-button";
+import { showActionResult } from "@/lib/use-run-action";
 import { FormSheet } from "@/components/form-sheet";
 import ProjectForm from "@/features/project/components/project-form";
 
@@ -109,9 +111,11 @@ const ProjectThumbnail = ({ src, alt, size = "sm" }: ProjectThumbnailProps) => {
 const SortableProjectTableRow = ({
   project,
   onEdit,
+  onDelete,
 }: {
   project: Project;
   onEdit: (project: Project) => void;
+  onDelete: (id: string) => Promise<void>;
 }) => {
   const thumbnail = String(project.thumbnail || "");
   const title = String(project.title || "");
@@ -164,14 +168,17 @@ const SortableProjectTableRow = ({
         </Badge>
       </TableCell>
       <TableCell className="w-[70px]">
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={`Edit ${title}`}
-          onClick={() => onEdit(project)}
-        >
-          <PencilIcon className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={`Edit ${title}`}
+            onClick={() => onEdit(project)}
+          >
+            <PencilIcon className="h-4 w-4" />
+          </Button>
+          <DeleteConfirmButton itemLabel={title} onConfirm={() => onDelete(project.id)} />
+        </div>
       </TableCell>
     </TableRow>
   );
@@ -180,9 +187,11 @@ const SortableProjectTableRow = ({
 const SortableProjectCard = ({
   project,
   onEdit,
+  onDelete,
 }: {
   project: Project;
   onEdit: (project: Project) => void;
+  onDelete: (id: string) => Promise<void>;
 }) => {
   const thumbnail = String(project.thumbnail || "");
   const title = String(project.title || "");
@@ -224,14 +233,17 @@ const SortableProjectCard = ({
             {description}
           </p>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={`Edit ${title}`}
-          onClick={() => onEdit(project)}
-        >
-          <PencilIcon className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={`Edit ${title}`}
+            onClick={() => onEdit(project)}
+          >
+            <PencilIcon className="h-4 w-4" />
+          </Button>
+          <DeleteConfirmButton itemLabel={title} onConfirm={() => onDelete(project.id)} />
+        </div>
       </div>
       <div className="flex flex-col gap-2 text-sm">
         <div className="flex items-center justify-between">
@@ -263,11 +275,17 @@ export const ProjectTable = ({
   const [items, setItems] = useState<Project[]>(projects);
   const [syncedProjects, setSyncedProjects] = useState(projects);
   const sheet = useEditorSheet<Project>();
+  // A stable id keeps dnd-kit's generated aria ids the same on the server and the client.
+  const dndId = useId();
 
   // Fresh projects from the server replace the local order (set during render, not in an effect).
   if (projects !== syncedProjects) {
     setSyncedProjects(projects);
     setItems(projects);
+  }
+
+  async function handleDelete(id: string) {
+    showActionResult(await deleteProjectAction(id));
   }
 
   const sensors = useSensors(
@@ -316,6 +334,7 @@ export const ProjectTable = ({
         </div>
       ) : (
         <DndContext
+          id={dndId}
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
@@ -347,6 +366,7 @@ export const ProjectTable = ({
                         key={project.id}
                         project={project}
                         onEdit={sheet.openEdit}
+                        onDelete={handleDelete}
                       />
                     ))}
                   </TableBody>
@@ -360,6 +380,7 @@ export const ProjectTable = ({
                     key={project.id}
                     project={project}
                     onEdit={sheet.openEdit}
+                    onDelete={handleDelete}
                   />
                 ))}
               </div>

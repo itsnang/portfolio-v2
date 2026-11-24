@@ -18,6 +18,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@portfolio/ui/avatar";
 import { Badge } from "@portfolio/ui/badge";
 import { FormSheet } from "@/components/form-sheet";
 import { ExperienceForm } from "@/features/experience/components/experience-form";
+import { DeleteConfirmButton } from "@/components/delete-confirm-button";
+import { deleteExperienceAction } from "@/features/experience/actions/experience";
+import { showActionResult } from "@/lib/use-run-action";
 
 interface ExperienceTableProps {
   experiences: Experiences[];
@@ -25,6 +28,10 @@ interface ExperienceTableProps {
 
 export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
   const sheet = useEditorSheet<Experiences>();
+
+  async function handleDelete(id: string) {
+    showActionResult(await deleteExperienceAction(id));
+  }
 
   return (
     <div className="space-y-4">
@@ -80,14 +87,20 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          aria-label={`Edit ${experience.title} at ${experience.company}`}
-                          onClick={() => sheet.openEdit(experience)}
-                        >
-                          <PencilIcon className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label={`Edit ${experience.title} at ${experience.company}`}
+                            onClick={() => sheet.openEdit(experience)}
+                          >
+                            <PencilIcon className="h-4 w-4" />
+                          </Button>
+                          <DeleteConfirmButton
+                            itemLabel={`${experience.title} at ${experience.company}`}
+                            onConfirm={() => handleDelete(experience.id)}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -114,14 +127,20 @@ export const ExperienceTable = ({ experiences }: ExperienceTableProps) => {
                       <p className="text-sm text-muted-foreground">{experience.title}</p>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Edit ${experience.title} at ${experience.company}`}
-                    onClick={() => sheet.openEdit(experience)}
-                  >
-                    <PencilIcon className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Edit ${experience.title} at ${experience.company}`}
+                      onClick={() => sheet.openEdit(experience)}
+                    >
+                      <PencilIcon className="h-4 w-4" />
+                    </Button>
+                    <DeleteConfirmButton
+                      itemLabel={`${experience.title} at ${experience.company}`}
+                      onConfirm={() => handleDelete(experience.id)}
+                    />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-2 text-sm">
                   <div className="flex items-center justify-between">
