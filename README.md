@@ -88,11 +88,11 @@ It has its own look, a quiet editor:
 
 |                                            |                                            |
 | ------------------------------------------ | ------------------------------------------ |
-| **Sign In**<br>![Sign in](docs/screenshots/cms-sign-in.png) | **Projects**<br>![Projects](docs/screenshots/dashboard-projects.png) |
-| **Experience**<br>![Experience](docs/screenshots/dashboard-experience.png) | **Posts**<br>![Posts](docs/screenshots/dashboard-blog.png) |
-| **Education**<br>![Education](docs/screenshots/dashboard-education.png) | **Recommendations**<br>![Recommendations](docs/screenshots/dashboard-recommendations.png) |
-| **Image Library**<br>![Images](docs/screenshots/dashboard-images.png) | **Profile**<br>![Profile](docs/screenshots/dashboard-profile.png) |
-| **App Config**<br>![App Config](docs/screenshots/dashboard-app-config.png) | |
+| **Sign In**<br>![Sign in](docs/screenshots/admin-sign-in.png) | **Projects**<br>![Projects](docs/screenshots/admin-projects.png) |
+| **Experience**<br>![Experience](docs/screenshots/admin-experience.png) | **Posts**<br>![Posts](docs/screenshots/admin-blog.png) |
+| **Education**<br>![Education](docs/screenshots/admin-education.png) | **Recommendations**<br>![Recommendations](docs/screenshots/admin-recommendations.png) |
+| **Image Library**<br>![Images](docs/screenshots/admin-images.png) | **Profile**<br>![Profile](docs/screenshots/admin-profile.png) |
+| **App Config**<br>![App Config](docs/screenshots/admin-app-config.png) | |
 
 Content types managed from the CMS:
 
