@@ -6,6 +6,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { architectsDaughter, caveat, spaceGrotesk } from "@portfolio/ui/fonts";
 import { getAppConfig } from "@/features/app-config/queries";
 import { preconnect } from "react-dom";
+import { ColorSchemeScript } from "@portfolio/ui/color-scheme";
+import { ColorSchemeToggle } from "@portfolio/ui/color-scheme-toggle";
 import { blogUrl, mainUrl } from "@/lib/site-urls";
 
 export const metadata: Metadata = buildMetadata({});
@@ -18,7 +20,7 @@ export default async function RootLayout({
   // Crossing to the Blog Site is a full page load; open the connection early.
   preconnect(blogUrl);
   const config = await getAppConfig();
-  const htmlClass = config.theme === "wireframe" ? "wireframe" : "dark";
+  const theme = config.theme === "wireframe" ? "wireframe" : "modern";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -38,8 +40,9 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={htmlClass} suppressHydrationWarning>
+    <html lang="en" className={theme === "wireframe" ? "wireframe" : undefined} suppressHydrationWarning>
       <head>
+        <ColorSchemeScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -49,6 +52,7 @@ export default async function RootLayout({
         className={`${spaceGrotesk.className} ${architectsDaughter.variable} ${caveat.variable}`}
         suppressHydrationWarning
       >
+        <ColorSchemeToggle variant={theme} />
         {children}
         <Analytics />
         <SpeedInsights />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AppSidebar } from "@/components/dashboard-shell/app-sidebar";
 import { DashboardBreadcrumb } from "@/components/dashboard-shell/dashboard-breadcrumb";
 import { requireAuth } from "@/lib/auth/session";
+import { ColorSchemeToggle } from "@portfolio/ui/color-scheme-toggle";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
 import {
   SidebarInset,
@@ -30,6 +31,7 @@ export default async function DashboardLayout({
           <header className="sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-b border-border bg-background/90 px-4 backdrop-blur">
             <SidebarTrigger className="-ml-1" />
             <DashboardBreadcrumb />
+            <ColorSchemeToggle className="ml-auto size-8 rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" />
           </header>
           <main className="mx-auto w-full max-w-5xl px-4 py-8 md:px-10 md:py-10">{children}</main>
         </SidebarInset>

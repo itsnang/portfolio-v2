@@ -72,6 +72,8 @@ Schema-change rules, migrations and the production database steps are in [`packa
 
 Both public Sites follow the theme chosen in the Admin Site. They're shown here in the "Wireframe" theme, as they are live today.
 
+Every Site, the Admin Site included, has a light and a dark version. Each follows the device setting until the visitor picks Light or Dark with the switch; the choice is saved in a cookie on `lornsamnang.com`, so it carries across all three Sites.
+
 |                                            |                                            |
 | ------------------------------------------ | ------------------------------------------ |
 | **Main: home**<br>![Main Site home](docs/screenshots/main-home.png) | **Main: a project**<br>![A project page](docs/screenshots/main-project.png) |
@@ -82,7 +84,7 @@ Both public Sites follow the theme chosen in the Admin Site. They're shown here 
 A password-protected dashboard (Better Auth, sign-up disabled) lets the site owner manage every piece of content shown on the Main and Blog Sites, with no redeploy needed.
 
 It has its own look, a quiet editor:
-- **Colours:** a warm stone ground, near-black ink and one blue accent.
+- **Colours:** a warm stone ground, near-black ink and one blue accent, with a dark version of the same palette.
 - **Fonts:** Host Grotesk for text and JetBrains Mono for counts.
 - **List pages:** each content type is a plain list with thin dividers, and each row shows a dot and a word for whether it's live. Clicking a row's title opens its editor.
 

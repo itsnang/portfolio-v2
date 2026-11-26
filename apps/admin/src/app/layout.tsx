@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ColorSchemeScript } from "@portfolio/ui/color-scheme";
 import { Toaster } from "@portfolio/ui/sonner";
 import { hostGrotesk, jetbrainsMono } from "./fonts";
 
@@ -15,12 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body
         className={`${hostGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         {children}
-        <Toaster richColors theme="light" position="top-center" />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

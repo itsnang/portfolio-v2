@@ -36,8 +36,8 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
-                border: "1.5px dashed #4a7a5a",
-                background: "#f0f7f2",
+                border: "1.5px dashed var(--wf-ok)",
+                background: "var(--wf-ok-bg)",
                 padding: "3px 10px 3px 8px",
                 marginBottom: 14,
               }}
@@ -47,13 +47,13 @@ export function WireframeHero({ name, isAvailable, abouts, imageUrl }: Props) {
                   width: 7,
                   height: 7,
                   borderRadius: "50%",
-                  background: "#4a7a5a",
+                  background: "var(--wf-ok)",
                   flexShrink: 0,
                 }}
               />
               <span
                 className="wf-m"
-                style={{ fontSize: 12, color: "#4a7a5a", letterSpacing: "0.05em" }}
+                style={{ fontSize: 12, color: "var(--wf-ok)", letterSpacing: "0.05em" }}
               >
                 available for work
               </span>

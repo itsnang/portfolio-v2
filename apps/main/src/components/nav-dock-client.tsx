@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@portfolio/ui/tooltip";
 import { cn } from "@portfolio/ui/cn";
+import { ColorSchemeToggle } from "@portfolio/ui/color-scheme-toggle";
 import { HomeIcon, NotebookIcon, Award } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -50,6 +51,10 @@ export const DockNavClient = ({
             </TooltipProvider>
           </DockIcon>
         ))}
+        {/* Hides the Site's floating switch while the dock is on the page. */}
+        <DockIcon data-color-scheme-switch>
+          <ColorSchemeToggle className={linkClassName} />
+        </DockIcon>
         <Separator orientation="vertical" className="h-full" />
         {socials.map((social) => (
           <DockIcon key={social.name}>

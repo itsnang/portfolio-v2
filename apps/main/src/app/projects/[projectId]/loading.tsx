@@ -5,7 +5,7 @@ function WireframeProjectDetailSkeleton() {
     <div className="sketch-page" style={{ minHeight: "100vh" }}>
 
       {/* Nav */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(251,250,245,.9)", backdropFilter: "blur(4px)", borderBottom: "2px solid #25252a" }}>
+      <nav style={{ position: "sticky", top: 0, zIndex: 40, background: "var(--wf-nav-bg)", backdropFilter: "blur(4px)", borderBottom: "2px solid var(--wf-ink)" }}>
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 62 }}>
           <Skel w="32px" h="26px" />
           <Skel w="60px" h="14px" />
@@ -33,7 +33,7 @@ function WireframeProjectDetailSkeleton() {
           <Skel h="300px" />
         </div>
 
-        <div style={{ borderTop: "1px dashed #a7a59c", margin: "30px 0 50px" }} />
+        <div style={{ borderTop: "1px dashed var(--wf-ink-faint)", margin: "30px 0 50px" }} />
 
         {/* Body */}
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr .9fr", gap: 48, alignItems: "start" }}>
@@ -53,7 +53,7 @@ function WireframeProjectDetailSkeleton() {
               ))}
             </div>
           </div>
-          <div style={{ background: "#ede9de", padding: "24px" }}>
+          <div style={{ background: "var(--wf-skel)", padding: "24px" }}>
             <Skel w="120px" h="22px" />
             <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginTop: 14 }}>
               {[90, 110, 80, 100, 95, 75, 115].map((w, i) => (
@@ -72,7 +72,7 @@ function WireframeProjectDetailSkeleton() {
         </div>
 
         {/* Prev / Next */}
-        <div style={{ display: "flex", justifyContent: "space-between", borderTop: "2px solid #25252a", marginTop: 60, padding: "34px 0 0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", borderTop: "2px solid var(--wf-ink)", marginTop: 60, padding: "34px 0 0" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <Skel w="40px" h="11px" />
             <Skel w="160px" h="22px" />
@@ -86,7 +86,7 @@ function WireframeProjectDetailSkeleton() {
       </div>
 
       {/* Footer */}
-      <footer style={{ borderTop: "2px solid #25252a", padding: "46px 0 60px", marginTop: 70 }}>
+      <footer style={{ borderTop: "2px solid var(--wf-ink)", padding: "46px 0 60px", marginTop: 70 }}>
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
           <Skel w="160px" h="13px" />
           <Skel w="280px" h="38px" />
@@ -108,12 +108,12 @@ export default function Loading() {
         <WireframeProjectDetailSkeleton />
       </div>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 [html.wireframe_&]:hidden">
-      <div className="h-8 bg-gray-200 rounded w-1/3 animate-pulse" />
-      <div className="h-64 bg-gray-200 rounded animate-pulse" />
+      <div className="h-8 bg-muted rounded w-1/3 animate-pulse" />
+      <div className="h-64 bg-muted rounded animate-pulse" />
       <div className="space-y-3">
-        <div className="h-4 bg-gray-200 rounded animate-pulse" />
-        <div className="h-4 bg-gray-200 rounded w-5/6 animate-pulse" />
-        <div className="h-4 bg-gray-200 rounded w-4/5 animate-pulse" />
+        <div className="h-4 bg-muted rounded animate-pulse" />
+        <div className="h-4 bg-muted rounded w-5/6 animate-pulse" />
+        <div className="h-4 bg-muted rounded w-4/5 animate-pulse" />
       </div>
     </div>
     </>
