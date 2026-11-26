@@ -31,8 +31,9 @@ function applyColorScheme() {
 function cookieDomain() {
   const { hostname } = location;
   if (hostname === "localhost" || /^[\d.]+$/.test(hostname) || hostname.includes(":")) return "";
+  // The last two labels, so the bare domain (lornsamnang.com) and every subdomain share one cookie.
   const labels = hostname.split(".");
-  return labels.length > 2 ? `; domain=.${labels.slice(-2).join(".")}` : "";
+  return labels.length >= 2 ? `; domain=.${labels.slice(-2).join(".")}` : "";
 }
 
 function setPreference(preference: ColorSchemePreference) {
