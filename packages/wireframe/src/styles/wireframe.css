@@ -157,23 +157,22 @@
   z-index: 3;
 }
 
-/* gallery: justified rows. Each photo grows in proportion to its own shape
-   (--wf-ratio = width ÷ height), so every photo in a row ends up the same height
-   and the row fills the width. The filler keeps the last row at its natural
-   size instead of blowing a lone photo up to full width. */
+/* gallery: balanced justified rows (the component picks the rows). Each photo's
+   width is in proportion to its shape (--wf-ratio = width ÷ height), so every
+   photo in a row ends up the same height and the row fills the width.
+   --wf-row is the row height the component aims for. */
 .wf-gallery-grid {
-  --wf-row: 240px;
+  --wf-row: 340px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
 }
-.wf-gallery-grid::after {
-  content: "";
-  flex-grow: 1000;
+.wf-gallery-row {
+  display: flex;
+  gap: inherit;
 }
 .wf-gallery-item {
-  flex-grow: var(--wf-ratio);
-  flex-basis: calc(var(--wf-ratio) * var(--wf-row));
+  flex: var(--wf-ratio) 1 0;
   aspect-ratio: var(--wf-ratio);
   min-width: 0;
 }
@@ -759,7 +758,7 @@
     grid-template-columns: 1fr !important;
   }
   .wf-gallery-grid {
-    --wf-row: 130px;
+    --wf-row: 190px;
     gap: 10px;
   }
   .wf-note,
