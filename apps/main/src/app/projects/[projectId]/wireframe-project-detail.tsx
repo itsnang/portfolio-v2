@@ -51,7 +51,7 @@ const CHECK_SVG = (
     <path
       d="M4,13 L10,19 L21,5"
       fill="none"
-      stroke="#e2402c"
+      stroke="var(--wf-accent)"
       strokeWidth="2.4"
       strokeLinecap="round"
       strokeLinejoin="round"

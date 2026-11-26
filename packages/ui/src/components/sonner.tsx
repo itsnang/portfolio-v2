@@ -1,16 +1,16 @@
 "use client"
 
-import { useTheme } from "next-themes"
+import { useColorScheme } from "./color-scheme-toggle"
 import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { scheme } = useColorScheme()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={scheme}
       className="toaster group"
       toastOptions={{
         classNames: {

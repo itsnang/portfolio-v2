@@ -14,6 +14,13 @@
   --wf-accent: #e2402c;
   --wf-grid: rgba(40, 40, 50, 0.05);
   --wf-tape: rgba(228, 210, 150, 0.55);
+  --wf-tape-edge: rgba(150, 130, 60, 0.4);
+  --wf-rule: rgba(40, 40, 50, 0.12);
+  --wf-skel: #ede9de;
+  --wf-skel-shine: #e0dcd0;
+  --wf-nav-bg: rgba(251, 250, 245, 0.86);
+  --wf-ok: #4a7a5a;
+  --wf-ok-bg: #f0f7f2;
   --wf-marker: var(--font-architects-daughter), "Comic Sans MS", cursive;
   --wf-hand: var(--font-caveat), "Architects Daughter", cursive;
   --wf-r: 4px;
@@ -26,6 +33,26 @@
   color: var(--wf-ink);
   font-family: var(--wf-marker);
   min-height: 100vh;
+}
+
+/* Dark: the same sketchbook on dark paper, light ink. */
+.dark .sketch-page {
+  --wf-paper: #1c1c1f;
+  --wf-paper-2: #25252a;
+  --wf-ink: #ebe8de;
+  --wf-ink-soft: #b2afa5;
+  --wf-ink-faint: #6e6c66;
+  --wf-line: #d9d6cc;
+  --wf-accent: #ff6b55;
+  --wf-grid: rgba(235, 232, 222, 0.045);
+  --wf-tape: rgba(214, 190, 120, 0.3);
+  --wf-tape-edge: rgba(214, 190, 120, 0.45);
+  --wf-rule: rgba(235, 232, 222, 0.14);
+  --wf-skel: #2a2a2f;
+  --wf-skel-shine: #34343a;
+  --wf-nav-bg: rgba(28, 28, 31, 0.86);
+  --wf-ok: #7fc296;
+  --wf-ok-bg: rgba(127, 194, 150, 0.12);
 }
 
 /* sketch border overlay */
@@ -123,7 +150,7 @@
   width: 64px;
   height: 22px;
   background: var(--wf-tape);
-  border: 1px solid rgba(150, 130, 60, 0.4);
+  border: 1px solid var(--wf-tape-edge);
   top: -10px;
   left: 50%;
   transform: translateX(-50%) rotate(-4deg);
@@ -244,7 +271,7 @@
   line-height: 1.5;
   color: var(--wf-ink);
   list-style: none;
-  border-bottom: 1px dashed rgba(40, 40, 50, 0.12);
+  border-bottom: 1px dashed var(--wf-rule);
 }
 .wf-feature li:last-child {
   border-bottom: none;
@@ -307,7 +334,7 @@
   }
 }
 .wf-skel {
-  background: linear-gradient(90deg, #ede9de 25%, #e0dcd0 50%, #ede9de 75%);
+  background: linear-gradient(90deg, var(--wf-skel) 25%, var(--wf-skel-shine) 50%, var(--wf-skel) 75%);
   background-size: 1200px 100%;
   animation: wf-shimmer 1.6s ease-in-out infinite;
   border-radius: 2px;
@@ -772,7 +799,7 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(251, 250, 245, 0.86);
+  background: var(--wf-nav-bg);
   backdrop-filter: blur(4px);
   border-bottom: 2px solid var(--wf-ink);
 }

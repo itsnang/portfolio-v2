@@ -47,6 +47,40 @@
   --sidebar-ring: #2456d6;
 }
 
+/* Dark: the same stone at night. The blue lifts so it still reads on the dark ground. */
+.dark {
+  --background: #191815;
+  --foreground: #ebe9e3;
+  --card: #22211d;
+  --card-foreground: #ebe9e3;
+  --popover: #22211d;
+  --popover-foreground: #ebe9e3;
+
+  --primary: #7c9cf2;
+  --primary-foreground: #10131b;
+  --secondary: #2c2b27;
+  --secondary-foreground: #ebe9e3;
+  --muted: #2c2b27;
+  --muted-foreground: #a4a198;
+  --accent: #2c2b27;
+  --accent-foreground: #ebe9e3;
+  --destructive: #e5534b;
+  --destructive-foreground: #ffffff;
+
+  --border: rgb(235 233 227 / 0.12);
+  --input: rgb(235 233 227 / 0.18);
+  --ring: #7c9cf2;
+
+  --sidebar: #191815;
+  --sidebar-foreground: #ebe9e3;
+  --sidebar-primary: #7c9cf2;
+  --sidebar-primary-foreground: #10131b;
+  --sidebar-accent: #2c2b27;
+  --sidebar-accent-foreground: #ebe9e3;
+  --sidebar-border: rgb(235 233 227 / 0.12);
+  --sidebar-ring: #7c9cf2;
+}
+
 /* Form fields read as fields on the stone ground. */
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
