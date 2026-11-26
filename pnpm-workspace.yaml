@@ -1,3 +1,11 @@
 packages:
   - apps/*
   - packages/*
+
+overrides:
+  # jsdom 27+ require()s @exodus/bytes, an ES-module-only package, and Vercel's
+  # function runtime rejects that (ERR_REQUIRE_ESM). Builds still prerender, so
+  # pages deploy fine, but every later re-render (revalidate after an Admin save,
+  # or the ISR timer) crashes and Vercel keeps serving the stale page. jsdom 26's
+  # dependencies are all CommonJS. Only isomorphic-dompurify uses jsdom.
+  jsdom: 26.1.0
