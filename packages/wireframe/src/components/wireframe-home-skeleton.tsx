@@ -43,7 +43,7 @@ export function WireframeHomeSkeleton() {
           </div>
         </div>
 
-        <div style={{ borderTop: "1px dashed #a7a59c" }} />
+        <div style={{ borderTop: "1px dashed var(--wf-ink-faint)" }} />
 
         {/* Experience */}
         <div style={{ padding: "84px 0 40px" }}>
@@ -53,7 +53,7 @@ export function WireframeHomeSkeleton() {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {[1, 2, 3].map((i) => (
-              <div key={i} style={{ background: "#ede9de", padding: "22px 26px", display: "flex", gap: 16, alignItems: "center" }}>
+              <div key={i} style={{ background: "var(--wf-skel)", padding: "22px 26px", display: "flex", gap: 16, alignItems: "center" }}>
                 <Skel w="46px" h="46px" className="flex-shrink-0" />
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
                   <Skel w="45%" h="20px" />
@@ -68,7 +68,7 @@ export function WireframeHomeSkeleton() {
           </div>
         </div>
 
-        <div style={{ borderTop: "1px dashed #a7a59c" }} />
+        <div style={{ borderTop: "1px dashed var(--wf-ink-faint)" }} />
 
         {/* Projects */}
         <div style={{ padding: "84px 0 40px" }}>
@@ -78,7 +78,7 @@ export function WireframeHomeSkeleton() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22 }}>
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} style={{ background: "#ede9de", display: "flex", flexDirection: "column" }}>
+              <div key={i} style={{ background: "var(--wf-skel)", display: "flex", flexDirection: "column" }}>
                 <Skel h="188px" />
                 <div style={{ padding: "18px 20px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
                   <Skel w="60%" h="22px" />

@@ -20,7 +20,7 @@ export default function SignInPage() {
         className="relative m-2 hidden overflow-hidden rounded-2xl border border-border bg-muted lg:flex lg:flex-col"
         style={{
           backgroundImage:
-            "radial-gradient(60% 50% at 50% 35%, rgb(255 255 255 / 0.45), transparent 70%), radial-gradient(45% 40% at 85% 95%, rgb(36 86 214 / 0.14), transparent 70%)",
+            "radial-gradient(60% 50% at 50% 35%, color-mix(in srgb, var(--card) 70%, transparent), transparent 70%), radial-gradient(45% 40% at 85% 95%, color-mix(in srgb, var(--primary) 14%, transparent), transparent 70%)",
         }}
       >
         <div className="flex flex-1 items-center justify-center px-12">
