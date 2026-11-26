@@ -35,12 +35,13 @@ const nextConfig: NextConfig = {
   // next/og's SVG->PNG step fail with "Input buffer contains unsupported
   // image format" when generating opengraph images.
   serverExternalPackages: ["sharp"],
-  // The blog moved to the Blog Site. Temporary for now; step 9 of the site
-  // split makes them permanent once the Blog Site has proven itself.
+  // The blog moved to the Blog Site for good (step 9 of the site split), so
+  // these are permanent (308): browsers and search engines cache them. Keep
+  // them indefinitely so old links and bookmarks keep working.
   async redirects() {
     return [
-      { source: "/blog", destination: `${blogOrigin}/`, permanent: false },
-      { source: "/blog/:path*", destination: `${blogOrigin}/:path*`, permanent: false },
+      { source: "/blog", destination: `${blogOrigin}/`, permanent: true },
+      { source: "/blog/:path*", destination: `${blogOrigin}/:path*`, permanent: true },
     ];
   },
 };
