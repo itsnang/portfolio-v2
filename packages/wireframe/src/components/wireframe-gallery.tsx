@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
 interface Props {
@@ -63,7 +64,8 @@ function balanceRows(ratios: number[], rows: number): number[][] {
 /**
  * Balanced justified rows: each photo keeps its own shape, photos in a row share one
  * height, and every row (the last one too) fills the width. The number of rows comes
- * from the gallery's width and the target row height in CSS (--wf-row).
+ * from the gallery's width and the target row height in CSS (--wf-row). Photos are
+ * stored as URLs only, so each one's shape is read from the image once it loads.
  */
 export function WireframeGallery({ images }: Props) {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -138,15 +140,12 @@ export function WireframeGallery({ images }: Props) {
                   className="wf-sketch wf-photo wf-gallery-item"
                   style={{ "--wf-ratio": shapes[i] } as CSSProperties}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={images[i]}
                     alt={`Gallery ${i + 1}`}
-                    decoding="async"
-                    // A cached photo can finish loading before React attaches onLoad.
-                    ref={(img) => {
-                      if (img?.complete) record(i, img);
-                    }}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1080px) 35vw, 400px"
+                    // Next fires this for a photo already loaded before hydration too.
                     onLoad={(event) => record(i, event.currentTarget)}
                   />
                 </div>
