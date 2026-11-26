@@ -157,6 +157,27 @@
   z-index: 3;
 }
 
+/* gallery: justified rows. Each photo grows in proportion to its own shape
+   (--wf-ratio = width ÷ height), so every photo in a row ends up the same height
+   and the row fills the width. The filler keeps the last row at its natural
+   size instead of blowing a lone photo up to full width. */
+.wf-gallery-grid {
+  --wf-row: 240px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.wf-gallery-grid::after {
+  content: "";
+  flex-grow: 1000;
+}
+.wf-gallery-item {
+  flex-grow: var(--wf-ratio);
+  flex-basis: calc(var(--wf-ratio) * var(--wf-row));
+  aspect-ratio: var(--wf-ratio);
+  min-width: 0;
+}
+
 /* x-box placeholder */
 .wf-xbox {
   position: relative;
@@ -738,7 +759,8 @@
     grid-template-columns: 1fr !important;
   }
   .wf-gallery-grid {
-    column-count: 2 !important;
+    --wf-row: 130px;
+    gap: 10px;
   }
   .wf-note,
   .wf-ann-arrow {
@@ -1003,9 +1025,6 @@ a.contact-mini:hover svg {
   }
   .sketch-page [style*="grid-template-columns: repeat(3, 1fr)"] {
     grid-template-columns: 1fr !important;
-  }
-  .sketch-page [style*="column-count: 4"] {
-    column-count: 2 !important;
   }
   .sketch-page h1[style*="font-size: 84px"] {
     font-size: 52px !important;
